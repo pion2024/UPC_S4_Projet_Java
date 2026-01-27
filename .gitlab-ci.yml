@@ -14,8 +14,8 @@ before_script:
       </proxies>
     </settings>' > $CI_PROJECT_DIR/.m2/settings.xml
 
-#variables:
-#  MAVEN_OPTS: "-Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
+variables:
+  MAVEN_OPTS: "-Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
 
 stages:          # List of stages for jobs, and their order of execution
   - build
