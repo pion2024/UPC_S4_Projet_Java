@@ -1,0 +1,10 @@
+com\starstuff\view\GameView.class
+com\starstuff\common\Vector3.class
+com\starstuff\controller\GameController$1.class
+com\starstuff\controller\GameController.class
+com\starstuff\controller\GameController$2.class
+com\starstuff\model\Block.class
+com\starstuff\App.class
+com\starstuff\model\Agent.class
+com\starstuff\model\Entity.class
+com\starstuff\model\GameWorld.class
