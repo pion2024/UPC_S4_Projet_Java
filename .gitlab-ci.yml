@@ -1,0 +1,53 @@
+image: maven:3.9.11-eclipse-temurin-17
+
+before_script:
+  - mkdir -p $CI_PROJECT_DIR/.m2
+  - echo '<settings>
+      <proxies>
+        <proxy>
+          <id>proxy</id>
+          <active>true</active>
+          <protocol>https</protocol>
+          <host>194.254.199.96</host>
+          <port>3128</port>
+        </proxy>
+      </proxies>
+    </settings>' > $CI_PROJECT_DIR/.m2/settings.xml
+
+#variables:
+#  MAVEN_OPTS: "-Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
+
+stages:          # List of stages for jobs, and their order of execution
+  - build
+  - test
+  - deploy
+
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - echo "Compiling the code..."
+    - mvn compile
+    - echo "Compile complete."
+
+unit-test-job:   # This job runs in the test stage.
+  stage: test    # It only starts when the job in the build stage completes successfully.
+  script:
+    - echo "Running unit tests..."
+    - mvn clean install
+    - CI=true mvn test
+    - echo "Done."
+
+lint-test-job:   # This job also runs in the test stage.
+  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  script:
+    - echo "Linting code..."
+    - mvn checkstyle:check
+    - echo "No lint issues found."
+
+deploy-job:      # This job runs in the deploy stage.
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
+  script:
+    - echo "Deploying application..."
+    - mvn install
+    - echo "Application successfully deployed."
