@@ -1,225 +1,457 @@
 package com.starstuff.model;
 
-import com.starstuff.common.Vector3;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.CopyOnWriteArrayList;
+import com.starstuff.common.Vector2;
+import java.util.*;
 
-/**
- * The Model. Contains all game state and logic.
- */
 public class GameWorld {
-    private final List<Entity> entities = new CopyOnWriteArrayList<>();
-    private final Set<String> floorPositions = new HashSet<>();
+    private int[][] terrain; 
+    private int width, height;
+
     private Agent player;
+    private Terminal terminal;
+    private List<Entity> entities = new ArrayList<>();
+    
+    // Robot Execution State
+    private Stack<Command> commandStack = new Stack<>();
+    private boolean robotExecuting = false;
+    private boolean robotRetreating = false; // NEW: Backtracking mode
+    private Command currentRobotCommand = null;
+    
+    // Paths
+    private Queue<Vector2> executionPath = new LinkedList<>(); // For actual movement
+    private List<Vector2> previewPath = new ArrayList<>(); // For UI rendering
 
-    // World Bounds for Camera calculation
-    private int minX = Integer.MAX_VALUE;
-    private int maxX = Integer.MIN_VALUE;
-    private int minZ = Integer.MAX_VALUE;
-    private int maxZ = Integer.MIN_VALUE;
-
-    // Configuration
-    private final int REGION_SIZE = 6;
-    private int gapSize = 1; // Default gap size, will be set in initialization
-
-    // Keep track of region bounds to calculate connections
-    private final List<RegionBounds> regions = new ArrayList<>();
-    private record RegionBounds(int minX, int maxX, int minZ, int maxZ) {}
-
-    public GameWorld() {
-        // Initialize with 3 regions and a gap of 1 block
-        // The gap of 1 ensures the standard 1x1 bridge fits perfectly.
-        initializeLevel(3, 1); 
+    public GameWorld(Level level) {
+        MapGenerator.generateLevel(this, level);
     }
 
-    /**
-     * @param n Number of regions
-     * @param gap The distance between regions (in blocks)
-     */
-    private void initializeLevel(int n, int gap) {
-        this.gapSize = gap;
-        
-        // 1. Generate Regions
-        for (int i = 0; i < n; i++) {
-            generateRegion(i, n);
-        }
-
-        // 2. Generate Connections (Triggers & Bridges)
-        // Connect Region i to Region i+1
-        for (int i = 0; i < n - 1; i++) {
-            createConnection(i, i + 1);
-        }
-
-        // 3. Create Player (Safe spawn in Region 0)
-        player = new Agent(new Vector3(2, 0, 2));
-        entities.add(player);
-
-        // 4. Create a or many movable Block 
-        // The axis: the plafonds are on the x-z plane, 0 at bottom left
-        // x represents distance to left side, z represents distance to bottom size
-        // y axis is orthogonal to x-z plane, representing the height, so should REMAIN 0
-        entities.add(new Block(new Vector3(3, 0, 1)));
-        entities.add(new Block(new Vector3(1, 0, 4))); //add one more block
+    public void initTerrain(int w, int h) {
+        this.width = w;
+        this.height = h;
+        this.terrain = new int[w][h];
+    }
+    
+    public void setTile(int x, int y, int type) {
+        if (x >= 0 && x < width && y >= 0 && y < height) terrain[x][y] = type;
+    }
+    
+    public int getTile(int x, int y) {
+        if (x >= 0 && x < width && y >= 0 && y < height) return terrain[x][y];
+        return 0; 
     }
 
-    private void generateRegion(int index, int total) {
-        // Layout Logic: Max 2 columns.
-        // Row 0: Indices 0, 1
-        // Row 1: Indices 2, 3 ...
-        int row = index / 2;
-        int col = index % 2;
-
-        int startX = col * (REGION_SIZE + gapSize);
-        int startZ = row * (REGION_SIZE + gapSize);
-
-        // Center Alignment for the last row if it has only 1 item (T-shape layout)
-        boolean isLastItem = (index == total - 1);
-        boolean isRowSingle = (total % 2 != 0); 
-        
-        if (isLastItem && isRowSingle && row > 0) {
-            // Shift X to center it relative to the 2 items above
-            startX = (REGION_SIZE + gapSize) / 2;
-        }
-
-        // Add Floor Tiles
-        for (int x = startX; x < startX + REGION_SIZE; x++) {
-            for (int z = startZ; z < startZ + REGION_SIZE; z++) {
-                floorPositions.add(x + "," + z);
-                updateBounds(x, z);
-            }
-        }
-
-        // Store bounds for connection logic
-        regions.add(new RegionBounds(startX, startX + REGION_SIZE, startZ, startZ + REGION_SIZE));
-    }
-
-    private void createConnection(int fromIdx, int toIdx) {
-        RegionBounds r1 = regions.get(fromIdx);
-        RegionBounds r2 = regions.get(toIdx);
-
-        Vector3 bridgePos = null;
-        Vector3 triggerPos = null;
-
-        // Determine if connection is Horizontal or Vertical based on bounds
-        
-        // Horizontal: r2 is to the right of r1
-        if (r2.minX >= r1.maxX) {
-            // Calculate mid-Z for alignment
-            int midZ = (Math.max(r1.minZ, r2.minZ) + Math.min(r1.maxZ, r2.maxZ)) / 2;
-            
-            // Bridge Position: In the gap. 
-            // Since gap is 1, r1.maxX is the coordinate of the gap.
-            // (Note: region maxX is exclusive in record usually, but here loop was < so it's exclusive)
-            bridgePos = new Vector3(r1.maxX, 0, midZ);
-            
-            // Trigger Position: Inside R1
-            triggerPos = new Vector3(r1.maxX - 2, 0, midZ);
-        }
-        // Vertical: r2 is below r1
-        else {
-            // Calculate mid-X for alignment
-            int midX = (Math.max(r1.minX, r2.minX) + Math.min(r1.maxX, r2.maxX)) / 2;
-            
-            // Bridge Position: In the gap (at r1.maxZ)
-            bridgePos = new Vector3(midX, 0, r1.maxZ);
-            
-            // Trigger Position: Inside R1
-            triggerPos = new Vector3(midX, 0, r1.maxZ - 2);
-        }
-
-        if (bridgePos != null) {
-            Bridge bridge = new Bridge(bridgePos);
-            entities.add(bridge);
-
-            Trigger trigger = new Trigger(triggerPos, bridge.getId());
-            entities.add(trigger);
+    public void update() {
+        updateButtons();
+        if (robotExecuting || robotRetreating) {
+            updateRobotLogic();
         }
     }
 
-    private void updateBounds(int x, int z) {
-        if (x < minX) minX = x;
-        if (x > maxX) maxX = x;
-        if (z < minZ) minZ = z;
-        if (z > maxZ) maxZ = z;
-    }
-
-    public void updateWorldLogic() {
+    private void updateButtons() {
         for (Entity e : entities) {
             if (e instanceof Trigger) {
                 Trigger t = (Trigger) e;
-                boolean pressed = checkTriggerPressed(t);
+                boolean pressed = false;
+                for (Entity other : entities) {
+                    if (other != t && other.getPosition().equals(t.getPosition())) {
+                        pressed = true;
+                        break;
+                    }
+                }
                 t.setPressed(pressed);
-                
-                entities.stream()
-                    .filter(b -> b instanceof Bridge && b.getId() == t.getLinkedBridgeId())
-                    .map(b -> (Bridge) b)
-                    .forEach(b -> b.setActive(pressed));
+                for (Entity b : entities) {
+                    if (b instanceof Bridge && b.getId() == t.getLinkedBridgeId()) {
+                        ((Bridge)b).setActive(pressed);
+                    }
+                }
             }
         }
     }
-
-    private boolean checkTriggerPressed(Trigger t) {
-        return entities.stream()
-                .anyMatch(e -> e != t && e.getPosition().equals(t.getPosition()) && e.getPosition().x != -1);
-    }
-
-    public synchronized void moveAgent(Agent agent, int dx, int dz) {
-        Vector3 target = agent.getPosition().add(dx, 0, dz);
-        agent.setFacing(dx, dz);
+    
+    // --- Agent Interaction (Player) ---
+    public void moveAgent(Agent ag, int dx, int dy) {
+        if (ag == null) return;
+        if (dx != 0 || dy != 0) ag.setFacing(new Vector2(dx, dy));
+        Vector2 target = ag.getPosition().add(dx, dy);
         
-        if (!isValidMove(target)) return;
-
-        boolean blocked = entities.stream()
-                .anyMatch(e -> e.getPosition().equals(target) 
-                        && e != agent 
-                        && !isWalkable(e));
-
-        if (!blocked) {
-            agent.setPosition(target);
+        // Player manual move: Strict check (Bridges must be active)
+        if (isValidMove(target, false)) {
+            ag.setPosition(target);
+            if (ag.isCarrying()) ag.getHeldBlock().setPosition(target);
         }
     }
 
-    public synchronized void interact(Agent agent) {
-        Vector3 targetPos = agent.getPosition().add(agent.getFacingDirection());
-
-        if (agent.isCarrying()) {
-            boolean occupied = entities.stream().anyMatch(e -> e.getPosition().equals(targetPos) && !isWalkable(e));
-            if (!occupied && isValidMove(targetPos)) {
-                Block b = agent.drop();
+    public void interact(Agent ag) {
+        if (ag == null) return;
+        if (ag.isCarrying()) {
+            Vector2 targetPos = ag.getPosition().add(ag.getFacing());
+            if (canPlaceBlockAt(targetPos)) {
+                Block b = ag.drop();
                 b.setPosition(targetPos);
             }
         } else {
-            entities.stream()
-                    .filter(e -> e instanceof Block && e.getPosition().equals(targetPos))
-                    .findFirst()
-                    .ifPresent(e -> {
-                        agent.hold((Block) e);
-                        e.setPosition(new Vector3(-1, -1, -1));
-                    });
+            Vector2 facingPos = ag.getPosition().add(ag.getFacing());
+            Block target = getBlockAt(facingPos);
+            if (target == null) {
+                // Fallback adjacent check
+                Vector2[] dirs = {new Vector2(0,1), new Vector2(0,-1), new Vector2(1,0), new Vector2(-1,0)};
+                for (Vector2 d : dirs) {
+                    Vector2 check = ag.getPosition().add(d);
+                    target = getBlockAt(check);
+                    if (target != null) { ag.setFacing(d); break; }
+                }
+            }
+            if (target != null) {
+                ag.hold(target);
+                target.setPosition(ag.getPosition());
+            }
         }
     }
 
-    private boolean isWalkable(Entity e) {
-        if (e instanceof Trigger) return true;
-        if (e instanceof Bridge) return ((Bridge)e).isActive();
-        return false;
+    private Block getBlockAt(Vector2 pos) {
+        for (Entity e : entities) {
+            if (e instanceof Block && e.getPosition().equals(pos)) return (Block) e;
+        }
+        return null;
     }
 
-    private boolean isValidMove(Vector3 p) {
-        if (floorPositions.contains(p.x + "," + p.z)) return true;
-        return entities.stream()
-                .anyMatch(e -> e instanceof Bridge && ((Bridge)e).isActive() && e.getPosition().equals(p));
+    public boolean canPlaceBlockAt(Vector2 p) {
+        if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height) return false;
+        int tile = terrain[p.x][p.y];
+        boolean isSafeGround = (tile == 1); 
+        if (!isSafeGround) {
+            for(Entity e : entities) {
+                if (e instanceof Bridge && e.getPosition().equals(p) && ((Bridge)e).isActive()) {
+                    isSafeGround = true; break;
+                }
+            }
+        }
+        if (!isSafeGround) return false;
+        for (Entity e : entities) {
+            if (e.getPosition().equals(p)) {
+                if (e instanceof Trigger || e instanceof Bridge) continue;
+                return false; 
+            }
+        }
+        return true;
     }
 
-    public Agent getPlayer() { return player; }
-    public List<Entity> getEntities() { return entities; }
-    public Set<String> getFloorPositions() { return floorPositions; }
+    // --- ROBOT LOGIC & PREVIEW ---
+
+    /**
+     * Calculates the full path preview assuming bridges are ON.
+     * Does NOT move the robot.
+     */
+    public void updatePreview(List<Command> cmds) {
+        previewPath.clear();
+        Robot robot = getRobot();
+        if (robot == null) return;
+
+        // Simulate from current position
+        Vector2 simPos = robot.getPosition();
+        // We don't simulate carrying logic fully for path preview, 
+        // just the movement trace.
+        
+        for (Command cmd : cmds) {
+            if (cmd.getTarget() == null) continue;
+            Vector2 target = cmd.getTarget().getPosition();
+            
+            List<Vector2> segment = null;
+            if (cmd.getType() == Command.Type.GO_TO) {
+                 // If target is block/obstacle, go next to it
+                 if (cmd.getTarget() instanceof Block || cmd.getTarget() instanceof Obstacle) {
+                     segment = findPathToAdjacent(simPos, target, true); // true = ignore bridges
+                 } else {
+                     segment = findPath(simPos, target, true);
+                 }
+            } else {
+                // Pick/Drop -> Adjacent
+                segment = findPathToAdjacent(simPos, target, true);
+            }
+
+            if (segment != null) {
+                previewPath.addAll(segment);
+                // Update simPos to the end of this segment for next command
+                if (!segment.isEmpty()) simPos = segment.get(segment.size() - 1);
+            }
+        }
+    }
+
+    public void startRobotExecution(List<Command> cmds) {
+        Robot r = getRobot();
+        if (r != null) r.clearHistory(); // Start fresh history
+
+        commandStack.clear();
+        for (int i = cmds.size() - 1; i >= 0; i--) {
+            commandStack.push(cmds.get(i));
+        }
+        
+        robotExecuting = true;
+        robotRetreating = false;
+        currentRobotCommand = null;
+        executionPath.clear();
+    }
+
+    private void updateRobotLogic() {
+        Robot robot = getRobot();
+        if(robot == null) return;
+
+        // --- MODE 1: RETREATING (Backtracking) ---
+        if (robotRetreating) {
+            if (robot.hasHistory()) {
+                // Undo one step
+                Robot.RobotSnapshot snapshot = robot.popHistory();
+                
+                // 1. Restore Position & Facing
+                robot.setPosition(snapshot.pos);
+                robot.setFacing(snapshot.facing);
+                
+                // 2. Restore Block State
+                // Case A: We are holding something now, but snapshot says we held nothing (We picked it up) -> DROP IT back
+                if (robot.isCarrying() && snapshot.heldBlock == null) {
+                    Block b = robot.drop();
+                    // Put it back where it was found (stored in snapshot?)
+                    // The snapshot.blockWorldPos tells us where the block WAS.
+                    // But wait, if we drop it, we need to know where to put it.
+                    // Actually, if we just performed a PickUp, the block is now in hand.
+                    // We need to restore it to 'snapshot.blockWorldPos' if that is not null.
+                    if (snapshot.blockWorldPos != null) {
+                         b.setPosition(snapshot.blockWorldPos);
+                    }
+                }
+                // Case B: We hold nothing, but snapshot says we held something (We dropped it) -> GRAB IT back
+                else if (!robot.isCarrying() && snapshot.heldBlock != null) {
+                    robot.hold(snapshot.heldBlock);
+                    snapshot.heldBlock.setPosition(robot.getPosition());
+                }
+                // Case C: Holding same block (Just moving) -> Update block pos
+                else if (robot.isCarrying()) {
+                    robot.getHeldBlock().setPosition(snapshot.pos);
+                }
+
+            } else {
+                // History empty, we are back at start
+                robotRetreating = false;
+                robot.say(null, 0); // Clear bubble
+            }
+            return;
+        }
+
+        // --- MODE 2: EXECUTING ---
+        
+        if (currentRobotCommand == null) {
+            if (commandStack.isEmpty()) {
+                robotExecuting = false;
+                return;
+            }
+            currentRobotCommand = commandStack.pop();
+            
+            // Plan Path (Optimistic: Ignore Bridges)
+            if (currentRobotCommand.getTarget() != null) {
+                calculateExecutionPath(robot, currentRobotCommand);
+            }
+        }
+
+        // Execute Step
+        boolean stepFinished = executeStep(robot, currentRobotCommand);
+        if (stepFinished) {
+            currentRobotCommand = null;
+            executionPath.clear();
+        }
+    }
     
-    public int getMinX() { return minX; }
-    public int getMaxX() { return maxX; }
-    public int getMinZ() { return minZ; }
-    public int getMaxZ() { return maxZ; }
+    private void calculateExecutionPath(Robot robot, Command cmd) {
+        executionPath.clear();
+        Vector2 targetPos = cmd.getTarget().getPosition();
+        Vector2 startPos = robot.getPosition();
+        List<Vector2> path = null;
+
+        // Optimistic Planning (Ignore Bridges = true)
+        if (cmd.getType() == Command.Type.GO_TO) {
+            if (cmd.getTarget() instanceof Block || cmd.getTarget() instanceof Obstacle) {
+                 path = findPathToAdjacent(startPos, targetPos, true);
+            } else {
+                 path = findPath(startPos, targetPos, true);
+            }
+        } else {
+            path = findPathToAdjacent(startPos, targetPos, true);
+        }
+
+        if (path != null) executionPath.addAll(path);
+    }
+
+    private boolean executeStep(Robot r, Command cmd) {
+        if (cmd.getTarget() == null) return true;
+        Vector2 currentPos = r.getPosition();
+        Vector2 targetPos = cmd.getTarget().getPosition();
+        boolean isAdjacent = isAdjacent(currentPos, targetPos);
+        boolean isOnTop = currentPos.equals(targetPos);
+
+        // -- ACTION LOGIC --
+        // Check if we need to perform the final action (Pick/Drop)
+        if (cmd.getType() == Command.Type.PICK_UP && isAdjacent) {
+             // Record state BEFORE picking up
+             Block targetB = (Block)cmd.getTarget();
+             r.pushHistory(targetB.getPosition()); // Save block pos
+             
+             r.setFacing(targetPos.add(currentPos.x * -1, currentPos.y * -1));
+             if (!r.isCarrying()) {
+                 r.hold(targetB);
+                 targetB.setPosition(r.getPosition());
+             }
+             return true; // Command Done
+        }
+        else if (cmd.getType() == Command.Type.DROP_AT && isAdjacent) {
+             // Record state BEFORE dropping
+             r.pushHistory(null);
+             
+             r.setFacing(targetPos.add(currentPos.x * -1, currentPos.y * -1));
+             if (r.isCarrying()) {
+                 Block b = r.drop();
+                 b.setPosition(targetPos);
+             }
+             return true; // Command Done
+        }
+        else if (cmd.getType() == Command.Type.GO_TO) {
+             if (isOnTop) return true;
+             if ((cmd.getTarget() instanceof Block) && isAdjacent) return true;
+        }
+
+        // -- MOVEMENT LOGIC --
+        if (!executionPath.isEmpty()) {
+            Vector2 nextStep = executionPath.peek();
+            
+            // Record History BEFORE moving
+            // (blockWorldPos is irrelevant for pure move, so null/current)
+            r.pushHistory(null);
+
+            // REALITY CHECK: Is the move actually valid right now?
+            if (!isValidMove(nextStep, false)) { // false = STRICT CHECK (bridges must be active)
+                triggerRobotError(r, "Blocked!");
+                return true; // Stop this command, switch to retreating
+            }
+
+            // Execute Move
+            Vector2 dir = nextStep.add(currentPos.x * -1, currentPos.y * -1);
+            r.setFacing(dir);
+            r.setPosition(nextStep);
+            if (r.isCarrying()) r.getHeldBlock().setPosition(nextStep);
+            
+            executionPath.poll();
+            return false; // Still moving
+        }
+        
+        return true; // Nothing left to do
+    }
+    
+    private void triggerRobotError(Robot r, String msg) {
+        r.say(msg, 5000); // Speech bubble for 5 sec or until cleared
+        robotExecuting = false;
+        robotRetreating = true; // Start backtracking
+        commandStack.clear();
+        executionPath.clear();
+        currentRobotCommand = null;
+    }
+
+    // --- Pathfinding Utilities ---
+
+    private boolean isAdjacent(Vector2 a, Vector2 b) {
+        return (Math.abs(a.x - b.x) + Math.abs(a.y - b.y)) == 1;
+    }
+
+    private List<Vector2> findPathToAdjacent(Vector2 start, Vector2 target, boolean ignoreBridges) {
+        Vector2[] dirs = {new Vector2(0,1), new Vector2(0,-1), new Vector2(1,0), new Vector2(-1,0)};
+        List<Vector2> bestPath = null;
+        for (Vector2 d : dirs) {
+            Vector2 neighbor = target.add(d);
+            if (isValidMove(neighbor, ignoreBridges) || neighbor.equals(start)) {
+                List<Vector2> path = findPath(start, neighbor, ignoreBridges);
+                if (path != null) {
+                    if (bestPath == null || path.size() < bestPath.size()) bestPath = path;
+                }
+            }
+        }
+        return bestPath;
+    }
+
+    private List<Vector2> findPath(Vector2 start, Vector2 end, boolean ignoreBridges) {
+        if (start.equals(end)) return new ArrayList<>();
+        if (!isValidMove(end, ignoreBridges)) return null;
+
+        Queue<Vector2> queue = new LinkedList<>();
+        queue.add(start);
+        Map<Vector2, Vector2> cameFrom = new HashMap<>();
+        cameFrom.put(start, null);
+        
+        while (!queue.isEmpty()) {
+            Vector2 current = queue.poll();
+            if (current.equals(end)) break;
+            Vector2[] dirs = {new Vector2(0,1), new Vector2(0,-1), new Vector2(1,0), new Vector2(-1,0)};
+            for (Vector2 d : dirs) {
+                Vector2 next = current.add(d);
+                if (!cameFrom.containsKey(next) && isValidMove(next, ignoreBridges)) {
+                    queue.add(next);
+                    cameFrom.put(next, current);
+                }
+            }
+        }
+        if (!cameFrom.containsKey(end)) return null; 
+
+        List<Vector2> path = new ArrayList<>();
+        Vector2 current = end;
+        while (current != null && !current.equals(start)) {
+            path.add(current);
+            current = cameFrom.get(current);
+        }
+        Collections.reverse(path);
+        return path;
+    }
+
+    public boolean isValidMove(Vector2 p, boolean ignoreBridgeState) {
+        if (p.x < 0 || p.x >= width || p.y < 0 || p.y >= height) return false;
+        
+        for (Entity e : entities) {
+            if (e.getPosition().equals(p)) {
+                if (e instanceof Trigger) continue; 
+                if (e instanceof Bridge) {
+                    if (ignoreBridgeState) continue; // Optimistic
+                    if (((Bridge)e).isActive()) continue; // Realistic
+                    continue; 
+                }
+                if (e instanceof Block) {
+                    boolean isHeld = (player != null && player.getHeldBlock() == e);
+                    if (getRobot() != null && getRobot().getHeldBlock() == e) isHeld = true;
+                    if (isHeld) continue; 
+                }
+                return false; 
+            }
+        }
+
+        int tile = terrain[p.x][p.y];
+        if (tile == 0) { 
+            boolean bridgeHere = false;
+            for(Entity e : entities) {
+                if (e instanceof Bridge && e.getPosition().equals(p)) {
+                    if (ignoreBridgeState || ((Bridge)e).isActive()) bridgeHere = true;
+                    break;
+                }
+            }
+            if (!bridgeHere) return false;
+        }
+        return true;
+    }
+    
+    // Getters
+    public List<Vector2> getPreviewPath() { return previewPath; }
+    public Robot getRobot() {
+        for(Entity e : entities) if(e instanceof Robot) return (Robot)e;
+        return null;
+    }
+    public Agent getPlayer() { return player; }
+    public void setPlayer(Agent p) { this.player = p; }
+    public Terminal getTerminal() { return terminal; }
+    public void setTerminal(Terminal t) { this.terminal = t; }
+    public List<Entity> getEntities() { return entities; }
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
 }

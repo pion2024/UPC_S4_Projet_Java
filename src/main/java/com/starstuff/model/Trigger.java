@@ -1,18 +1,17 @@
 package com.starstuff.model;
-
-import com.starstuff.common.Vector3;
+import com.starstuff.common.Vector2;
 
 public class Trigger extends Entity {
-    private boolean isPressed = false;
-    private final int linkedBridgeId;
+    private boolean pressed = false;
+    private int linkedBridgeId; // ID of the bridge this trigger controls
 
-    public Trigger(Vector3 startPos, int linkedBridgeId) {
-        super(startPos);
-        this.linkedBridgeId = linkedBridgeId;
+    public Trigger(Vector2 pos, int bridgeId) { 
+        super(pos); 
+        this.linkedBridgeId = bridgeId; 
     }
 
-    public boolean isPressed() { return isPressed; }
-    public void setPressed(boolean pressed) { isPressed = pressed; }
+    public boolean isPressed() { return pressed; }
+    public void setPressed(boolean p) { this.pressed = p; }
     public int getLinkedBridgeId() { return linkedBridgeId; }
     @Override public String getType() { return "TRIGGER"; }
 }
