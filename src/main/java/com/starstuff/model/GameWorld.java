@@ -62,18 +62,27 @@ public class GameWorld {
 
     private void updateButtons() {
         for (Entity e : entities) {
+            // on cherche parmi toutes les entités celles qui sont des triggers, pour savoir si elles sont pressées ou pas
             if (e instanceof Trigger) {
                 Trigger t = (Trigger) e;
                 boolean pressed = false;
                 for (Entity other : entities) {
+                    // un trigger est pressé ssi une autre entité se trouve sur la même case que lui
                     if (other != t && other.getPosition().equals(t.getPosition())) {
                         pressed = true;
+                        // on peut quiter la recherche si on a deja trouvé une entité qui presse le trigger,
+                        // car le trigger ne peut être pressé que par une seule entité à la fois
                         break;
                     }
                 }
-                t.setPressed(pressed);
+                t.setPressed(pressed); //on met a jour l'etat du trigger
+                // Ensuite, on cherche le pont lié à ce trigger pour l'activer ou le dés
                 for (Entity b : entities) {
+                    // pour lier un pont à un trigger, on a stocké dans le trigger l'id du pont qu'il contrôle, 
+                    // donc on cherche le pont (première condition) qui a cet id (deuxième condition)
                     if (b instanceof Bridge && b.getId() == t.getLinkedBridgeId()) {
+                        // une fois trouvé, on active ou désactive le pont en fonction de l'état du trigger
+                        // le GamePanel va occuper d'afficher selon l'état du pont (actif ou pas)
                         ((Bridge)b).setActive(pressed);
                     }
                 }
