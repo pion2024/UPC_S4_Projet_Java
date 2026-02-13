@@ -1,0 +1,9 @@
+# les dossiers et les fichiers indiques ci dessous seront pas deposes ver le depot distant
+
+target/
+
+# ignorer les fichiers de compilation
+*.class
+*.jar
+*.war
+*.ear
