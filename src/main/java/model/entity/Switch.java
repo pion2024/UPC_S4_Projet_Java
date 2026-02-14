@@ -12,6 +12,7 @@ public class Switch extends Items{
         this.isPressed = false;
     }
 
+    @Override
     public void onSteppedOn(Entity stepper){
         if(target != null){
             target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
