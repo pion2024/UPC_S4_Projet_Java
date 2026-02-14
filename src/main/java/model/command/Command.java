@@ -1,8 +1,5 @@
 package model.command;
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Entity;
+import model.entity.Entity;
 /**
  * Represents a command for the Robot.
  */
