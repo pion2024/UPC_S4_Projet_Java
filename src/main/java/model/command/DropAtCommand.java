@@ -1,5 +1,5 @@
 package model.command;
-import model.Entity;
+import model.entity.Entity;
 
 public class DropAtCommand extends Command {
     public DropAtCommand(Entity target) {
