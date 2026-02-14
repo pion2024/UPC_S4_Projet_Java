@@ -1,6 +1,6 @@
 package model.entity;
 
-public class Items extends Entity{
+public abstract class Items extends Entity{
     /* classe abstraite dont héritera tout les objets a stocker dans la matrice */
 
     protected boolean traversable;
@@ -20,4 +20,6 @@ public class Items extends Entity{
     public int getId(){
         return this.id;
     }
+
+    public abstract void onSteppedOn(Entity stepper);
 }
