@@ -12,10 +12,10 @@ public class Board {
     // Constantes
 
     // Variables
-    private Items[][] elements;
+    private Matrix<Items> elements;
 
     /* Constructeurs */
-    public Board(Items[][] elements) {
+    public Board(Matrix<Items> elements) {
         this.elements = elements;
     }
 
@@ -23,12 +23,12 @@ public class Board {
 
     /* Méthodes dynamiques */
     // Getters
-    public Items[][] getItems() {
+    public Matrix<Items> getItems() {
         return this.elements;
     }
 
     // Setters
-    public void setItems(Items[][] elements) {
+    public void setItems(Matrix<Items> elements) {
         this.elements = elements;
     }
 }
