@@ -1,11 +1,13 @@
 package model.entity;
+import model.Vector2;
+import model.Position;
 
 // La dalle qui se casse après le passage
 public class SingleUseTile extends Items {
     private boolean broken = false;
 
-    public SingleUseTile(int id,int x, int y) {
-        super(id, x, y, true);
+    public SingleUseTile(int id, Position pos) {
+        super(id, pos, true);
     }
 
     @Override

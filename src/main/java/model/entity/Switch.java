@@ -1,4 +1,6 @@
 package model.entity;
+import model.Vector2;
+import model.Position;
 
 public class Switch extends Items{
     
@@ -6,8 +8,8 @@ public class Switch extends Items{
     private boolean isPressed; // état actuelle
 
 
-    public Switch(int id, int x, int y, boolean traversable, Activatable target){
-        super(id, x, y, traversable);
+    public Switch(int id, Position pos, boolean traversable, Activatable target){
+        super(id, pos, traversable);
         this.target = target;
         this.isPressed = false;
     }

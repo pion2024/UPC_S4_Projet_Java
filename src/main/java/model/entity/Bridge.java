@@ -1,11 +1,13 @@
 package model.entity;
+import model.Vector2;
+import model.Position;
 
 // Le Pont (ou dalle vide) qui apparaît/disparaît 
 public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
 
-    public Bridge(int id, int x, int y, boolean traversable) {
-        super(id, x, y, traversable);
+    public Bridge(int id, Position pos, boolean traversable) {
+        super(id, pos, traversable);
         this.active = traversable;
     }
 
