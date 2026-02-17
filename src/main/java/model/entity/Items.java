@@ -1,4 +1,6 @@
 package model.entity;
+import model.Vector2;
+import model.Position;
 
 public abstract class Items extends Entity{
     /* classe abstraite dont héritera tout les objets a stocker dans la matrice */
@@ -7,8 +9,8 @@ public abstract class Items extends Entity{
     protected int id; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
 
 
-    public Items(int id, int x, int y, boolean traversable){
-        super(x,y);
+    public Items(int id, Position pos, boolean traversable){
+        super(pos);
         this.traversable = traversable;
         this.id = id;
     }
