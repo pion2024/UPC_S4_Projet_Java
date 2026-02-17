@@ -3,7 +3,7 @@ package model.board;
 /* Classe qui représente une matrice.
  * Alors on utilisera la notation matricicelle.
  */
-public class Matrix<T> implements Cloneable {
+public class Matrix<T> {
     /* Attributs de classe */
     // Constantes
 
