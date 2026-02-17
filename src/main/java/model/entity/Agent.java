@@ -4,7 +4,7 @@ import model.Position;
 
 public class Agent extends Entity {
     private Block heldBlock = null;
-    // Default facing Down (0, 1)
+    // la direction auquelle on fait face; par défaut le bas (0, 1)
     private Vector2 facing = new Vector2(0, 1); 
 
     public Agent(Position pos) {
