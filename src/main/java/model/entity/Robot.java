@@ -5,7 +5,7 @@ import java.util.Stack;
 
 public class Robot extends Agent {
     
-    // History Stack for backtracking
+    // Pile qui représente la mémoire d'un roboy, utile pour du backtracking
     private Stack<RobotSnapshot> history = new Stack<>();
     
     // UI Message (Speech Bubble)
@@ -19,10 +19,10 @@ public class Robot extends Agent {
     //@Override 
     //public String getType() { return "ROBOT"; }
 
-    // --- History Management ---
+    // --- Gestion de la mémoire du robot ---
     
     public void pushHistory(Position blockPosIfApplicable) {
-        // Capture state BEFORE a move/action
+        // On prend une snapshot de l'état du robot avant une action ou un déplacement
         history.push(new RobotSnapshot(
             this.pos,
             this.getFacing(),
@@ -44,7 +44,7 @@ public class Robot extends Agent {
         return !history.isEmpty();
     }
 
-    // --- Message Management ---
+    // --- Gestion des messages ---
     
     public void say(String msg, int durationMs) {
         this.speechBubble = msg;
@@ -58,13 +58,13 @@ public class Robot extends Agent {
         return speechBubble;
     }
 
-    // --- Snapshot Class ---
+    // --- Classe Snapshot ---
     
     public static class RobotSnapshot {
         public final Position pos;
         public final Vector2 facing;
-        public final Block heldBlock; // The block held at this moment (or null)
-        public final Position blockWorldPos; // Where that block was in the world (if applicable)
+        public final Block heldBlock; // Bloc tenu (ou null si rien n'est tenu)
+        public final Position blockWorldPos; // S'il existe, position du bloc
 
         public RobotSnapshot(Position p, Vector2 f, Block h, Position bPos) {
             this.pos = p;
