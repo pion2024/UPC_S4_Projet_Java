@@ -1,7 +1,7 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
 import java.util.Stack;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Robot extends Agent {
     
@@ -24,7 +24,7 @@ public class Robot extends Agent {
     public void pushHistory(Position blockPosIfApplicable) {
         // On prend une snapshot de l'état du robot avant une action ou un déplacement
         history.push(new RobotSnapshot(
-            this.pos,
+            this.getPos(),
             this.getFacing(),
             this.getHeldBlock(),
             blockPosIfApplicable
@@ -62,11 +62,11 @@ public class Robot extends Agent {
     
     public static class RobotSnapshot {
         public final Position pos;
-        public final Vector2 facing;
+        public final Direction facing;
         public final Block heldBlock; // Bloc tenu (ou null si rien n'est tenu)
         public final Position blockWorldPos; // S'il existe, position du bloc
 
-        public RobotSnapshot(Position p, Vector2 f, Block h, Position bPos) {
+        public RobotSnapshot(Position p, Direction f, Block h, Position bPos) {
             this.pos = p;
             this.facing = f;
             this.heldBlock = h;

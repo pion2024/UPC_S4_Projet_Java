@@ -1,11 +1,11 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Agent extends Entity {
     private Block heldBlock = null;
     // la direction auquelle on fait face; par défaut le bas (0, 1)
-    private Vector2 facing = new Vector2(0, 1); 
+    private Direction facing = Direction.DOWN;
 
     public Agent(Position pos) {
         super(pos);
@@ -16,8 +16,8 @@ public class Agent extends Entity {
     public void hold(Block b) { this.heldBlock = b; }
     public Block drop() { Block b = heldBlock; heldBlock = null; return b; }
     
-    public Vector2 getFacing() { return facing; }
-    public void setFacing(Vector2 facing) { this.facing = facing; }
+    public Direction getFacing() { return facing; }
+    public void setFacing(Direction facing) { this.facing = facing; }
 
     // @Override public String getType() { return "AGENT"; }
 }

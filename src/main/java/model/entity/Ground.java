@@ -1,12 +1,11 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
+import model.physic.Position;
 
 // sol classique 
 public class Ground extends Items{
 
     public Ground(int id, Position pos){
-        super(id, pos, true);
+        super(id, pos, true, CellType.GROUND);
     }
 
     public void onSteppedOn(Entity stepper){
