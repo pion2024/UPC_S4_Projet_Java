@@ -1,6 +1,5 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
+import physic.Position;
 
 public class Agent extends Entity {
     private Block heldBlock = null;

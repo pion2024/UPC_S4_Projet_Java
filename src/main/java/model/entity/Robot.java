@@ -1,6 +1,5 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
+import physic.Position;
 import java.util.Stack;
 
 public class Robot extends Agent {

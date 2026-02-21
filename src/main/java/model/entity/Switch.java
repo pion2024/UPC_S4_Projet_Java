@@ -1,6 +1,5 @@
 package model.entity;
-import model.Vector2;
-import model.Position;
+import physic.Position;
 
 public class Switch extends Items{
     
