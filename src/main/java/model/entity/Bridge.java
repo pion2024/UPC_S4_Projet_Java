@@ -6,7 +6,7 @@ public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
 
     public Bridge(int id, Position pos, boolean traversable) {
-        super(id, pos, traversable);
+        super(id, pos, traversable, CellType.BRIDGE);
         this.active = traversable;
     }
 

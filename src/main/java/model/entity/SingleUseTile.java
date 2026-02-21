@@ -6,7 +6,7 @@ public class SingleUseTile extends Items {
     private boolean broken = false;
 
     public SingleUseTile(int id, Position pos) {
-        super(id, pos, true);
+        super(id, pos, true, CellType.TILE);
     }
 
     @Override

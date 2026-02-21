@@ -14,10 +14,12 @@ public enum Direction {
         this.dy = y;
     }
 
+    /* ----------- getteur / setteur --------- */
+    
     public int getDx(){
         return dx;
     }
-    public int Dy(){
+    public int getDy(){
         return dy;
     }
 }

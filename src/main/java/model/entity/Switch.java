@@ -8,7 +8,7 @@ public class Switch extends Items{
 
 
     public Switch(int id, Position pos, boolean traversable, Activatable target){
-        super(id, pos, traversable);
+        super(id, pos, traversable, CellType.SWITCH);
         this.target = target;
         this.isPressed = false;
     }

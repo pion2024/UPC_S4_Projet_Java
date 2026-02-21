@@ -5,7 +5,7 @@ import model.physic.Position;
 public class Ground extends Items{
 
     public Ground(int id, Position pos){
-        super(id, pos, true);
+        super(id, pos, true, CellType.GROUND);
     }
 
     public void onSteppedOn(Entity stepper){
