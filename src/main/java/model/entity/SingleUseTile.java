@@ -1,5 +1,5 @@
 package model.entity;
-import physic.Position;
+import model.physic.Position;
 
 // La dalle qui se casse après le passage
 public class SingleUseTile extends Items {

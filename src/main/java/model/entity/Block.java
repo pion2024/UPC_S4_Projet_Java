@@ -1,5 +1,5 @@
 package model.entity;
-import physic.Position;
+import model.physic.Position;
 
 // /**
 //  * Représente un bloc que l'on peut porter (cube).

@@ -1,5 +1,5 @@
 package model.entity;
-import physic.Position;
+import model.physic.Position;
 
 public class Entity {
 

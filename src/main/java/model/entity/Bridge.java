@@ -1,5 +1,5 @@
 package model.entity;
-import physic.Position;
+import model.physic.Position;
 
 // Le Pont (ou dalle vide) qui apparaît/disparaît 
 public class Bridge extends Items implements Activatable {

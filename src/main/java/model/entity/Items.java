@@ -1,5 +1,5 @@
 package model.entity;
-import physic.Position;
+import model.physic.Position;
 
 public abstract class Items extends Entity{
     /* classe abstraite dont héritera tout les objets a stocker dans la matrice */
