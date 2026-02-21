@@ -88,6 +88,12 @@ public class Matrix<T> implements Cloneable {
         return true;
     }
 
+    // permet de verifier si on est dans la matrice 
+
+    public boolean isInside(int line, int column){
+        return line >= 0 && line < nbLines && column >= 0 && column < nbColumns;
+    }
+
     /* Méthodes protégées */
 
     /* Méthodes publiques */
