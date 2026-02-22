@@ -8,7 +8,7 @@ public class Ground extends Items{
         super(id, pos, true, CellType.GROUND);
     }
 
-    public void onSteppedOn(Entity stepper){
+    public void onSteppedOn(MovableEntity stepper){
         // ne fais rien 
     }
 }
