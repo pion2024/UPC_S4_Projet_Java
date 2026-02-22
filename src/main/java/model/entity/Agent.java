@@ -2,7 +2,7 @@ package model.entity;
 import model.physic.Direction;
 import model.physic.Position;
 
-public class Agent extends Entity {
+public class Agent extends MovableEntity {
     private Block heldBlock = null;
     // la direction auquelle on fait face; par défaut le bas (0, 1)
     private Direction facing = Direction.DOWN;

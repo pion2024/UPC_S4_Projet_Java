@@ -11,7 +11,7 @@ import model.physic.Position;
 //     }
 // }
 
-public class Block extends Entity {
+public class Block extends MovableEntity {
 
     private CellType type;
     
