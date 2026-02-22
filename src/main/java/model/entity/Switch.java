@@ -14,13 +14,13 @@ public class Switch extends Items{
     }
 
     @Override
-    public void onSteppedOn(Entity stepper){
+    public void onSteppedOn(MovableEntity stepper){
         if(target != null){
             target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
         }
     }
 
-    public void onEntityEnter(Entity stepper) {
+    public void onEntityEnter(MovableEntity stepper) {
         // Quand on entre, si ce n'était pas déjà pressé (évite les doubles clics)
         if (!isPressed) {
             isPressed = true;
@@ -28,7 +28,7 @@ public class Switch extends Items{
         }
     }
 
-    public void onEntityLeave(Entity stepper) {
+    public void onEntityLeave(MovableEntity stepper) {
         // Dès qu'on quitte la dalle, l'interrupteur remonte
         if (isPressed) {
             isPressed = false;

@@ -27,5 +27,5 @@ public abstract class Items extends Entity{
         return type;
     }
 
-    public abstract void onSteppedOn(Entity stepper);
+    public abstract void onSteppedOn(MovableEntity stepper);
 }

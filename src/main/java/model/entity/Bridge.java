@@ -17,7 +17,7 @@ public class Bridge extends Items implements Activatable {
     }
 
     @Override
-    public void onSteppedOn(Entity stepper) {
+    public void onSteppedOn(MovableEntity stepper) {
          // ne fais rien 
     }
 }

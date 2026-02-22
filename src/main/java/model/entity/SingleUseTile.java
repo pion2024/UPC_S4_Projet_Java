@@ -10,7 +10,7 @@ public class SingleUseTile extends Items {
     }
 
     @Override
-    public void onSteppedOn(Entity stepper) {
+    public void onSteppedOn(MovableEntity stepper) {
         if (!broken) {
             this.broken = true;
             this.traversable = false; // La dalle s'est effondrée 

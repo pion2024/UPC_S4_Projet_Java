@@ -11,7 +11,7 @@ public class Propulsor extends Items {
     }
 
     @Override
-    public void onSteppedOn(Entity e){
+    public void onSteppedOn(MovableEntity e){
         int newX = e.getPos().getX() + propulsDirection.getDx();
         int newY = e.getPos().getY() + propulsDirection.getDy();
         e.getPos().setX(newX);
