@@ -5,8 +5,8 @@ import model.physic.Position;
 public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
 
-    public Bridge(int id, Position pos, boolean traversable) {
-        super(id, pos, traversable, CellType.BRIDGE);
+    public Bridge(Position pos, boolean traversable) {
+        super(pos, traversable, CellType.BRIDGE);
         this.active = traversable;
     }
 

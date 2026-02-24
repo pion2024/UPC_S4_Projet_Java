@@ -5,13 +5,14 @@ public abstract class Items extends Entity{
     /* classe abstraite dont héritera tout les objets a stocker dans la matrice */
 
     protected boolean traversable;
-    protected int id; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
+    protected int id = 0; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
     protected CellType type;
+    private static int counter = 1; //compteur qui permet d'attribuer l'id à chaque item pour le rendre unique
 
-    public Items(int id, Position pos, boolean traversable, CellType type){
+    public Items(Position pos, boolean traversable, CellType type){
         super(pos);
         this.traversable = traversable;
-        this.id = id;
+        this.id = counter++;
         this.type = type;
     }
 

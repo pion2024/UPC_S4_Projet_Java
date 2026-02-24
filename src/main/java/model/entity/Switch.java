@@ -1,24 +1,30 @@
 package model.entity;
 import model.physic.Position;
 
-public class Switch extends Items{
+public class Switch extends Interactions{
     
-    private Activatable target; // l'objet que switch contrôle
+    //private Activatable target; // l'objet que switch contrôle
     private boolean isPressed; // état actuelle
 
 
-    public Switch(int id, Position pos, boolean traversable, Activatable target){
-        super(id, pos, traversable, CellType.SWITCH);
-        this.target = target;
+    public Switch(Position pos, boolean traversable, CellType targetType, int targetId){
+        super(pos, traversable, CellType.SWITCH, targetType, targetId);
+        //this.target = target;
         this.isPressed = false;
     }
 
-    @Override
-    public void onSteppedOn(MovableEntity stepper){
-        if(target != null){
-            target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
-        }
-    }
+    // @Override
+    // public void onSteppedOn(MovableEntity stepper){
+    //     if(target != null){
+    //         target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
+    //     }
+    // }
+
+    // public void onSteppedOn(MovableEntity stepper){
+    //     if(isConnected(type, id)){
+    //         target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
+    //     }
+    // }
 
     public void onEntityEnter(MovableEntity stepper) {
         // Quand on entre, si ce n'était pas déjà pressé (évite les doubles clics)

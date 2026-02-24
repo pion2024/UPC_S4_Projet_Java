@@ -5,8 +5,8 @@ import model.physic.Position;
 public class SingleUseTile extends Items {
     private boolean broken = false;
 
-    public SingleUseTile(int id, Position pos) {
-        super(id, pos, true, CellType.TILE);
+    public SingleUseTile(Position pos) {
+        super(pos, true, CellType.TILE);
     }
 
     @Override

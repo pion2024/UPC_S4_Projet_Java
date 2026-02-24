@@ -1,12 +1,13 @@
 package model.entity;
-import model.physic.*;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Propulsor extends Items {
 
     private final Direction propulsDirection;
 
-    public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR);
+    public Propulsor(Position pos, Direction dir){
+        super(pos, true, CellType.PROPULSOR);
         this.propulsDirection = dir;
     }
 
