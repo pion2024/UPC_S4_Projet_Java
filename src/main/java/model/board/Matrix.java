@@ -1,7 +1,7 @@
 package model.board;
 
-/* Classe qui représente une matrice.
- * Alors on utilisera la notation matricicelle.
+/* Classe générique qui représente une matrice.
+ * Alors on utilisera la notation matricielle.
  */
 public class Matrix<T> {
     /* Attributs de classe */
@@ -13,8 +13,8 @@ public class Matrix<T> {
     // Constantes
 
     // Variables
-    protected int nbLines;
-    protected int nbColumns;
+    protected int nbLines;      // nbLines      doit être > 0
+    protected int nbColumns;    // nbLColumns   doit être > 0
     protected T[][] items;
 
     /* Constructeurs */
@@ -48,11 +48,17 @@ public class Matrix<T> {
     }
 
     public T getItem(int lineIndex, int columnIndex) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
         return this.items[lineIndex][columnIndex];
     }
 
     // Setters
     public void setItem(int lineIndex, int columnIndex, T item) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
         this.items[lineIndex][columnIndex] = item;
     }
 
@@ -87,15 +93,15 @@ public class Matrix<T> {
         }
         return true;
     }
-
-    // permet de verifier si on est dans la matrice 
-
-    public boolean isInside(int line, int column){
-        return line >= 0 && line < nbLines && column >= 0 && column < nbColumns;
+    
+    private boolean isInside(int line, int column){
+        return  (0 < line && line < nbLines) &&
+                (0 < column && column < nbColumns);
     }
 
     /* Méthodes protégées */
 
     /* Méthodes publiques */
+
     
 }
