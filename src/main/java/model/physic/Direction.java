@@ -2,24 +2,24 @@ package model.physic;
 
 public enum Direction {
     UP(0,-1),
+    RIGHT(1, 0),
     DOWN(0, 1),
-    LEFT(-1, 0),
-    RIGHT(1, 0);
+    LEFT(-1, 0);
 
-    private int dx;
-    private int dy;
+    private int di;
+    private int dj;
 
-    Direction(int x, int y){
-        this.dx = x;
-        this.dy = y;
+    Direction(int i, int j){
+        this.di = i;
+        this.dj = j;
     }
 
     /* ----------- getteur / setteur --------- */
     
-    public int getDx(){
-        return dx;
+    public int getDi(){
+        return di;
     }
-    public int getDy(){
-        return dy;
+    public int getDj(){
+        return dj;
     }
 }

@@ -1,5 +1,5 @@
 package model.entity;
-import model.physic.Position;
+import model.physic.*;
 
 public class Switch extends Items{
     
@@ -7,8 +7,8 @@ public class Switch extends Items{
     private boolean isPressed; // état actuelle
 
 
-    public Switch(int id, Position pos, boolean traversable, Activatable target){
-        super(id, pos, traversable, CellType.SWITCH);
+    public Switch(int id, Position pos, boolean traversable, Activatable target, Direction dir){
+        super(id, pos, traversable, CellType.SWITCH, dir);
         this.target = target;
         this.isPressed = false;
     }
