@@ -1,4 +1,5 @@
 package model.entity;
+import model.physic.Direction;
 import model.physic.Position;
 
 public abstract class Items extends Entity{
@@ -7,14 +8,23 @@ public abstract class Items extends Entity{
     protected boolean traversable;
     protected int id; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
     protected CellType type;
+    protected Direction dir;
 
-    public Items(int id, Position pos, boolean traversable, CellType type){
+    public Items(int id, Position pos, boolean traversable, CellType type, Direction dir){
         super(pos);
         this.traversable = traversable;
         this.id = id;
         this.type = type;
     }
 
+    public Direction getDir(){
+        return this.dir;
+    }
+
+    public void setDir(Direction dir){
+        this.dir=dir;
+    }
+    
     public boolean isTraversable(){
         return traversable;
     }

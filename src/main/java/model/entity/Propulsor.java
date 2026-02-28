@@ -6,14 +6,14 @@ public class Propulsor extends Items {
     private final Direction propulsDirection;
 
     public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR);
+        super(id, pos, true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
     }
 
     @Override
     public void onSteppedOn(MovableEntity e){
-        int newX = e.getPos().getX() + propulsDirection.getDx();
-        int newY = e.getPos().getY() + propulsDirection.getDy();
+        int newX = e.getPos().getX() + propulsDirection.getDi();
+        int newY = e.getPos().getY() + propulsDirection.getDj();
         e.getPos().setX(newX);
         e.getPos().setY(newY);
     }
