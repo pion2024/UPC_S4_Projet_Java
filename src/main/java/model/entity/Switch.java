@@ -13,6 +13,10 @@ public class Switch extends Items{
         this.isPressed = false;
     }
 
+    public boolean getIsPressed() {
+        return this.isPressed;
+    }
+
     @Override
     public void onSteppedOn(MovableEntity stepper){
         if(target != null){
