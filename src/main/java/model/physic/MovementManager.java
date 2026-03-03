@@ -23,7 +23,7 @@ public class MovementManager {
         int nextY = currentPos.getY() + dir.getDj();
 
         // On vérifie si cet Item est traversable 
-        if (canMoveTo(nextY, nextY)) {
+        if (canMoveTo(nextX, nextY)) {
         
             // Si l'agent porte un bloc, on vérifie aussi la case du bloc (nextBlockX/Y)
             if (agent.isCarrying()) {

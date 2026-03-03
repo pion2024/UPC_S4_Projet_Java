@@ -11,8 +11,8 @@ public class Bridge extends Items implements Activatable {
     }
 
     @Override
-    public void toggle() {
-        this.active = !this.active;
+    public void setActivated(boolean state) {
+        this.active = state;
         this.traversable = this.active;
     }
 
