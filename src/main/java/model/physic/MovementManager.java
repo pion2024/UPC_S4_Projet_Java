@@ -19,16 +19,16 @@ public class MovementManager {
 
         // Calcul de la destination de l'agent
         Position currentPos = agent.getPos();
-        int nextX = currentPos.getX() + dir.getDx();
-        int nextY = currentPos.getY() + dir.getDy();
+        int nextX = currentPos.getX() + dir.getDi();
+        int nextY = currentPos.getY() + dir.getDj();
 
         // On vérifie si cet Item est traversable 
-        if (canMoveTo(nextY, nextY)) {
+        if (canMoveTo(nextX, nextY)) {
         
             // Si l'agent porte un bloc, on vérifie aussi la case du bloc (nextBlockX/Y)
             if (agent.isCarrying()) {
-                int nextBlockX = nextX + dir.getDx();
-                int nextBlockY = nextY + dir.getDy();
+                int nextBlockX = nextX + dir.getDi();
+                int nextBlockY = nextY + dir.getDj();
             
                 // On vérifie les limites pour le bloc
                 if (!canMoveTo(nextBlockX, nextBlockY)) {
@@ -111,8 +111,8 @@ public class MovementManager {
 
     private Position getPositionInFront(Agent a) {
         return new Position(
-            a.getPos().getX() + a.getFacing().getDx(),
-            a.getPos().getY() + a.getFacing().getDy()
+            a.getPos().getX() + a.getFacing().getDi(),
+            a.getPos().getY() + a.getFacing().getDj()
         );
     }
 }

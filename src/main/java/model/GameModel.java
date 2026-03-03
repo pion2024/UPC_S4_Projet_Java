@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-
 import model.entity.Bridge;
 import model.entity.Propulsor;
 import model.entity.Switch;
@@ -34,9 +33,9 @@ public class GameModel {
         }
 
         public boolean areSwitchesPressed() {
-            for (int i = 0; i < this.switches.size(); i++) {
-                    if (!this.switches.get(i).getIsPressed()) return false;
-                }
+            for (Switch s : switches) {
+                if (!s.getIsPressed()) return false;
+            }
             return true;
         }
 
@@ -46,9 +45,13 @@ public class GameModel {
          */
         public void activate(ArrayList<Switch> switchesToCheck) {
             if (checkIfConnected(switchesToCheck)) {
-                if (areSwitchesPressed()) {
-                    if (this.bridge != null) this.bridge.toggle();
-                    //else if (this.propulsor != null) this.propulsor.toggle();
+                boolean active = areSwitchesPressed();
+            
+                if (bridge != null) {
+                    bridge.setActivated(active);
+                }
+                if (propulsor != null) {
+                    propulsor.setActivated(active);
                 }
             }
         }

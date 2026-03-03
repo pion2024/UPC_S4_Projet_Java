@@ -1,12 +1,12 @@
 package model.entity;
-import model.physic.Position;
+import model.physic.*;
 
 // La dalle qui se casse après le passage
 public class SingleUseTile extends Items {
     private boolean broken = false;
 
-    public SingleUseTile(int id, Position pos) {
-        super(id, pos, true, CellType.TILE);
+    public SingleUseTile(int id, Position pos, Direction dir) {
+        super(id, pos, true, CellType.TILE, dir);
     }
 
     @Override
