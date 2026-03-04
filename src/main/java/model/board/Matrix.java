@@ -78,14 +78,14 @@ public class Matrix<T> {
 
         int nbLines = items.length;
         int nbColumns = items[0].length;
-        for (int line = 0; line < nbLines; line++) {
-            if (items[line] == null) {
-                throw new IllegalArgumentException("La ligne " + (line + 1) + " est null.\n");
+        for (int lineIndex = 0; lineIndex < nbLines; lineIndex++) {
+            if (items[lineIndex] == null) {
+                throw new IllegalArgumentException("La ligne " + (lineIndex + 1) + " est null.\n");
             }
-            if (items[line].length != nbColumns) {
+            if (items[lineIndex].length != nbColumns) {
                 throw new IllegalArgumentException(
-                    "Le nombre de colonne(s) de la ligne " + (line + 1) +
-                    " du tableau (de tableau(x)) pour créer la matrice est " + items[line].length +
+                    "Le nombre de colonne(s) de la ligne " + (lineIndex + 1) +
+                    " du tableau (de tableau(x)) pour créer la matrice est " + items[lineIndex].length +
                     ", comparé au nombre de colonne(s) de la première ligne qui est " + nbColumns + "." +
                     " Ce qui n'est pas attendu.\n"
                 );
@@ -97,9 +97,9 @@ public class Matrix<T> {
     /* Méthodes protégées */
 
     /* Méthodes publiques */
-    public boolean isInside(int line, int column){
-        return  (0 < line && line < nbLines) &&
-                (0 < column && column < nbColumns);
+    public boolean isInside(int lineIndex, int columnIndex){
+        return  (0 < lineIndex && lineIndex < nbLines) &&
+                (0 < columnIndex && columnIndex < nbColumns);
     }
 
 
