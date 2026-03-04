@@ -22,7 +22,6 @@ public class Board {
         this.elements = elements;
     }
 
-
     /* Méthodes statiques */
 
     /* Méthodes dynamiques */
@@ -31,6 +30,10 @@ public class Board {
         return this.elements;
     }
 
+    public Items getItemAt(int lineIndex, int columnIndex) {
+        return this.elements.getItem(lineIndex, columnIndex);
+    }
+    
     public List<MovableEntity> getMovableEntities() { 
         return movableEntities; 
     }
@@ -39,7 +42,8 @@ public class Board {
     public void setItems(Matrix<Items> elements) {
         this.elements = elements;
     }
-/* Méthodes privées (utilitaires) */
+    
+    /* Méthodes privées (utilitaires) */
 
     /* Méthodes protégées */
 
