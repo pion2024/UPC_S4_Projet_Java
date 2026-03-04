@@ -22,17 +22,6 @@ public class Board {
         this.elements = elements;
     }
 
-    
-    // Utilitaire pour trouver s'il y a un objet mobile à une position donnée
-    
-    public MovableEntity getEntityAt(int x, int y) {
-        for (MovableEntity e : movableEntities) {
-            if (e.getPos().getX() == x && e.getPos().getY() == y) {
-                return e;
-            }
-        }
-        return null;
-    }
 
     /* Méthodes statiques */
 
@@ -50,5 +39,24 @@ public class Board {
     public void setItems(Matrix<Items> elements) {
         this.elements = elements;
     }
+/* Méthodes privées (utilitaires) */
 
+    /* Méthodes protégées */
+
+    /* Méthodes publiques */
+    /**
+     * Utilitaire pour trouver s'il y a un objet mobile à une position donnée.
+     * @param x
+     * @param y
+     * @return
+     */
+    public MovableEntity getEntityAt(int x, int y) {
+        for (MovableEntity e : movableEntities) {
+            if ((e.getPos().getX() == x) &&
+                (e.getPos().getY() == y)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
