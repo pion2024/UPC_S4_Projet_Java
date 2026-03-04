@@ -98,8 +98,8 @@ public class Matrix<T> {
 
     /* Méthodes publiques */
     public boolean isInside(int lineIndex, int columnIndex){
-        return  (0 < lineIndex && lineIndex < nbLines) &&
-                (0 < columnIndex && columnIndex < nbColumns);
+        return  (0 < lineIndex && lineIndex < this.nbLines) &&
+                (0 < columnIndex && columnIndex < this.nbColumns);
     }
 
 

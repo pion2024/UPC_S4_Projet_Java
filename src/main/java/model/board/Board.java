@@ -35,7 +35,7 @@ public class Board {
     }
     
     public List<MovableEntity> getMovableEntities() { 
-        return movableEntities; 
+        return this.movableEntities; 
     }
 
     // Setters
