@@ -1,5 +1,6 @@
 package model.board;
 
+import java.util.ArrayList;
 import java.util.List;
 import model.entity.Items;
 import model.entity.MovableEntity;
@@ -20,6 +21,7 @@ public class Board {
     /* Constructeurs */
     public Board(Matrix<Items> elements) {
         this.elements = elements;
+        this.movableEntities = new ArrayList<>();
     }
 
     /* Méthodes statiques */

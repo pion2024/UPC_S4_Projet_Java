@@ -1,45 +1,26 @@
 package model.entity;
-import model.physic.Position;
+import model.physic.*;
 
 public class Switch extends Items{
-    
-    private Activatable target; // l'objet que switch contrôle
     private boolean isPressed; // état actuelle
 
 
-    public Switch(int id, Position pos, boolean traversable, Activatable target){
-        super(id, pos, traversable, CellType.SWITCH);
-        this.target = target;
+    public Switch(int id, Position pos, boolean traversable, Activatable target, Direction dir){
+        super(id, pos, traversable, CellType.SWITCH, dir);
         this.isPressed = false;
+    }
+
+    public void updateStatus(boolean entityEnter){
+        this.isPressed = entityEnter;
+    }
+
+    public boolean getIsPressed(){
+        return this.isPressed;
     }
 
     @Override
     public void onSteppedOn(MovableEntity stepper){
-        if(target != null){
-            target.toggle(); // active le pont par exemple auquelle il est relié avec l'id, quand quelque chose est sur switch
-        }
+        /* c'est gameState qui s'occupe de vérifier si'il y a une entité et de marquer l'interrupteur comme activé  */
     }
 
-    public void onEntityEnter(MovableEntity stepper) {
-        // Quand on entre, si ce n'était pas déjà pressé (évite les doubles clics)
-        if (!isPressed) {
-            isPressed = true;
-            notifyTarget(); 
-        }
-    }
-
-    public void onEntityLeave(MovableEntity stepper) {
-        // Dès qu'on quitte la dalle, l'interrupteur remonte
-        if (isPressed) {
-            isPressed = false;
-            notifyTarget(); // On re-bascule la cible à son état d'origine
-        }
-    }
-
-    private void notifyTarget() {
-        // L'utilité est ici : on vérifie que la cible existe bien
-        if (target != null) {
-            target.toggle();
-        }
-    }
 }

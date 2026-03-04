@@ -25,7 +25,6 @@ public class Matrix<T> {
     }
 
     public Matrix(T[][] items) {
-        this.isMatrix(items);
         this.nbLines = items.length;
         this.nbColumns = items[0].length;
         this.items = items;
@@ -62,41 +61,15 @@ public class Matrix<T> {
         this.items[lineIndex][columnIndex] = item;
     }
 
-
-
-    /* Méthodes privées (utilitaires) */
-    private boolean isMatrix(T[][] items) {
-        if (items == null) {
-            throw new IllegalArgumentException("L'argument entré pour créer la matrice est null.\n");
-        }
-        if (items.length == 0) {
-            throw new IllegalArgumentException(
-                "Le nombre de ligne(s) du tableau (de tableau(x)) pour créer la matrice est 0." + 
-                " Ce qui n'est pas attendu.\n"
-            );
-        }
-
-        int nbLines = items.length;
-        int nbColumns = items[0].length;
-        for (int lineIndex = 0; lineIndex < nbLines; lineIndex++) {
-            if (items[lineIndex] == null) {
-                throw new IllegalArgumentException("La ligne " + (lineIndex + 1) + " est null.\n");
-            }
-            if (items[lineIndex].length != nbColumns) {
-                throw new IllegalArgumentException(
-                    "Le nombre de colonne(s) de la ligne " + (lineIndex + 1) +
-                    " du tableau (de tableau(x)) pour créer la matrice est " + items[lineIndex].length +
-                    ", comparé au nombre de colonne(s) de la première ligne qui est " + nbColumns + "." +
-                    " Ce qui n'est pas attendu.\n"
-                );
-            }
-        }
-        return true;
-    }
-    
     /* Méthodes protégées */
 
     /* Méthodes publiques */
+    /**
+     * Permet de vérifier si une position donnée est dans la matrice.
+     * @param lineIndex
+     * @param columnIndex
+     * @return
+     */
     public boolean isInside(int lineIndex, int columnIndex){
         return  (0 < lineIndex && lineIndex < this.nbLines) &&
                 (0 < columnIndex && columnIndex < this.nbColumns);
