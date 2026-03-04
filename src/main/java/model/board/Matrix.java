@@ -94,14 +94,14 @@ public class Matrix<T> {
         return true;
     }
     
-    private boolean isInside(int line, int column){
+    /* Méthodes protégées */
+
+    /* Méthodes publiques */
+    public boolean isInside(int line, int column){
         return  (0 < line && line < nbLines) &&
                 (0 < column && column < nbColumns);
     }
 
-    /* Méthodes protégées */
-
-    /* Méthodes publiques */
 
     
 }
