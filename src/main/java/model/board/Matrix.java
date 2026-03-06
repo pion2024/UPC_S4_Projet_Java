@@ -1,9 +1,9 @@
 package model.board;
 
-/* Classe qui représente une matrice.
- * Alors on utilisera la notation matricicelle.
+/* Classe générique qui représente une matrice.
+ * Alors on utilisera la notation matricielle.
  */
-public class Matrix<T> implements Cloneable {
+public class Matrix<T> {
     /* Attributs de classe */
     // Constantes
 
@@ -13,8 +13,8 @@ public class Matrix<T> implements Cloneable {
     // Constantes
 
     // Variables
-    protected int nbLines;
-    protected int nbColumns;
+    protected int nbLines;      // nbLines      doit être > 0
+    protected int nbColumns;    // nbLColumns   doit être > 0
     protected T[][] items;
 
     /* Constructeurs */
@@ -48,22 +48,34 @@ public class Matrix<T> implements Cloneable {
     }
 
     public T getItem(int lineIndex, int columnIndex) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
         return this.items[lineIndex][columnIndex];
     }
 
     // Setters
     public void setItem(int lineIndex, int columnIndex, T item) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
         this.items[lineIndex][columnIndex] = item;
-    }
-
-    // permet de verifier si on est dans la matrice 
-
-    public boolean isInside(int line, int column){
-        return line >= 0 && line < nbLines && column >= 0 && column < nbColumns;
     }
 
     /* Méthodes protégées */
 
     /* Méthodes publiques */
+    /**
+     * Permet de vérifier si une position donnée est dans la matrice.
+     * @param lineIndex
+     * @param columnIndex
+     * @return
+     */
+    public boolean isInside(int lineIndex, int columnIndex){
+        return  (0 < lineIndex && lineIndex < this.nbLines) &&
+                (0 < columnIndex && columnIndex < this.nbColumns);
+    }
+
+
     
 }

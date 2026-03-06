@@ -24,18 +24,6 @@ public class Board {
         this.movableEntities = new ArrayList<>();
     }
 
-    
-    // Utilitaire pour trouver s'il y a un objet mobile à une position donnée
-    
-    public MovableEntity getEntityAt(int x, int y) {
-        for (MovableEntity e : movableEntities) {
-            if (e.getPos().getX() == x && e.getPos().getY() == y) {
-                return e;
-            }
-        }
-        return null;
-    }
-
     /* Méthodes statiques */
 
     /* Méthodes dynamiques */
@@ -44,13 +32,37 @@ public class Board {
         return this.elements;
     }
 
+    public Items getItemAt(int lineIndex, int columnIndex) {
+        return this.elements.getItem(lineIndex, columnIndex);
+    }
+    
     public List<MovableEntity> getMovableEntities() { 
-        return movableEntities; 
+        return this.movableEntities; 
     }
 
     // Setters
     public void setItems(Matrix<Items> elements) {
         this.elements = elements;
     }
+    
+    /* Méthodes privées (utilitaires) */
 
+    /* Méthodes protégées */
+
+    /* Méthodes publiques */
+    /**
+     * Utilitaire pour trouver s'il y a un objet mobile à une position donnée.
+     * @param x
+     * @param y
+     * @return
+     */
+    public MovableEntity getEntityAt(int x, int y) {
+        for (MovableEntity e : movableEntities) {
+            if ((e.getPos().getX() == x) &&
+                (e.getPos().getY() == y)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }
