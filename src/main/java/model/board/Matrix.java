@@ -21,7 +21,8 @@ public class Matrix<T> implements Cloneable {
     public Matrix(int nbLines, int nbColumns) {
         this.nbLines = nbLines;
         this.nbColumns = nbColumns;
-        this.items = (T[][]) new Object[nbColumns][nbLines];
+        this.items = (T[][]) new Object[nbLines][nbColumns]; //corriger l'ordre de nbLines et nbColumns
+        //la premiere dimension correspond au nombre de lignes, et la seconde dimension correspond au nombre de colonnes.
     }
 
     public Matrix(T[][] items) {
