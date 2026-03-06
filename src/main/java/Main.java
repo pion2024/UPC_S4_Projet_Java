@@ -1,41 +1,23 @@
 //src/main/java/Main.java
 import javax.swing.SwingUtilities;
 import model.GameModel;
+import model.Level;
 import view.GameView;
 import controller.GameController;
-import model.board.Board;
-import model.board.Matrix;
-import model.entity.*;
-import model.physic.Direction;
-import model.physic.Position;
 
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            Matrix<Items> matrix = new Matrix<>(10, 10);
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    matrix.setItem(i, j, new Ground(0, new Position(j, i)));
-                }
-            }
+            //on charge le niveau voulu ici
+            Level level = Level.LEVEL_1;
 
-            Board board = new Board(matrix);
-            GameModel model = new GameModel(board);
+            //creation du modele
+            GameModel model = new GameModel(level.getWidth(), level.getHeight());
 
-            Switch sw1 = new Switch(1, new Position(2, 2), true, null, Direction.UP);
-            Bridge bridge1 = new Bridge(2, new Position(5, 5), false, Direction.UP);
-            
-            bridge1.addSwitch(sw1);
-            
-            matrix.setItem(2, 2, sw1);
-            matrix.setItem(5, 5, bridge1); 
+            //on applique la config du niveau
+            level.setup(model);
 
-            model.addBridge(bridge1);
-
-            Robot player = new Robot(new Position(0, 0));
-            board.getMovableEntities().add(player);
-            model.setPlayer(player);
-
+            //on lance la vue et le controller
             GameView view = new GameView(model);
             GameController controller = new GameController(model, view);
 
