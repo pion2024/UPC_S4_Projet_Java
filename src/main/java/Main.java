@@ -1,27 +1,27 @@
 //src/main/java/Main.java
 import javax.swing.SwingUtilities;
-import model.GameModel;
-import model.Level;
-import view.GameView;
+
 import controller.GameController;
+import view.AssetManager;
+import view.WindowManager;
 
 public class Main {
     public static void main(String[] args) {
+        // On charge d'abord les images (sinon le menu sera vide)
+        AssetManager.loadAssets();
+
         SwingUtilities.invokeLater(() -> {
-            //on charge le niveau voulu ici
-            Level level = Level.LEVEL_1;
+            // On crée le gestionnaire de fenêtres (il crée la JFrame et le CardLayout)
+            WindowManager winManager = new WindowManager();
 
-            //creation du modele
-            GameModel model = new GameModel(level.getWidth(), level.getHeight());
+            // On crée le contrôleur en lui donnant l'accès au manager
+            GameController controller = new GameController(winManager);
 
-            //on applique la config du niveau
-            level.setup(model);
+            // On donne le contrôleur au manager (pour que le bouton "Jouer" puisse l'appeler)
+            winManager.setController(controller);
 
-            //on lance la vue et le controller
-            GameView view = new GameView(model);
-            GameController controller = new GameController(model, view);
-
-            controller.start();
+            // On lance l'affichage sur le menu
+            winManager.init();
         });
     }
 }
