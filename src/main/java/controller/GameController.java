@@ -5,9 +5,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import model.GameModel;
-import view.GameView;
-import model.physic.MovementManager;
 import model.physic.Direction;
+import model.physic.MovementManager;
+import view.GameView;
 
 public class GameController extends KeyAdapter {
     private GameModel model;
@@ -59,6 +59,16 @@ public class GameController extends KeyAdapter {
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
                 moveMgr.moveAgent(model.getPlayer(), Direction.RIGHT);
+                actionPerfomed = true;
+                break;
+            case KeyEvent.VK_SPACE:
+                // Si le joueur porte déjà quelque chose, il le pose (DROP)
+                if (model.getPlayer().isCarrying()) {
+                    moveMgr.dropBlock(model.getPlayer());
+                } else {
+                // Sinon, il essaie de ramasser (GRAB)
+                    moveMgr.grabBlock(model.getPlayer());
+                }
                 actionPerfomed = true;
                 break;
         }
