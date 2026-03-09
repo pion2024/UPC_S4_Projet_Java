@@ -71,9 +71,9 @@ public class Matrix<T> {
      * @param columnIndex
      * @return
      */
-    public boolean isInside(int lineIndex, int columnIndex){
-        return  (0 < lineIndex && lineIndex < this.nbLines) &&
-                (0 < columnIndex && columnIndex < this.nbColumns);
+    public boolean isInside(int lineIndex, int columnIndex) {
+        return  (0 <= lineIndex && lineIndex < this.nbLines) &&
+                (0 <= columnIndex && columnIndex < this.nbColumns);
     }
 
 
