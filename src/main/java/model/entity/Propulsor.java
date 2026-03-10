@@ -1,21 +1,34 @@
 package model.entity;
-import model.physic.*;
+import model.physic.Direction;
+import model.physic.Position;
 
-public class Propulsor extends Items {
+public class Propulsor extends Items implements Activatable{
 
     private final Direction propulsDirection;
+    private boolean isActivate;
 
     public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR);
+        super(id, pos, true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
     }
 
     @Override
+    public void setActivated(boolean state){
+        this.isActivate = state;
+    }
+
+    public boolean getIsActivate(){
+        return this.isActivate;
+    }
+
+    @Override
     public void onSteppedOn(MovableEntity e){
-        int newX = e.getPos().getX() + propulsDirection.getDx();
-        int newY = e.getPos().getY() + propulsDirection.getDy();
+        if (isActivate){
+            int newX = e.getPos().getX() + propulsDirection.getDi();
+        int newY = e.getPos().getY() + propulsDirection.getDj();
         e.getPos().setX(newX);
         e.getPos().setY(newY);
+        }
     }
 
     public Direction getpropulsDirection(){

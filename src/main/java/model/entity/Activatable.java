@@ -1,5 +1,5 @@
 package model.entity;
 
 public interface Activatable {
-    void toggle();
+    void setActivated(boolean b);
 }
