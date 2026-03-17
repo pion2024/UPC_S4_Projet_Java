@@ -2,10 +2,17 @@ package model.entity;
 
 import model.physic.Position;
 
-public abstract class MovableEntity extends Entity {
-    
+public abstract class MovableEntity {
+
+    protected Position pos; 
+
     public MovableEntity(Position pos) {
-        super(pos);
+        this.pos = pos;
+    }
+
+
+    public Position getPos(){
+        return this.pos;
     }
 
     // modifie la position 

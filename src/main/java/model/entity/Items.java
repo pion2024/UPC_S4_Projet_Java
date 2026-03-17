@@ -1,19 +1,16 @@
 package model.entity;
 import model.physic.Direction;
-import model.physic.Position;
 
-public abstract class Items extends Entity{
+public abstract class Items{
     /* classe abstraite dont héritera tout les objets a stocker dans la matrice */
 
     protected boolean traversable;
-    protected int id; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
+    // protected int id; // numéro unique pour chaque instance -> utile pour activer un pont spécifique ...
     protected CellType type;
     protected Direction dir;
 
-    public Items(int id, Position pos, boolean traversable, CellType type, Direction dir){
-        super(pos);
+    public Items(boolean traversable, CellType type, Direction dir){
         this.traversable = traversable;
-        this.id = id;
         this.type = type;
     }
 
@@ -29,9 +26,6 @@ public abstract class Items extends Entity{
         return traversable;
     }
 
-    public int getId(){
-        return this.id;
-    }
 
     public CellType getType(){
         return type;

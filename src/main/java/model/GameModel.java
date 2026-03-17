@@ -13,24 +13,25 @@ import model.entity.Propulsor;
 import model.entity.Robot;
 import model.entity.Switch;
 import model.physic.Direction;
-import model.physic.Position;
 
 
 public class GameModel {
     private Board board;
     private List<Bridge> bridges;
+    private List<Propulsor> propulsors;
     private List<Switch> switches;
     private Robot player;
 
     public GameModel(int width, int height) {
         //init du monde avec du vide partout (bridge bloqué)
-        Matrix<Items> matrix = new Matrix<>(height, width);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                matrix.setItem(y, x, new Bridge(0, new Position(x, y), false, Direction.UP));
-            }
-        }
-        this.board = new Board(matrix);
+        // Matrix<Items> matrix = new Matrix<>(height, width);
+        // for (int y = 0; y < height; y++) {
+        //     for (int x = 0; x < width; x++) {
+        //         matrix.setItem(y, x, new Bridge(false, Direction.UP));
+        //     }
+        // }
+        //this.board = new Board(matrix);
+        this.board.init();
         this.bridges = new ArrayList<>();
         this.switches = new ArrayList<>();
     }
@@ -63,33 +64,33 @@ public class GameModel {
 
     public class Connection {
 
-        Bridge bridge;
-        Propulsor propulsor;
-        ArrayList<Switch> switches;
+        Bridge bridge2;
+        Propulsor propulsor2;
+        ArrayList<Switch> switches2;
         public Connection(Bridge bridge, ArrayList<Switch> switches){
-            this.bridge = bridge;
-            this.switches = switches;
+            this.bridge2 = bridge;
+            this.switches2 = switches;
         }
         public Connection(Propulsor propulsor, ArrayList<Switch> switches){
-            this.propulsor = propulsor;
-            this.switches = switches;
+            this.propulsor2 = propulsor;
+            this.switches2 = switches;
         }
 
         //vérifie que la liste en paramètre corresponde à la liste du pont/propulseur
         public boolean checkIfConnected(ArrayList<Switch> switchesToCheck) {
-            if (this.switches.isEmpty()) return false;
-            if (this.switches.size() != switchesToCheck.size()) return false;
+            if (this.switches2.isEmpty()) return false;
+            if (this.switches2.size() != switchesToCheck.size()) return false;
             else {
-                for (int i = 0 ; i < this.switches.size() ; i++) {
-                    if (this.switches.get(i) == switchesToCheck.get(i)) return false;
+                for (int i = 0 ; i < this.switches2.size() ; i++) {
+                    if (this.switches2.get(i) == switchesToCheck.get(i)) return false;
                 }
                 return true;
             }
         }
 
         public boolean areSwitchesPressed() {
-            for (int i = 0; i < this.switches.size(); i++) {
-                    if (!this.switches.get(i).getIsPressed()) return false;
+            for (int i = 0; i < this.switches2.size(); i++) {
+                    if (!this.switches2.get(i).getIsPressed()) return false;
                 }
             return true;
         }
@@ -100,8 +101,8 @@ public class GameModel {
         public void activate(ArrayList<Switch> switchesToCheck) {
             if (checkIfConnected(switchesToCheck)) {
                 if (areSwitchesPressed()) {
-                    if (this.bridge != null) this.bridge.isActive();
-                    else if (this.propulsor != null) this.propulsor.getIsActivate();
+                    if (this.bridge2 != null) this.bridge2.isActive();
+                    else if (this.propulsor2 != null) this.propulsor2.getIsActivate();
                 }
             }
         }

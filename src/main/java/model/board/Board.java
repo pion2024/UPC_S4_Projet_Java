@@ -15,35 +15,42 @@ public class Board {
     // Constantes
 
     // Variables
-    private Matrix<Items> elements;
-    private List<MovableEntity> movableEntities; // (Blocs, Robots, Joueur)
+    // private Matrix<Items> map;
+    Items[][] map;
+    // private List<MovableEntity> movableEntities; // (Blocs, Robots, Joueur)
 
     /* Constructeurs */
-    public Board(Matrix<Items> elements) {
-        this.elements = elements;
-        this.movableEntities = new ArrayList<>();
+    public Board(int length, int width) {
+        // this.elements = elements;
+        //this.movableEntities = new ArrayList<>();
+        initMap(length,width);
     }
 
     /* Méthodes statiques */
 
     /* Méthodes dynamiques */
     // Getters
-    public Matrix<Items> getItems() {
-        return this.elements;
-    }
 
-    public Items getItemAt(int lineIndex, int columnIndex) {
-        return this.elements.getItem(lineIndex, columnIndex);
+    public initMap(); //init avec du vide,ground partout 
+
+    public Matrix<Items> getMap() {
+        return this.map;
+    }
+ 
+
+    public Item getItemAt(int x, int y) {
+        // return this.map.getItem(lineIndex, columnIndex);
+        return map[x][y];
     }
     
-    public List<MovableEntity> getMovableEntities() { 
-        return this.movableEntities; 
-    }
+    // public List<MovableEntity> getMovableEntities() { 
+    //     return this.movableEntities; 
+    // }
 
-    // Setters
-    public void setItems(Matrix<Items> elements) {
-        this.elements = elements;
-    }
+    // // Setters
+    // public void setItems(Matrix<Items> map) {
+    //     this.map = map;
+    // }
     
     /* Méthodes privées (utilitaires) */
 
@@ -56,13 +63,13 @@ public class Board {
      * @param y
      * @return
      */
-    public MovableEntity getEntityAt(int x, int y) {
-        for (MovableEntity e : movableEntities) {
-            if ((e.getPos().getX() == x) &&
-                (e.getPos().getY() == y)) {
-                return e;
-            }
-        }
-        return null;
-    }
+    // public MovableEntity getEntityAt(int x, int y) {
+    //     for (MovableEntity e : movableEntities) {
+    //         if ((e.getPos().getX() == x) &&
+    //             (e.getPos().getY() == y)) {
+    //             return e;
+    //         }
+    //     }
+    //     return null;
+    // }
 }

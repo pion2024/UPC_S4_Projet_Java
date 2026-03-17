@@ -1,14 +1,13 @@
 package model.entity;
 import model.physic.Direction;
-import model.physic.Position;
 
 public class Propulsor extends Items implements Activatable{
 
     private final Direction propulsDirection;
     private boolean isActivate;
 
-    public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR, dir);
+    public Propulsor(Direction dir){
+        super(true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
     }
 

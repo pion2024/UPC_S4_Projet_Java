@@ -3,15 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.physic.Direction;
-import model.physic.Position;
 
 // Le Pont (ou dalle vide) qui apparaît/disparaît 
 public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
     private List<Switch> hostSwitches;
 
-    public Bridge(int id, Position pos, boolean traversable, Direction dir) {
-        super(id, pos, traversable, CellType.BRIDGE, dir);
+
+    public Bridge(boolean traversable, Direction dir) {
+        super(traversable, CellType.BRIDGE, dir);
         this.active = traversable;
         this.hostSwitches = new ArrayList<>();
     }

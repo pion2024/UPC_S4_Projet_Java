@@ -1,19 +1,21 @@
 package model.command;
-import model.entity.Entity;
+
+import model.entity.MovableEntity;
+
 /**
  * Represents a command for the Robot.
  */
 public class Command {         
-    private Entity targetEntity;  
-    public Command(Entity target) {
+    private MovableEntity targetMovableEntity;  
+    public Command(MovableEntity target) {
         setTarget(target);
     }
     
-    public void setTarget(Entity e) {
-        this.targetEntity = e;
+    public void setTarget(MovableEntity e) {
+        this.targetMovableEntity = e;
     }
-    public Entity getTarget() {
-        return this.targetEntity;
+    public MovableEntity getTarget() {
+        return this.targetMovableEntity;
     }
 
     // mode d'emploi pour les sous classess (i.e. DropAtCommand, PickUpCommand, GoToCommand) :

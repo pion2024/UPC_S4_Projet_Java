@@ -4,11 +4,12 @@ import model.physic.Position;
 
 public class Switch extends Items{
     private boolean isPressed; // état actuelle
+    protected Position pos;
 
-
-    public Switch(int id, Position pos, boolean traversable, Activatable target, Direction dir){
-        super(id, pos, traversable, CellType.SWITCH, dir);
+    public Switch(Position pos, boolean traversable, Activatable target, Direction dir){
+        super(traversable, CellType.SWITCH, dir);
         this.isPressed = false;
+        this.pos = pos;
     }
 
     public void updateStatus(boolean entityEnter){
@@ -17,6 +18,10 @@ public class Switch extends Items{
 
     public boolean getIsPressed(){
         return this.isPressed;
+    }
+
+    public Position getPos() {
+        return this.pos;
     }
 
     @Override
