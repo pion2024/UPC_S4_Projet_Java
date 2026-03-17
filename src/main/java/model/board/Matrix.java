@@ -15,20 +15,20 @@ public class Matrix<T> {
     // Variables
     protected int nbLines;      // nbLines      doit être > 0
     protected int nbColumns;    // nbLColumns   doit être > 0
-    protected T[][] items;
+    protected T[][] elements;
 
     /* Constructeurs */
     public Matrix(int nbLines, int nbColumns) {
         this.nbLines = nbLines;
         this.nbColumns = nbColumns;
-        this.items = (T[][]) new Object[nbLines][nbColumns]; //corriger l'ordre de nbLines et nbColumns
+        this.elements = (T[][]) new Object[nbLines][nbColumns]; //corriger l'ordre de nbLines et nbColumns
         //la premiere dimension correspond au nombre de lignes, et la seconde dimension correspond au nombre de colonnes.
     }
 
-    public Matrix(T[][] items) {
-        this.nbLines = items.length;
-        this.nbColumns = items[0].length;
-        this.items = items;
+    public Matrix(T[][] elements) {
+        this.nbLines = elements.length;
+        this.nbColumns = elements[0].length;
+        this.elements = elements;
     }
     
     /* Méthodes statiques */
@@ -44,14 +44,14 @@ public class Matrix<T> {
     }
 
     public T[][] getItems() {
-        return this.items;
+        return this.elements;
     }
 
     public T getItem(int lineIndex, int columnIndex) {
         if ( !this.isInside(lineIndex, columnIndex) ) {
             throw new IllegalArgumentException("Les indices sont hors bornes.");
         }
-        return this.items[lineIndex][columnIndex];
+        return this.elements[lineIndex][columnIndex];
     }
 
     // Setters
@@ -59,7 +59,7 @@ public class Matrix<T> {
         if ( !this.isInside(lineIndex, columnIndex) ) {
             throw new IllegalArgumentException("Les indices sont hors bornes.");
         }
-        this.items[lineIndex][columnIndex] = item;
+        this.elements[lineIndex][columnIndex] = item;
     }
 
     /* Méthodes protégées */

@@ -5,7 +5,7 @@ import java.util.List;
 import model.entity.Items;
 import model.entity.MovableEntity;
 
-public class Board {
+public class Board extends Matrix<Items>{
     /* Attributs de classe */
     // Constantes
 
@@ -15,12 +15,11 @@ public class Board {
     // Constantes
 
     // Variables
-    private Matrix<Items> elements;
     private List<MovableEntity> movableEntities; // (Blocs, Robots, Joueur)
 
     /* Constructeurs */
-    public Board(Matrix<Items> elements) {
-        this.elements = elements;
+    public Board(Matrix<Items> items) {
+        super(items.elements);
         this.movableEntities = new ArrayList<>();
     }
 
@@ -28,21 +27,13 @@ public class Board {
 
     /* Méthodes dynamiques */
     // Getters
-    public Matrix<Items> getItems() {
-        return this.elements;
-    }
-
-    public Items getItemAt(int lineIndex, int columnIndex) {
-        return this.elements.getItem(lineIndex, columnIndex);
-    }
-    
     public List<MovableEntity> getMovableEntities() { 
         return this.movableEntities; 
     }
 
     // Setters
-    public void setItems(Matrix<Items> elements) {
-        this.elements = elements;
+    public void setMovableEntities(List<MovableEntity> movableEntities) {
+        this.movableEntities = movableEntities;
     }
     
     /* Méthodes privées (utilitaires) */
@@ -57,7 +48,7 @@ public class Board {
      * @return
      */
     public MovableEntity getEntityAt(int x, int y) {
-        for (MovableEntity e : movableEntities) {
+        for (MovableEntity e : this.movableEntities) {
             if ((e.getPos().getX() == x) &&
                 (e.getPos().getY() == y)) {
                 return e;
