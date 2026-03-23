@@ -1,20 +1,20 @@
 package model.physic;
 
 public class Position {
-    private int x;
-    private int y;
+    private int i;
+    private int j;
 
-    public Position(int x, int y){
-        this.x = x;
-        this.y = y;
+    public Position(int i, int j){
+        this.i = i;
+        this.j = j;
     }
 
     /* ----------- getteurs / setteurs ----------- */
 
-    public int getX(){ return this.x; }
-    public int getY(){ return this.y; }
-    public void setX(int x){ this.x = x; }
-    public void setY(int y){ this.y = y; }
+    public int getI(){ return this.i; }
+    public int getJ(){ return this.j; }
+    public void setI(int i){ this.i = i; }
+    public void setJ(int j){ this.j = j; }
 
     // equals méthode qui permet de savoir si deux objets sont sur la même case 
 
@@ -22,7 +22,7 @@ public class Position {
     public boolean equals(Object o){
         if(this == o) return true; // c'est le même objet
         if(o instanceof Position p) { // compare les positions des objets
-            return this.x == p.getX() && this.y == p.getY();
+            return this.i == p.getI() && this.j == p.getJ();
         }
         return false;
     }

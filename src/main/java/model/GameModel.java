@@ -3,9 +3,14 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.board.Board;
 import model.board.Matrix;
-import model.entity.*;
+import model.entity.Bridge;
+import model.entity.Items;
+import model.entity.MovableEntity;
+import model.entity.Robot;
+import model.entity.Switch;
 import model.physic.Direction;
 import model.physic.Position;
 
@@ -18,9 +23,9 @@ public class GameModel {
     public GameModel(int width, int height) {
         //init du monde avec du vide partout (bridge bloqué)
         Matrix<Items> matrix = new Matrix<>(height, width);
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                matrix.setItem(y, x, new Bridge(0, new Position(x, y), false, Direction.UP));
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                matrix.setItem(i, j, new Bridge(0, new Position(i, j), false, Direction.UP));
             }
         }
         this.board = new Board(matrix);

@@ -42,18 +42,18 @@ public class GameView extends JPanel {
         int cols = board.getItems().getNbColumns();
         int rows = board.getItems().getNbLines();
 
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-                Items item = board.getItems().getItem(y, x);
-                drawFixedItem(g, item, x, y);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Items item = board.getItems().getItem(i, j);
+                drawFixedItem(g, item, j, i);
 
-                MovableEntity mobile = board.getEntityAt(x, y);
+                MovableEntity mobile = board.getEntityAt(i, j);
                 if (mobile != null) {
-                    drawMovableEntity(g, mobile, x, y);
+                    drawMovableEntity(g, mobile, j, i);
                 }
                 
                 g.setColor(Color.BLACK);
-                g.drawRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+                g.drawRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
             }
         }
     }
@@ -80,7 +80,7 @@ public class GameView extends JPanel {
     this.setMinimumSize(size);
 }
 
-    private void drawFixedItem(Graphics g, Items item, int x, int y) {
+    private void drawFixedItem(Graphics g, Items item, int j, int i) {
         switch (item.getType()) {
             case GROUND:
                 g.setColor(new Color(220, 220, 220));
@@ -96,17 +96,17 @@ public class GameView extends JPanel {
                 g.setColor(Color.WHITE);
                 break;
         }
-        g.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+        g.fillRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
     }
 
-    private void drawMovableEntity(Graphics g, MovableEntity mobile, int x, int y) {
+    private void drawMovableEntity(Graphics g, MovableEntity mobile, int j, int i) {
         if (mobile instanceof Robot) {
             g.setColor(Color.BLUE);
         } else {
             g.setColor(Color.MAGENTA);
         }
         int padding = 10; 
-        g.fillRect(x * CELL_SIZE + padding, y * CELL_SIZE + padding, 
+        g.fillRect(j * CELL_SIZE + padding, i * CELL_SIZE + padding, 
                    CELL_SIZE - 2 * padding, CELL_SIZE - 2 * padding);
     }
 }

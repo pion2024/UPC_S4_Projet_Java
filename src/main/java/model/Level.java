@@ -2,7 +2,12 @@
 package model;
 
 import model.board.Matrix;
-import model.entity.*;
+import model.entity.Block;
+import model.entity.Bridge;
+import model.entity.Ground;
+import model.entity.Items;
+import model.entity.Robot;
+import model.entity.Switch;
 import model.physic.Direction;
 import model.physic.Position;
 
@@ -18,12 +23,12 @@ public enum Level {
 
             //on pose les mecanismes
             //un interrupteur rouge au depart
-            Switch sw1 = new Switch(1, new Position(2, 5), true, null, Direction.UP);
+            Switch sw1 = new Switch(1, new Position(5, 2), true, null, Direction.UP);            matrix.setItem(5, 2, sw1);
             matrix.setItem(5, 2, sw1);
             model.addSwitch(sw1);
 
             //on cree le passage entre les deux iles
-            Bridge b1 = new Bridge(2, new Position(4, 5), false, Direction.UP);
+            Bridge b1 = new Bridge(2, new Position(5, 4), false, Direction.UP);
             Bridge b2 = new Bridge(3, new Position(5, 5), false, Direction.UP);
             
             //on lie les ponts au switch
@@ -60,13 +65,13 @@ public enum Level {
     public abstract void setup(GameModel model);
 
     //remplit une zone avec du ground
-    protected void createIsland(Matrix<Items> matrix, int startX, int startY, int width, int height) {
-        for (int y = startY; y < startY + height; y++) {
-            for (int x = startX; x < startX + width; x++) {
-                if (matrix.isInside(y, x)) {
-                    matrix.setItem(y, x, new Ground(0, new Position(x, y)));
-                }
+    protected void createIsland(Matrix<Items> matrix, int startJ, int startI, int width, int height) {
+    for (int i = startI; i < startI + height; i++) {
+        for (int j = startJ; j < startJ + width; j++) {
+            if (matrix.isInside(i, j)) {
+                matrix.setItem(i, j, new Ground(0, new Position(i, j)));
             }
         }
     }
+}
 }
