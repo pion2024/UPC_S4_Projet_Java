@@ -25,7 +25,7 @@ public class GameModel {
         Matrix<Items> matrix = new Matrix<>(height, width);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                matrix.setItem(i, j, new Bridge(0, new Position(i, j), false, Direction.UP));
+                matrix.setElement(i, j, new Bridge(0, new Position(i, j), false, Direction.UP));
             }
         }
         this.board = new Board(matrix);

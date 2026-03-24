@@ -32,7 +32,7 @@ public class MovementManager {
             // on éxecute le mouvement
             agent.setPosition(nextI, nextJ);
 
-            Items groundItem = board.getItems().getItem(nextI, nextJ);
+            Items groundItem = board.getElement(nextI, nextJ);
             // Puisque groundItem est de type Items, il possède onSteppedOn
             groundItem.onSteppedOn(agent);
         }
@@ -71,7 +71,7 @@ public class MovementManager {
             board.getMovableEntities().add(b);
 
             // On regarde ce qu'il y a "sous" le bloc dans la matrice
-            Items groundBelow = board.getItems().getItem(dropPos.getI(), dropPos.getJ());
+            Items groundBelow = board.getElement(dropPos.getI(), dropPos.getJ());
             // On prévient l'item
             groundBelow.onSteppedOn(b);
         }
@@ -82,12 +82,12 @@ public class MovementManager {
     
     public boolean canMoveTo(int i, int j) {
         // Vérification des limites de la matrice
-        if (!board.getItems().isInside(i, j)) {
+        if (!board.isInside(i, j)) {
             return false; // Bloqué au bord
         }
 
         // Récupération de l'entité sur la case
-        Items target = board.getItems().getItem(i, j);
+        Items target = board.getElement(i, j);
 
         // Vérification des ponts / obstacles via CellType
         if (!target.isTraversable()) {
