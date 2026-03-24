@@ -15,7 +15,7 @@ public enum Level {
     LEVEL_1(10, 10) {
         @Override
         public void setup(GameModel model) {
-            Matrix<Items> matrix = model.getBoard().getItems();
+            Matrix<Items> matrix = model.getBoard();
 
             //on dessine les zones de terre
             createIsland(matrix, 0, 0, 4, 10); //bloc de gauche
@@ -23,8 +23,8 @@ public enum Level {
 
             //on pose les mecanismes
             //un interrupteur rouge au depart
-            Switch sw1 = new Switch(1, new Position(5, 2), true, null, Direction.UP);            matrix.setItem(5, 2, sw1);
-            matrix.setItem(5, 2, sw1);
+            Switch sw1 = new Switch(1, new Position(5, 2), true, null, Direction.UP);
+            matrix.setElement(5, 2, sw1);
             model.addSwitch(sw1);
 
             //on cree le passage entre les deux iles
@@ -35,8 +35,8 @@ public enum Level {
             b1.addSwitch(sw1);
             b2.addSwitch(sw1);
             
-            matrix.setItem(5, 4, b1);
-            matrix.setItem(5, 5, b2);
+            matrix.setElement(5, 4, b1);
+            matrix.setElement(5, 5, b2);
             model.addBridge(b1);
             model.addBridge(b2);
 
@@ -69,7 +69,7 @@ public enum Level {
     for (int i = startI; i < startI + height; i++) {
         for (int j = startJ; j < startJ + width; j++) {
             if (matrix.isInside(i, j)) {
-                matrix.setItem(i, j, new Ground(0, new Position(i, j)));
+                matrix.setElement(i, j, new Ground(0, new Position(i, j)));
             }
         }
     }
