@@ -1,13 +1,16 @@
 package model.entity;
-import model.physic.*;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Switch extends Items{
     private boolean isPressed; // état actuelle
+    private Position pos;
 
 
-    public Switch(int id, Position pos, boolean traversable, Activatable target, Direction dir){
-        super(id, pos, traversable, CellType.SWITCH, dir);
+    public Switch(Position pos, boolean traversable, Activatable target, Direction dir){
+        super(traversable, CellType.SWITCH, dir);
         this.isPressed = false;
+        this.pos = pos;
     }
 
     public void updateStatus(boolean entityEnter){
@@ -21,6 +24,10 @@ public class Switch extends Items{
     @Override
     public void onSteppedOn(MovableEntity stepper){
         /* c'est gameState qui s'occupe de vérifier si'il y a une entité et de marquer l'interrupteur comme activé  */
+    }
+
+    public Position getPos(){
+        return this.pos;
     }
 
 }
