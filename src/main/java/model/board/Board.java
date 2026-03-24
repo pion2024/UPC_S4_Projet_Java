@@ -2,6 +2,7 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.entity.Items;
 import model.entity.MovableEntity;
 
@@ -47,10 +48,10 @@ public class Board extends Matrix<Items>{
      * @param y
      * @return
      */
-    public MovableEntity getEntityAt(int x, int y) {
+    public MovableEntity getEntityAt(int i, int j) {
         for (MovableEntity e : this.movableEntities) {
-            if ((e.getPos().getX() == x) &&
-                (e.getPos().getY() == y)) {
+            if ((e.getPos().getI() == i) &&
+                (e.getPos().getJ() == j)) {
                 return e;
             }
         }

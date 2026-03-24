@@ -10,7 +10,7 @@ public abstract class MovableEntity extends Entity {
 
     // modifie la position 
     public void setPosition(int x, int y) {
-        this.getPos().setX(x);
-        this.getPos().setY(y);
+        this.getPos().setI(x);
+        this.getPos().setJ(y);
     }
 }

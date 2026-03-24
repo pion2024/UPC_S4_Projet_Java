@@ -1,5 +1,6 @@
 package model.entity;
-import model.physic.*;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Propulsor extends Items implements Activatable{
 
@@ -19,10 +20,10 @@ public class Propulsor extends Items implements Activatable{
     @Override
     public void onSteppedOn(MovableEntity e){
         if (isActivate){
-            int newX = e.getPos().getX() + propulsDirection.getDi();
-        int newY = e.getPos().getY() + propulsDirection.getDj();
-        e.getPos().setX(newX);
-        e.getPos().setY(newY);
+            int newX = e.getPos().getI() + propulsDirection.getDi();
+            int newY = e.getPos().getJ() + propulsDirection.getDj();
+            e.getPos().setI(newX);
+            e.getPos().setJ(newY);
         }
     }
 
