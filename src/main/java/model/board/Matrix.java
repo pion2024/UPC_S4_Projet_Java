@@ -43,11 +43,11 @@ public class Matrix<T> {
         return this.nbLines;
     }
 
-    public T[][] getItems() {
+    public T[][] getElements() {
         return this.elements;
     }
 
-    public T getItem(int lineIndex, int columnIndex) {
+    public T getElement(int lineIndex, int columnIndex) {
         if ( !this.isInside(lineIndex, columnIndex) ) {
             throw new IllegalArgumentException("Les indices sont hors bornes.");
         }
@@ -55,11 +55,11 @@ public class Matrix<T> {
     }
 
     // Setters
-    public void setItem(int lineIndex, int columnIndex, T item) {
+    public void setElement(int lineIndex, int columnIndex, T element) {
         if ( !this.isInside(lineIndex, columnIndex) ) {
             throw new IllegalArgumentException("Les indices sont hors bornes.");
         }
-        this.elements[lineIndex][columnIndex] = item;
+        this.elements[lineIndex][columnIndex] = element;
     }
 
     /* Méthodes protégées */
