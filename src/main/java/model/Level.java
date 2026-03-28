@@ -3,11 +3,11 @@ package model;
 
 import model.board.Matrix;
 import model.entity.Block;
+import model.entity.BlockSwitch;
 import model.entity.Bridge;
 import model.entity.Ground;
 import model.entity.Items;
 import model.entity.Robot;
-import model.entity.Switch;
 import model.physic.Direction;
 import model.physic.Position;
 
@@ -23,8 +23,9 @@ public enum Level {
 
             //on pose les mecanismes
             //un interrupteur rouge au depart
-            Switch sw1 = new Switch(1, new Position(5, 2), true, null, Direction.UP);
-            matrix.setElement(5, 2, sw1);
+            BlockSwitch sw1 = new BlockSwitch();            
+            matrix.setItem(5, 2, sw1);
+            matrix.setItem(5, 2, sw1);
             model.addSwitch(sw1);
 
             //on cree le passage entre les deux iles
@@ -69,7 +70,7 @@ public enum Level {
     for (int i = startI; i < startI + height; i++) {
         for (int j = startJ; j < startJ + width; j++) {
             if (matrix.isInside(i, j)) {
-                matrix.setElement(i, j, new Ground(0, new Position(i, j)));
+                matrix.setItem(i, j, new Ground());
             }
         }
     }

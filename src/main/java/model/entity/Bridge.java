@@ -2,7 +2,8 @@ package model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.physic.*;
+import model.physic.Direction;
+import model.physic.Position;
 
 // Le Pont (ou dalle vide) qui apparaît/disparaît 
 public class Bridge extends Items implements Activatable {
@@ -10,7 +11,7 @@ public class Bridge extends Items implements Activatable {
     private List<Switch> hostSwitches;
 
     public Bridge(int id, Position pos, boolean traversable, Direction dir) {
-        super(id, pos, traversable, CellType.BRIDGE, dir);
+        super(traversable, CellType.BRIDGE, dir);
         this.active = traversable;
         this.hostSwitches = new ArrayList<>();
     }

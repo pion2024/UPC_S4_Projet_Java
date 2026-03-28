@@ -8,7 +8,7 @@ public class Propulsor extends Items implements Activatable{
     private boolean isActivate;
 
     public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR, dir);
+        super(true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
     }
 

@@ -6,8 +6,13 @@ import java.awt.event.KeyEvent;
 
 import model.GameModel;
 import model.Level;
+import model.board.Board;
+import model.entity.Block;
+import model.entity.Items;
+import model.entity.Switch;
 import model.physic.Direction;
 import model.physic.MovementManager;
+import model.physic.Position;
 import view.GameView;
 import view.WindowManager;
 
@@ -61,30 +66,54 @@ public class GameController extends KeyAdapter {
             case KeyEvent.VK_W:
             case KeyEvent.VK_UP:
                 moveMgr.moveAgent(model.getPlayer(), Direction.UP);
+                model.getPlayer().setFacing(Direction.UP);
                 actionPerfomed = true;
                 break;
             case KeyEvent.VK_S:
             case KeyEvent.VK_DOWN:
                 moveMgr.moveAgent(model.getPlayer(), Direction.DOWN);
+                model.getPlayer().setFacing(Direction.DOWN);
                 actionPerfomed = true;
                 break;
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
                 moveMgr.moveAgent(model.getPlayer(), Direction.LEFT);
+                model.getPlayer().setFacing(Direction.LEFT);
                 actionPerfomed = true;
                 break;
             case KeyEvent.VK_D:
             case KeyEvent.VK_RIGHT:
                 moveMgr.moveAgent(model.getPlayer(), Direction.RIGHT);
+                model.getPlayer().setFacing(Direction.RIGHT); 
                 actionPerfomed = true;
                 break;
             case KeyEvent.VK_SPACE:
-                // Si le joueur porte déjà quelque chose, il le pose (DROP)
                 if (model.getPlayer().isCarrying()) {
                     moveMgr.dropBlock(model.getPlayer());
                 } else {
-                // Sinon, il essaie de ramasser (GRAB)
-                    moveMgr.grabBlock(model.getPlayer());
+
+                    // on essaie TOUJOURS de grab d'abord
+                    Position p = model.getPlayer().getPos();
+                    Direction d = model.getPlayer().getFacing();
+
+                    int i = p.getI() + d.getDi();
+                    int j = p.getJ() + d.getDj();
+
+                    Board board = model.getBoard();
+
+                    if (board.getItems().isInside(i, j)) {
+
+                        // PRIORITÉ AU BLOC
+                        if (board.getEntityAt(i, j) instanceof Block) {
+                        moveMgr.grabBlock(model.getPlayer());
+                        } else {
+                            // sinon interaction avec switch
+                            Items item = board.getItemAt(i, j);
+                            if (item instanceof Switch sw) {
+                                sw.onInteract(model.getPlayer());
+                            }
+                        }
+                    }
                 }
                 actionPerfomed = true;
                 break;
