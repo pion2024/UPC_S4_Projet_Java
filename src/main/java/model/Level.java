@@ -15,7 +15,7 @@ public enum Level {
     LEVEL_1(10, 10) {
         @Override
         public void setup(GameModel model) {
-            Matrix<Items> matrix = model.getBoard().getItems();
+            Matrix<Items> matrix = model.getBoard();
 
             //on dessine les zones de terre
             createIsland(matrix, 0, 0, 4, 10); //bloc de gauche
@@ -36,8 +36,8 @@ public enum Level {
             b1.addSwitch(sw1);
             b2.addSwitch(sw1);
             
-            matrix.setItem(5, 4, b1);
-            matrix.setItem(5, 5, b2);
+            matrix.setElement(5, 4, b1);
+            matrix.setElement(5, 5, b2);
             model.addBridge(b1);
             model.addBridge(b2);
 

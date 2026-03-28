@@ -130,12 +130,12 @@ public class MovementManager {
     
     public boolean canMoveTo(int i, int j) {
         // Vérification des limites de la matrice
-        if (!board.getItems().isInside(i, j)) {
+        if (!board.isInside(i, j)) {
             return false; // Bloqué au bord
         }
 
         // Récupération de l'entité sur la case
-        Items target = board.getItems().getItem(i, j);
+        Items target = board.getElement(i, j);
 
         // Vérification des ponts / obstacles via CellType
         if (!target.isTraversable()) {

@@ -39,12 +39,12 @@ public class GameView extends JPanel {
         }
         super.paintComponent(g);
         Board board = model.getBoard();
-        int cols = board.getItems().getNbColumns();
-        int rows = board.getItems().getNbLines();
+        int cols = board.getNbColumns();
+        int rows = board.getNbLines();
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                Items item = board.getItems().getItem(i, j);
+                Items item = board.getElement(i, j);
                 drawFixedItem(g, item, j, i);
 
                 MovableEntity mobile = board.getEntityAt(i, j);
@@ -71,8 +71,8 @@ public class GameView extends JPanel {
     // Sécurité supplémentaire
     if (model == null || model.getBoard() == null) return;
 
-    int cols = model.getBoard().getItems().getNbColumns();
-    int rows = model.getBoard().getItems().getNbLines();
+    int cols = model.getBoard().getNbColumns();
+    int rows = model.getBoard().getNbLines();
     
     // On définit la taille physique du composant
     Dimension size = new Dimension(cols * CELL_SIZE, rows * CELL_SIZE);
