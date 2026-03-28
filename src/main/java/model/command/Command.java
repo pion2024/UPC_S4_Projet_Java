@@ -1,18 +1,18 @@
 package model.command;
-import model.entity.Entity;
+import model.entity.MovableEntity;
 /**
  * Represents a command for the Robot.
  */
 public class Command {         
-    private Entity targetEntity;  
-    public Command(Entity target) {
+    private MovableEntity targetEntity;  
+    public Command(MovableEntity target) {
         setTarget(target);
     }
     
-    public void setTarget(Entity e) {
+    public void setTarget(MovableEntity e) {
         this.targetEntity = e;
     }
-    public Entity getTarget() {
+    public MovableEntity getTarget() {
         return this.targetEntity;
     }
 
