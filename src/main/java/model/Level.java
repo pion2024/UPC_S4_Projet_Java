@@ -24,8 +24,8 @@ public enum Level {
             //on pose les mecanismes
             //un interrupteur rouge au depart
             BlockSwitch sw1 = new BlockSwitch();            
-            matrix.setItem(5, 2, sw1);
-            matrix.setItem(5, 2, sw1);
+            matrix.setElement(5, 2, sw1);
+            matrix.setElement(5, 2, sw1);
             model.addSwitch(sw1);
 
             //on cree le passage entre les deux iles
@@ -70,7 +70,7 @@ public enum Level {
     for (int i = startI; i < startI + height; i++) {
         for (int j = startJ; j < startJ + width; j++) {
             if (matrix.isInside(i, j)) {
-                matrix.setItem(i, j, new Ground());
+                matrix.setElement(i, j, new Ground());
             }
         }
     }

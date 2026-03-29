@@ -4,6 +4,7 @@ package view;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -80,33 +81,80 @@ public class GameView extends JPanel {
     this.setMinimumSize(size);
 }
 
-    private void drawFixedItem(Graphics g, Items item, int j, int i) {
+    // private void drawFixedItem(Graphics g, Items item, int j, int i) {
+    //     switch (item.getType()) {
+    //         case GROUND:
+    //             g.setColor(new Color(220, 220, 220));
+    //             break;
+    //         case SWITCH:
+    //             Switch sw = (Switch) item;
+    //             g.setColor(sw.getIsPressed() ? Color.GREEN : Color.RED);
+    //             break;
+    //         case BRIDGE:
+    //             g.setColor(item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY);
+    //             break;
+    //         default:
+    //             g.setColor(Color.WHITE);
+    //             break;
+    //     }
+    //     g.fillRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    // }
+
+     private void drawFixedItem(Graphics g, Items item, int col, int row) {
+        BufferedImage img = null;
+        Color fallback;
+
         switch (item.getType()) {
             case GROUND:
-                g.setColor(new Color(220, 220, 220));
+                img = AssetManager.GROUND;
+                fallback = new Color(220, 220, 220);
                 break;
             case SWITCH:
                 Switch sw = (Switch) item;
-                g.setColor(sw.getIsPressed() ? Color.GREEN : Color.RED);
+                img = AssetManager.SWITCH;
+                fallback = sw.getIsPressed() ? Color.GREEN : Color.RED;
                 break;
             case BRIDGE:
-                g.setColor(item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY);
+                img = item.isTraversable() ? AssetManager.OPENED_BRIDGE : AssetManager.CLOSED_BRIDGE;
+                fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
                 break;
             default:
-                g.setColor(Color.WHITE);
+                fallback = Color.WHITE;
                 break;
         }
-        g.fillRect(j * CELL_SIZE, i * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+        drawCell(g, img, col, row, fallback);
     }
 
-    private void drawMovableEntity(Graphics g, MovableEntity mobile, int j, int i) {
+    private void drawCell(Graphics g, BufferedImage img, int col, int row, Color fallback) {
+    if (img != null) {
+        g.drawImage(img, col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE, null);
+    } else {
+        g.setColor(fallback);
+        g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+    }
+}
+
+    // private void drawMovableEntity(Graphics g, MovableEntity mobile, int j, int i) {
+    //     if (mobile instanceof Robot) {
+    //         g.setColor(Color.BLUE);
+    //     } else {
+    //         g.setColor(Color.MAGENTA);
+    //     }
+    //     int padding = 10; 
+    //     g.fillRect(j * CELL_SIZE + padding, i * CELL_SIZE + padding, 
+    //                CELL_SIZE - 2 * padding, CELL_SIZE - 2 * padding);
+    // }
+
+    private void drawMovableEntity(Graphics g, MovableEntity mobile, int col, int row) {
         if (mobile instanceof Robot) {
-            g.setColor(Color.BLUE);
+            int padding = 5;
+            drawCell(g, AssetManager.PLAYER, col, row, Color.BLUE);
         } else {
+            int padding = 10;
             g.setColor(Color.MAGENTA);
+            g.fillRect(col * CELL_SIZE + padding, row * CELL_SIZE + padding,
+                       CELL_SIZE - 2 * padding, CELL_SIZE - 2 * padding);
         }
-        int padding = 10; 
-        g.fillRect(j * CELL_SIZE + padding, i * CELL_SIZE + padding, 
-                   CELL_SIZE - 2 * padding, CELL_SIZE - 2 * padding);
     }
 }
