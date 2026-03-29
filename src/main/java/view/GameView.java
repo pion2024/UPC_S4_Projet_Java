@@ -44,7 +44,7 @@ public class GameView extends JPanel {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                Items item = board.getElement(i, j);
+                Items item = board.getItemAt(i, j);
                 drawFixedItem(g, item, j, i);
 
                 MovableEntity mobile = board.getEntityAt(i, j);

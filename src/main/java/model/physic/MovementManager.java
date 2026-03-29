@@ -26,7 +26,7 @@ public class MovementManager {
         int newJ = oldJ + dir.getDj();
 
         // Vérifier que la case est valide
-        if (!board.getItems().isInside(newI, newJ)) {
+        if (!board.isInside(newI, newJ)) {
             return;
         }
 
@@ -74,7 +74,7 @@ public class MovementManager {
 
         if (target instanceof Block b) {
             // prévenir le switch AVANT de retirer le bloc
-            Items item = board.getItems().getItem(i, j);
+            Items item = board.getItemAt(i, j);
             if (item instanceof Switch sw) {
                 sw.onExit(b);
             }
@@ -94,9 +94,9 @@ public class MovementManager {
         int j = dropPos.getJ();
 
         // Vérifie que la case est valide et libre
-        if (!board.getItems().isInside(i, j)) return;
+        if (!board.isInside(i, j)) return;
 
-        Items itemAtPos = board.getItems().getItem(i, j);
+        Items itemAtPos = board.getItemAt(i, j);
         MovableEntity entityAtPos = board.getEntityAt(i, j);
 
         // Déjà occupé
@@ -135,7 +135,7 @@ public class MovementManager {
         }
 
         // Récupération de l'entité sur la case
-        Items target = board.getElement(i, j);
+        Items target = board.getItemAt(i, j);
 
         // Vérification des ponts / obstacles via CellType
         if (!target.isTraversable()) {
