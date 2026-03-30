@@ -1,9 +1,9 @@
 package model.board;
 
-/* Classe qui représente une matrice.
- * Alors on utilisera la notation matricicelle.
+/* Classe générique qui représente une matrice.
+ * Alors on utilisera la notation matricielle.
  */
-public class Matrix<T> implements Cloneable {
+public class Matrix<T> {
     /* Attributs de classe */
     // Constantes
 
@@ -13,21 +13,22 @@ public class Matrix<T> implements Cloneable {
     // Constantes
 
     // Variables
-    protected int nbLines;
-    protected int nbColumns;
-    protected T[][] items;
+    protected int nbLines;      // nbLines      doit être > 0
+    protected int nbColumns;    // nbLColumns   doit être > 0
+    protected T[][] elements;
 
     /* Constructeurs */
     public Matrix(int nbLines, int nbColumns) {
         this.nbLines = nbLines;
         this.nbColumns = nbColumns;
-        this.items = (T[][]) new Object[nbColumns][nbLines];
+        this.elements = (T[][]) new Object[nbLines][nbColumns]; //corriger l'ordre de nbLines et nbColumns
+        //la premiere dimension correspond au nombre de lignes, et la seconde dimension correspond au nombre de colonnes.
     }
 
-    public Matrix(T[][] items) {
-        this.nbLines = items.length;
-        this.nbColumns = items[0].length;
-        this.items = items;
+    public Matrix(T[][] elements) {
+        this.nbLines = elements.length;
+        this.nbColumns = elements[0].length;
+        this.elements = elements;
     }
     
     /* Méthodes statiques */
@@ -42,27 +43,39 @@ public class Matrix<T> implements Cloneable {
         return this.nbLines;
     }
 
-    public T[][] getItems() {
-        return this.items;
+    public T[][] getElements() {
+        return this.elements;
     }
 
-    public T getItem(int lineIndex, int columnIndex) {
-        return this.items[lineIndex][columnIndex];
+    public T getElement(int lineIndex, int columnIndex) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
+        return this.elements[lineIndex][columnIndex];
     }
 
     // Setters
-    public void setItem(int lineIndex, int columnIndex, T item) {
-        this.items[lineIndex][columnIndex] = item;
-    }
-
-    // permet de verifier si on est dans la matrice 
-
-    public boolean isInside(int line, int column){
-        return line >= 0 && line < nbLines && column >= 0 && column < nbColumns;
+    public void setElement(int lineIndex, int columnIndex, T element) {
+        if ( !this.isInside(lineIndex, columnIndex) ) {
+            throw new IllegalArgumentException("Les indices sont hors bornes.");
+        }
+        this.elements[lineIndex][columnIndex] = element;
     }
 
     /* Méthodes protégées */
 
     /* Méthodes publiques */
+    /**
+     * Permet de vérifier si une position donnée est dans la matrice.
+     * @param lineIndex
+     * @param columnIndex
+     * @return
+     */
+    public boolean isInside(int lineIndex, int columnIndex) {
+        return  (0 <= lineIndex && lineIndex < this.nbLines) &&
+                (0 <= columnIndex && columnIndex < this.nbColumns);
+    }
+
+
     
 }

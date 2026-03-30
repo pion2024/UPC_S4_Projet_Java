@@ -1,45 +1,27 @@
 //src/main/java/Main.java
 import javax.swing.SwingUtilities;
-import model.GameModel;
-import view.GameView;
+
 import controller.GameController;
-import model.board.Board;
-import model.board.Matrix;
-import model.entity.*;
-import model.physic.Direction;
-import model.physic.Position;
+import view.AssetManager;
+import view.WindowManager;
 
 public class Main {
     public static void main(String[] args) {
+        // On charge d'abord les images (sinon le menu sera vide)
+        AssetManager.loadAssets();
+
         SwingUtilities.invokeLater(() -> {
-            Matrix<Items> matrix = new Matrix<>(10, 10);
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    matrix.setItem(i, j, new Ground(0, new Position(j, i)));
-                }
-            }
+            // On crée le gestionnaire de fenêtres (il crée la JFrame et le CardLayout)
+            WindowManager winManager = new WindowManager();
 
-            Board board = new Board(matrix);
-            GameModel model = new GameModel(board);
+            // On crée le contrôleur en lui donnant l'accès au manager
+            GameController controller = new GameController(winManager);
 
-            Switch sw1 = new Switch(1, new Position(2, 2), true, null, Direction.UP);
-            Bridge bridge1 = new Bridge(2, new Position(5, 5), false, Direction.UP);
-            
-            bridge1.addSwitch(sw1);
-            
-            matrix.setItem(2, 2, sw1);
-            matrix.setItem(5, 5, bridge1); 
+            // On donne le contrôleur au manager (pour que le bouton "Jouer" puisse l'appeler)
+            winManager.setController(controller);
 
-            model.addBridge(bridge1);
-
-            Robot player = new Robot(new Position(0, 0));
-            board.getMovableEntities().add(player);
-            model.setPlayer(player);
-
-            GameView view = new GameView(model);
-            GameController controller = new GameController(model, view);
-
-            controller.start();
+            // On lance l'affichage sur le menu
+            winManager.init();
         });
     }
 }

@@ -2,10 +2,11 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.entity.Items;
 import model.entity.MovableEntity;
 
-public class Board {
+public class Board extends Matrix<Items>{
     /* Attributs de classe */
     // Constantes
 
@@ -15,42 +16,45 @@ public class Board {
     // Constantes
 
     // Variables
-    private Matrix<Items> elements;
     private List<MovableEntity> movableEntities; // (Blocs, Robots, Joueur)
 
     /* Constructeurs */
-    public Board(Matrix<Items> elements) {
-        this.elements = elements;
+    public Board(Matrix<Items> items) {
+        super(items.elements);
         this.movableEntities = new ArrayList<>();
-    }
-
-    
-    // Utilitaire pour trouver s'il y a un objet mobile à une position donnée
-    
-    public MovableEntity getEntityAt(int x, int y) {
-        for (MovableEntity e : movableEntities) {
-            if (e.getPos().getX() == x && e.getPos().getY() == y) {
-                return e;
-            }
-        }
-        return null;
     }
 
     /* Méthodes statiques */
 
     /* Méthodes dynamiques */
     // Getters
-    public Matrix<Items> getItems() {
-        return this.elements;
-    }
-
     public List<MovableEntity> getMovableEntities() { 
-        return movableEntities; 
+        return this.movableEntities; 
     }
 
     // Setters
-    public void setItems(Matrix<Items> elements) {
-        this.elements = elements;
+    public void setMovableEntities(List<MovableEntity> movableEntities) {
+        this.movableEntities = movableEntities;
     }
+    
+    /* Méthodes privées (utilitaires) */
 
+    /* Méthodes protégées */
+
+    /* Méthodes publiques */
+    /**
+     * Utilitaire pour trouver s'il y a un objet mobile à une position donnée.
+     * @param x
+     * @param y
+     * @return
+     */
+    public MovableEntity getEntityAt(int i, int j) {
+        for (MovableEntity e : this.movableEntities) {
+            if ((e.getPos().getI() == i) &&
+                (e.getPos().getJ() == j)) {
+                return e;
+            }
+        }
+        return null;
+    }
 }

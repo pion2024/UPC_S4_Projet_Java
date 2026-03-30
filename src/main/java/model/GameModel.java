@@ -1,85 +1,120 @@
-//src/main/java/model/GameModel.java
 package model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import model.board.Board;
+import model.board.Matrix;
 import model.entity.Bridge;
+import model.entity.Items;
 import model.entity.Propulsor;
 import model.entity.Robot;
 import model.entity.Switch;
+import model.physic.Direction;
+import model.physic.Position;
 
 public class GameModel {
+
     private Board board;
     private List<Bridge> bridges;
-    private Robot player; 
+    private List<Propulsor> propulsors;
+    private List<Switch> switches;
+    private Robot player;
 
-    public GameModel(Board board) {
-        this.board = board;
-        this.bridges = new ArrayList<>();
-    }
-
-    public void addBridge(Bridge b) { this.bridges.add(b); }
-    public void setPlayer(Robot player) { this.player = player; }
-
-    public Board getBoard() { return this.board; }
-    public Robot getPlayer() { return this.player; }
-
-    public void update() {
-        for (Bridge bridge : bridges) {
-            bridge.updateStatus(); 
-        }
-    }
-
-    public class Connection {
-
-        Bridge bridge;
-        Propulsor propulsor;
-        ArrayList<Switch> switches;
-        public Connection(Bridge bridge, ArrayList<Switch> switches){
-            this.bridge = bridge;
-            this.switches = switches;
-        }
-        public Connection(Propulsor propulsor, ArrayList<Switch> switches){
-            this.propulsor = propulsor;
-            this.switches = switches;
-        }
-
-        //vérifie que la liste en paramètre corresponde à la liste du pont/propulseur
-        public boolean checkIfConnected(ArrayList<Switch> switchesToCheck) {
-            if (this.switches.isEmpty()) return false;
-            if (this.switches.size() != switchesToCheck.size()) return false;
-            else {
-                for (int i = 0 ; i < this.switches.size() ; i++) {
-                    if (this.switches.get(i) == switchesToCheck.get(i)) return false;
-                }
-                return true;
+    public GameModel(int width, int height) {
+        // init du monde avec du vide partout (bridges bloqués)
+        Matrix<Items> matrix = new Matrix<>(height, width);
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                matrix.setElement(i, j, new Bridge(0, new Position(i, j), false, Direction.UP));
             }
         }
 
-        public boolean areSwitchesPressed() {
-            for (Switch s : switches) {
-                if (!s.getIsPressed()) return false;
+        this.board = new Board(matrix);
+        this.bridges = new ArrayList<>();
+        this.switches = new ArrayList<>();
+    }
+
+    // ======= Méthodes de gestion =======
+
+    public void addBridge(Bridge b) {
+        this.bridges.add(b);
+    }
+
+    public void addSwitch(Switch s) {
+        this.switches.add(s);
+    }
+
+    public void setPlayer(Robot player) {
+        this.player = player;
+        // ajouter le player aux entités mobiles du board
+        this.board.getMovableEntities().add(player);
+    }
+
+    public Board getBoard() {
+        return this.board;
+    }
+
+    public Robot getPlayer() {
+        return this.player;
+    }
+
+    // ======= Boucle de mise à jour =======
+
+    public void update() {
+        // Les switches sont gérés par onEnter / onExit / onInteract => pas besoin de update ici
+        
+
+        // On update l'état des ponts
+        for (Bridge bridge : bridges) {
+            if (checkIfConnected(bridge, switches)) {
+                bridge.updateStatus();
+            }
+        }
+
+        for (Propulsor propulsor : propulsors) {
+            if (checkIfConnected(propulsor, switches)) {
+                propulsor.updateStatus();
+            }
+        }
+    }
+
+
+
+    //vérifie que les ponts n'ont pas de switch en dehors de la liste de switch dans le niveau
+    public boolean checkIfConnected(Bridge bridge, List<Switch> switchesToCheck) {
+        int res = 0;
+        if (bridges.get(bridges.indexOf(bridge)).getHostSwitches().isEmpty() || switches.isEmpty()) return false;
+        else {
+            for (int i = 0 ; i < this.switches.size() ; i++) {
+                if (bridge.getHostSwitches().get(res) == switchesToCheck.get(i)) {
+                    res++;
+                }
+                if (res == bridge.getHostSwitches().size()) return true;
+                if (i == switchesToCheck.size() && bridge.getHostSwitches().get(res) != switchesToCheck.get(i)) {
+                    return false;
+                }
             }
             return true;
         }
+    }
 
-        /**
-         * décommenter la partie commenté lorsque la fonction toggle sera implémenté dans Propulsor
-         * @param switchesToCheck switches vérifiant si la liste appartient au pont/prolseur et si ils sont activé
-         */
-        public void activate(ArrayList<Switch> switchesToCheck) {
-            if (checkIfConnected(switchesToCheck)) {
-                boolean active = areSwitchesPressed();
-            
-                if (bridge != null) {
-                    bridge.setActivated(active);
+    //vérifie que les propulseurs n'ont pas de switch en dehors de la liste de switch dans le niveau
+    public boolean checkIfConnected(Propulsor propulsor, List<Switch> switchesToCheck) {
+        int res = 0;
+        if (propulsors.get(propulsors.indexOf(propulsor)).getHostSwitches().isEmpty() || switches.isEmpty()) return false;
+        else {
+            for (int i = 0 ; i < this.switches.size() ; i++) {
+                if (propulsor.getHostSwitches().get(res) == switchesToCheck.get(i)) {
+                    res++;
                 }
-                if (propulsor != null) {
-                    propulsor.setActivated(active);
+                if (res == propulsor.getHostSwitches().size()) return true;
+                if (i == switchesToCheck.size() && propulsor.getHostSwitches().get(res) != switchesToCheck.get(i)) {
+                    return false;
                 }
             }
+            return true;
         }
     }
+
 }

@@ -1,14 +1,22 @@
 package model.entity;
-import model.physic.*;
+import java.util.List;
+
+import model.physic.Direction;
+import model.physic.Position;
 
 public class Propulsor extends Items implements Activatable{
 
     private final Direction propulsDirection;
     private boolean isActivate;
+    private List<Switch> hostSwitches;
 
     public Propulsor(int id, Position pos, Direction dir){
-        super(id, pos, true, CellType.PROPULSOR, dir);
+        super(true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
+    }
+
+    public List<Switch> getHostSwitches() {
+        return this.hostSwitches;
     }
 
     @Override
@@ -19,14 +27,25 @@ public class Propulsor extends Items implements Activatable{
     @Override
     public void onSteppedOn(MovableEntity e){
         if (isActivate){
-            int newX = e.getPos().getX() + propulsDirection.getDi();
-        int newY = e.getPos().getY() + propulsDirection.getDj();
-        e.getPos().setX(newX);
-        e.getPos().setY(newY);
+            int newX = e.getPos().getI() + propulsDirection.getDi();
+            int newY = e.getPos().getJ() + propulsDirection.getDj();
+            e.getPos().setI(newX);
+            e.getPos().setJ(newY);
         }
     }
 
     public Direction getpropulsDirection(){
         return propulsDirection;
+    }
+
+    public void updateStatus() {
+        boolean allPressed = true;
+        for (Switch sw : hostSwitches) {
+            if (!sw.getIsPressed()) {
+                allPressed = false;
+                break;
+            }
+        }
+        setActivated(allPressed);
     }
 }

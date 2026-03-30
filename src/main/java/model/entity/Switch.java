@@ -1,26 +1,33 @@
 package model.entity;
-import model.physic.*;
 
-public class Switch extends Items{
-    private boolean isPressed; // état actuelle
+import model.physic.Direction;
 
+public abstract class Switch extends Items {
 
-    public Switch(int id, Position pos, boolean traversable, Activatable target, Direction dir){
-        super(id, pos, traversable, CellType.SWITCH, dir);
+    protected boolean isPressed;
+
+    public Switch(boolean traversable, Direction dir) {
+        super(traversable, CellType.SWITCH, dir);
         this.isPressed = false;
     }
 
-    public void updateStatus(boolean entityEnter){
-        this.isPressed = entityEnter;
+    // Méthode centrale pour mettre à jour l'état
+    public void updateStatus(boolean active) {
+        this.isPressed = active;
+    }
+    
+    public boolean getIsPressed() {
+        return isPressed;
     }
 
-    public boolean getIsPressed(){
-        return this.isPressed;
-    }
+    // Une entité ENTRE sur la case
+    public abstract void onSteppedOn(MovableEntity entity);
 
-    @Override
-    public void onSteppedOn(MovableEntity stepper){
-        /* c'est gameState qui s'occupe de vérifier si'il y a une entité et de marquer l'interrupteur comme activé  */
-    }
+    // Une entité SORT de la case
+    public abstract void onExit(MovableEntity entity);
 
+    // Interaction (touche espace)
+    public void onInteract(Agent agent) {
+        // par défaut : rien
+    }
 }

@@ -1,7 +1,12 @@
 package model.physic;
 
-import model.board.*;
-import model.entity.*;
+import model.board.Board;
+import model.entity.Agent;
+import model.entity.Block;
+import model.entity.BlockSwitch;
+import model.entity.Items;
+import model.entity.MovableEntity;
+import model.entity.Switch;
 
 public class MovementManager {
     private Board board;
@@ -13,35 +18,45 @@ public class MovementManager {
     
     // Tente de déplacer un agent dans une direction donnée.
      
-    public void moveAgent(Agent agent, Direction dir) {
-        // L'agent tourne toujours vers la direction demandée
-        agent.setFacing(dir);
+    public void moveAgent(MovableEntity entity, Direction dir) {
+        int oldI = entity.getPos().getI();
+        int oldJ = entity.getPos().getJ();
 
-        // Calcul de la destination de l'agent
-        Position currentPos = agent.getPos();
-        int nextX = currentPos.getX() + dir.getDi();
-        int nextY = currentPos.getY() + dir.getDj();
+        int newI = oldI + dir.getDi();
+        int newJ = oldJ + dir.getDj();
 
-        // On vérifie si cet Item est traversable 
-        if (canMoveTo(nextX, nextY)) {
-        
-            // Si l'agent porte un bloc, on vérifie aussi la case du bloc (nextBlockX/Y)
-            if (agent.isCarrying()) {
-                int nextBlockX = nextX + dir.getDi();
-                int nextBlockY = nextY + dir.getDj();
-            
-                // On vérifie les limites pour le bloc
-                if (!canMoveTo(nextBlockX, nextBlockY)) {
-                    return;
-                } 
-            }
+        // Vérifier que la case est valide
+        if (!board.getItems().isInside(newI, newJ)) {
+            return;
+        }
 
-            // on éxecute le mouvement
-            agent.setPosition(nextX, nextY);
+        Items targetItem = board.getItemAt(newI, newJ);
 
-            Items groundItem = board.getItems().getItem(nextY, nextX);
-            // Puisque groundItem est de type Items, il possède onSteppedOn
-            groundItem.onSteppedOn(agent);
+        if (targetItem instanceof BlockSwitch && !(entity instanceof Block)) {
+            return; // joueur/robot ne peuvent pas passer
+        }
+
+        // Vérifier si traversable
+        if (targetItem != null && !targetItem.isTraversable()) {
+            return;
+        }
+
+        // Vérifier s'il y a déjà une entité
+        if (board.getEntityAt(newI, newJ) != null) return;
+
+        // QUITTER l'ancien switch
+        Items oldItem = board.getItemAt(oldI, oldJ);
+        if (oldItem instanceof Switch sw) {
+            sw.onExit(entity);
+        }
+
+        // déplacer l'entité
+        entity.setPosition(newI, newJ);
+
+        // ENTRER sur le nouveau switch
+        Items newItem = board.getItemAt(newI, newJ);
+        if (newItem instanceof Switch sw) {
+            sw.onSteppedOn(entity);
         }
         
     }
@@ -52,10 +67,17 @@ public class MovementManager {
         if (agent.isCarrying()) return; // Déjà occupé
 
         Position targetPos = getPositionInFront(agent);
+        int i = targetPos.getI();
+        int j = targetPos.getJ();
 
-        MovableEntity target = board.getEntityAt(targetPos.getX(), targetPos.getY());
+        MovableEntity target = board.getEntityAt(targetPos.getI(), targetPos.getJ());
 
-        if (target instanceof Block) {
+        if (target instanceof Block b) {
+            // prévenir le switch AVANT de retirer le bloc
+            Items item = board.getItems().getItem(i, j);
+            if (item instanceof Switch sw) {
+                sw.onExit(b);
+            }
             agent.hold((Block) target);
             board.getMovableEntities().remove(target);
         }
@@ -68,33 +90,52 @@ public class MovementManager {
         if (!agent.isCarrying()) return;
 
         Position dropPos = getPositionInFront(agent);
+        int i = dropPos.getI();
+        int j = dropPos.getJ();
 
-        // Est-ce que la case devant est libre et dans la carte ?
-        if (canMoveTo(dropPos.getX(), dropPos.getY())) {
-            Block b = agent.drop();
-            b.setPosition(dropPos.getX(), dropPos.getY());
+        // Vérifie que la case est valide et libre
+        if (!board.getItems().isInside(i, j)) return;
 
-            // 2. On enregistre que le bloc occupe maintenant cet espace sur le plateau
-            board.getMovableEntities().add(b);
+        Items itemAtPos = board.getItems().getItem(i, j);
+        MovableEntity entityAtPos = board.getEntityAt(i, j);
 
-            // On regarde ce qu'il y a "sous" le bloc dans la matrice
-            Items groundBelow = board.getItems().getItem(dropPos.getY(), dropPos.getX());
-            // On prévient l'item
-            groundBelow.onSteppedOn(b);
+        // Déjà occupé
+        if (entityAtPos != null) return;
+
+        if (itemAtPos instanceof Switch sw) {
+
+            // si ce n’est pas un BlockSwitch → interdit
+            if (!(sw instanceof BlockSwitch)) {
+                return;
+            }
+
+        // BlockSwitch accepte → on continue sans vérifier traversable
+        } else {
+            // Cas normal (sol, pont, etc.)
+            if (!itemAtPos.isTraversable()) return;
         }
+
+
+        // Déposer le bloc
+        Block b = agent.drop();
+        b.setPosition(dropPos.getI(), dropPos.getJ());// le bloc connaît sa position
+        board.getMovableEntities().add(b); // ajoute au board
+
+        // Prévenir l'item dessous (ex: switch ou bridge)
+        itemAtPos.onSteppedOn(b);
     }
 
     
     // Méthode de vérification centrale 
     
-    public boolean canMoveTo(int x, int y) {
+    public boolean canMoveTo(int i, int j) {
         // Vérification des limites de la matrice
-        if (!board.getItems().isInside(y, x)) {
+        if (!board.isInside(i, j)) {
             return false; // Bloqué au bord
         }
 
         // Récupération de l'entité sur la case
-        Items target = board.getItems().getItem(y, x);
+        Items target = board.getElement(i, j);
 
         // Vérification des ponts / obstacles via CellType
         if (!target.isTraversable()) {
@@ -102,7 +143,7 @@ public class MovementManager {
         }
 
         // Vérifier si un objet mobile (Bloc/Robot) bloque le passage
-        if (board.getEntityAt(x, y) != null) {
+        if (board.getEntityAt(i, j) != null) {
             return false; 
         }
 
@@ -111,8 +152,8 @@ public class MovementManager {
 
     private Position getPositionInFront(Agent a) {
         return new Position(
-            a.getPos().getX() + a.getFacing().getDi(),
-            a.getPos().getY() + a.getFacing().getDj()
+            a.getPos().getI() + a.getFacing().getDi(),
+            a.getPos().getJ() + a.getFacing().getDj()
         );
     }
 }
