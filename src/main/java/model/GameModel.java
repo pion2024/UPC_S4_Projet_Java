@@ -60,6 +60,7 @@ public class GameModel {
 
     // ======= Boucle de mise à jour =======
 
+    //le coeur de la boucle de jeu
     public void update() {
         // Les switches sont gérés par onEnter / onExit / onInteract => pas besoin de update ici
         
