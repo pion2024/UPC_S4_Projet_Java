@@ -13,11 +13,6 @@ public class Bridge extends Items implements Activatable {
     public Bridge(int id, Position pos, boolean traversable, Direction dir) {
         super(traversable, CellType.BRIDGE, dir);
         this.active = traversable;
-        this.hostSwitches = new ArrayList<>();
-    }
-
-    public List<Switch> getHostSwitches() {
-        return this.hostSwitches;
     }
 
     @Override

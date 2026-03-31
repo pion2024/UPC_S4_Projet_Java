@@ -1,10 +1,3 @@
-//src/main/java/Main.java
-import javax.swing.SwingUtilities;
-
-import controller.GameController;
-import view.AssetManager;
-import view.WindowManager;
-
 public class Main {
     public static void main(String[] args) {
         // On charge d'abord les images (sinon le menu sera vide)
