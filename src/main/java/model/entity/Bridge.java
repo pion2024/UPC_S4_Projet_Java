@@ -9,15 +9,21 @@ import model.physic.Position;
 public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
     private List<Switch> hostSwitches;
+    private Direction dir;
 
     public Bridge(int id, Position pos, boolean traversable, Direction dir) {
-        super(traversable, CellType.BRIDGE, dir);
+        super(traversable, CellType.BRIDGE);
+        this.dir = dir;
         this.active = traversable;
         this.hostSwitches = new ArrayList<>();
     }
 
     public List<Switch> getHostSwitches() {
         return this.hostSwitches;
+    }
+
+    public Direction getDir() {
+        return this.dir;
     }
 
     @Override

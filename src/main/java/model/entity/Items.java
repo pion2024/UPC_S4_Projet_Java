@@ -9,7 +9,7 @@ public abstract class Items{
     protected CellType type;
     protected Direction dir;
 
-    public Items(boolean traversable, CellType type, Direction dir){
+    public Items(boolean traversable, CellType type){
         this.traversable = traversable;
         this.type = type;
     }

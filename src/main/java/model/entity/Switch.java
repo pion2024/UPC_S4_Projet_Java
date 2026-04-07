@@ -5,9 +5,11 @@ import model.physic.Direction;
 public abstract class Switch extends Items {
 
     protected boolean isPressed;
+    private Direction dir;
 
     public Switch(boolean traversable, Direction dir) {
-        super(traversable, CellType.SWITCH, dir);
+        super(traversable, CellType.SWITCH);
+        this.dir = dir;
         this.isPressed = false;
     }
 
@@ -18,6 +20,10 @@ public abstract class Switch extends Items {
     
     public boolean getIsPressed() {
         return isPressed;
+    }
+
+    public Direction getDir() {
+        return this.dir;
     }
 
     // Une entité ENTRE sur la case
