@@ -5,6 +5,8 @@ import java.util.List;
 
 import model.board.Board;
 import model.entity.Bridge;
+import model.entity.Cable;
+import model.entity.Cable.State;
 import model.entity.Items;
 import model.entity.Propulsor;
 import model.entity.Robot;
@@ -18,7 +20,9 @@ public class GameModel {
     private List<Bridge> bridges;
     private List<Propulsor> propulsors;
     private List<Switch> switches;
+    private List<List<Cable>> cables;
     private Robot player;
+    
 
     public GameModel(int width, int height) {
         // init du monde avec du vide partout (bridges bloqués)
@@ -117,4 +121,54 @@ public class GameModel {
         }
     }
 
+    //------------------------------------------------------------------------------
+
+    public void updateWithCable() {
+        //active le cable si le switch est pressé/activé
+        if (this.switches.isEmpty() || (this.bridges.isEmpty() && this.propulsors.isEmpty())) return;
+        for (int i = 0 ; i < this.switches.size() ; i++) {
+            if (this.switches.get(i).getIsPressed()) {
+                for (int j = 0 ; j < this.cables.get(i).size() ; j++) {
+                    this.cables.get(i).get(j).setIsActivated(true);
+                }
+            }
+        }
+        //active le pont si le cable est activé
+        for (Bridge bridge : bridges) {
+            for (int k = 0 ; k < this.cables.size() ; k++) {
+                bridge.setActivated(this.cables.get(k).get(0).getIsActivated());
+            }
+        }
+    }
+
+    //cablage (pour l'instant ne fait que des cablage en ligne ou en courbe)
+    public List<Cable> cableManagement(Switch sw, Bridge bridge, Board board) {
+        List<Cable> cable = new ArrayList<>();
+        if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
+            for (int i = sw.getDir().getDj() - 1 ; i > bridge.getDir().getDj() ; i--) {
+                cable.add(new Cable(sw, State.VERTICAL, Direction.DOWN));
+            }
+        }
+        if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() <= bridge.getDir().getDj()){
+            for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
+                cable.add(new Cable(sw, State.VERTICAL, Direction.UP));
+            }
+        }
+        if (sw.getDir().getDi() >= bridge.getDir().getDi() && sw.getDir().getDj() == bridge.getDir().getDj()){
+            for (int i = sw.getDir().getDi() - 1 ; i > bridge.getDir().getDi() ; i--) {
+                cable.add(new Cable(sw, State.HORIZONTAL, Direction.LEFT));
+            }
+        }
+        if (sw.getDir().getDi() <= bridge.getDir().getDi() && sw.getDir().getDj() == bridge.getDir().getDj()){
+            for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
+                cable.add(new Cable(sw, State.HORIZONTAL, Direction.RIGHT));
+            }
+        }
+        if (sw.getDir().getDi() <= bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
+            for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
+                cable.add(new Cable(sw, State.HORIZONTAL, Direction.RIGHT));
+            }
+        }
+        return cable;
+    }
 }

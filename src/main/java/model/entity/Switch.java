@@ -5,11 +5,9 @@ import model.physic.Direction;
 public abstract class Switch extends Items {
 
     protected boolean isPressed;
-    private Direction dir;
 
     public Switch(boolean traversable, Direction dir) {
-        super(traversable, CellType.SWITCH);
-        this.dir = dir;
+        super(traversable, CellType.SWITCH, dir);
         this.isPressed = false;
     }
 

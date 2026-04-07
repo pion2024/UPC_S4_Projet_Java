@@ -9,11 +9,9 @@ public class Propulsor extends Items implements Activatable{
     private final Direction propulsDirection;
     private boolean isActivate;
     private List<Switch> hostSwitches;
-    private Direction dir;
 
     public Propulsor(int id, Position pos, Direction dir){
-        super(true, CellType.PROPULSOR);
-        this.dir = dir;
+        super(true, CellType.PROPULSOR, dir);
         this.propulsDirection = dir;
     }
 

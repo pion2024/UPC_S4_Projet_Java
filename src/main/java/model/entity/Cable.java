@@ -1,45 +1,50 @@
 package model.entity;
 
-import java.util.ArrayList;
-
-import model.board.Board;
+import model.physic.Direction;
 
 public class Cable extends Items {
-    private enum State {
+    public enum State {
         VERTICAL,
-        HORIZONTAL;
+        HORIZONTAL,
     }
-    private ArrayList<State> states;
+    private State state;
     private boolean isActivated;
-    private Board board;
-    public Cable(Switch sw, Bridge bridge, Board board) {
-        super(true, CellType.CABLE);
+    public Cable(Switch sw, State state, Direction dir) {
+        super(true, CellType.CABLE, dir);
         this.isActivated = sw.getIsPressed();
-        cableManagement(sw, bridge, board);
+        this.state = state;
     }
 
-    public void cableManagement(Switch sw, Bridge bridge, Board board) {
-        if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
-            for (int i = sw.getDir().getDj() - 1 ; i > bridge.getDir().getDj() ; i--) {
-                this.board.setItem(sw.getDir().getDi(), i, this);
-            }
-        }
-        if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() <= bridge.getDir().getDj()){
-            for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
-                this.board.setItem(sw.getDir().getDi(), i, this);
-            }
-        }
-        if (sw.getDir().getDi() >= bridge.getDir().getDi() && sw.getDir().getDj() == bridge.getDir().getDj()){
-            for (int i = sw.getDir().getDi() - 1 ; i > bridge.getDir().getDi() ; i--) {
-                this.board.setItem(i, sw.getDir().getDj(), this);
-            }
-        }
-        if (sw.getDir().getDi() <= bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
-            for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
-                this.board.setItem(i, sw.getDir().getDj(), this);
-            }
-        }
+    public boolean getIsActivated() {
+        return this.isActivated;
     }
+
+    public void setIsActivated(boolean newIsActivated) {
+        this.isActivated = newIsActivated;
+    }
+
+    // public ArrayList<State> cableManagement(Switch sw, Bridge bridge, Board board) {
+    //     if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
+    //         for (int i = sw.getDir().getDj() - 1 ; i > bridge.getDir().getDj() ; i--) {
+    //             this.board.setItem(sw.getDir().getDi(), i, this);
+    //         }
+    //     }
+    //     if (sw.getDir().getDi() == bridge.getDir().getDi() && sw.getDir().getDj() <= bridge.getDir().getDj()){
+    //         for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
+    //             this.board.setItem(sw.getDir().getDi(), i, this);
+    //         }
+    //     }
+    //     if (sw.getDir().getDi() >= bridge.getDir().getDi() && sw.getDir().getDj() == bridge.getDir().getDj()){
+    //         for (int i = sw.getDir().getDi() - 1 ; i > bridge.getDir().getDi() ; i--) {
+    //             this.board.setItem(i, sw.getDir().getDj(), this);
+    //         }
+    //     }
+    //     if (sw.getDir().getDi() <= bridge.getDir().getDi() && sw.getDir().getDj() >= bridge.getDir().getDj()){
+    //         for (int i = sw.getDir().getDj() + 1 ; i < bridge.getDir().getDj() ; i++) {
+    //             this.board.setItem(i, sw.getDir().getDj(), this);
+    //         }
+    //     }
+    // }
 
     @Override
     public void onSteppedOn(MovableEntity stepper) {

@@ -4,11 +4,9 @@ import model.physic.Direction;
 // sol classique 
 public class Ground extends Items{
 
-    private Direction dir;
 
     public Ground(){
-        super(true, CellType.GROUND); // direction par défaut
-        this.dir = Direction.UP;
+        super(true, CellType.GROUND, Direction.UP); // direction par défaut
     }
 
     public void onSteppedOn(MovableEntity stepper){
