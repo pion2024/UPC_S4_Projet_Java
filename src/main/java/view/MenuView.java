@@ -33,8 +33,8 @@ public class MenuView extends JPanel {
         mainPanel.add(Box.createVerticalGlue());
 
         // 2. Gestion du LOGO
-        if (AssetManager.LOGO != null) {
-            JLabel logoLabel = new JLabel(new ImageIcon(AssetManager.LOGO));
+        if (AssetManager.getInstance().getLogo() != null) {
+            JLabel logoLabel = new JLabel(new ImageIcon(AssetManager.getInstance().getLogo()));
             logoLabel.setAlignmentX(CENTER_ALIGNMENT);
             mainPanel.add(logoLabel);
         } else {
@@ -72,9 +72,9 @@ public class MenuView extends JPanel {
         super.paintComponent(g);
         
         // On vérifie si l'image est bien chargée dans l'AssetManager
-        if (AssetManager.BACKGROUND != null) {
+        if (AssetManager.getInstance().getBackground() != null) {
             // On dessine l'image pour qu'elle occupe tout le panneau
-            g.drawImage(AssetManager.BACKGROUND, 0, 0, getWidth(), getHeight(), this);
+            g.drawImage(AssetManager.getInstance().getBackground(), 0, 0, getWidth(), getHeight(), this);
         } else {
             // Couleur de secours si l'image ne charge pas
             g.setColor(new Color(30, 30, 30));

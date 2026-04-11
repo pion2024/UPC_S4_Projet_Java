@@ -106,16 +106,16 @@ public class GameView extends JPanel {
 
         switch (item.getType()) {
             case GROUND:
-                img = AssetManager.GROUND;
+                img = AssetManager.getInstance().getGround();
                 fallback = new Color(220, 220, 220);
                 break;
             case SWITCH:
                 Switch sw = (Switch) item;
-                img = AssetManager.SWITCH;
+                img = AssetManager.getInstance().getSwitch();
                 fallback = sw.getIsPressed() ? Color.GREEN : Color.RED;
                 break;
             case BRIDGE:
-                img = item.isTraversable() ? AssetManager.OPENED_BRIDGE : AssetManager.CLOSED_BRIDGE;
+                img = item.isTraversable() ? AssetManager.getInstance().getOpenBridge() : AssetManager.getInstance().getClosedBridge();
                 fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
                 break;
             default:
@@ -149,7 +149,7 @@ public class GameView extends JPanel {
     private void drawMovableEntity(Graphics g, MovableEntity mobile, int col, int row) {
         if (mobile instanceof Robot) {
             int padding = 5;
-            drawCell(g, AssetManager.PLAYER, col, row, Color.BLUE);
+            drawCell(g, AssetManager.getInstance().getPlayer(), col, row, Color.BLUE);
         } else {
             int padding = 10;
             g.setColor(Color.MAGENTA);
