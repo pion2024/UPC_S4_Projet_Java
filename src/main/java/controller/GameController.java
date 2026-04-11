@@ -108,7 +108,7 @@ public class GameController extends KeyAdapter {
                         moveMgr.grabBlock(model.getPlayer());
                         } else {
                             // sinon interaction avec switch
-                            Items item = board.getItemAt(i, i);
+                            Items item = board.getItemAt(i, j);
                             if (item instanceof Switch sw) {
                                 sw.onInteract(model.getPlayer());
                             }

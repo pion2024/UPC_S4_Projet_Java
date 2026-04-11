@@ -42,10 +42,10 @@ public class GameModel {
         this.switches.add(s);
     }
 
-    public void setPlayer(Agent player2) {
-        this.player = player2;
+    public void setPlayer(Agent player) {
+        this.player = player;
         // ajouter le player aux entités mobiles du board
-        this.board.getMovableEntities().add(player2);
+        this.board.getMovableEntities().add(player);
     }
 
     public Board getBoard() {

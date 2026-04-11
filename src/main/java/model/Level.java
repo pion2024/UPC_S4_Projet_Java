@@ -40,7 +40,7 @@ public enum Level {
             model.addBridge(b1);
             model.addBridge(b2);
 
-            //le robot qui pop
+            //le joueur qui pop
             Agent player = new Agent(new Position(0, 0));
             model.getBoard().getMovableEntities().add(player);
             model.setPlayer(player);
