@@ -12,12 +12,14 @@ public class AssetManager {
 
     // ===== IMAGES =====
     private BufferedImage background;
-    private BufferedImage player;
+    private BufferedImage playerUp;
+    private BufferedImage playerRight;
+    private BufferedImage playerDown;
+    private BufferedImage playerLeft;
     private BufferedImage ground;
     private BufferedImage block;
     private BufferedImage robot;
     private BufferedImage propulsor;
-    private BufferedImage logo;
     private BufferedImage switchBlock;
     private BufferedImage openedBridge;
     private BufferedImage closedBridge;
@@ -36,16 +38,18 @@ public class AssetManager {
 
     private void loadAllAssets() {
         background = load("/assets/background.png");
-        player = load("/assets/player.png");
+        playerUp = load("/assets/playerUp.png");
+        playerRight = load("/assets/playerRight.png");
+        playerDown = load("/assets/playerDown.png");
+        playerLeft = load("/assets/playerLeft.png");
         ground = load("/assets/ground.png");
         block = load("/assets/block.png");
         robot = load("/assets/robot.png");
         propulsor = load("/assets/propulsor.png");
-        logo = load("/assets/logo.png");
         switchBlock = load("/assets/switchBlock.png");
         openedBridge = load("/assets/openedBridge.png");
         closedBridge = load("/assets/closedBridge.png");
-        wall =load("/assets/wall.png");
+        wall = load("/assets/wall.png");
 
         System.out.println(" Assets chargés !");
     }
@@ -65,12 +69,14 @@ public class AssetManager {
 
     // ===== GETTERS =====
     public BufferedImage getBackground() { return background; }
-    public BufferedImage getPlayer() { return player; }
+    public BufferedImage getPlayerUp() { return playerUp; }
+    public BufferedImage getPlayerRight() { return playerRight; }
+    public BufferedImage getPlayerDown() { return playerDown; }
+    public BufferedImage getPlayerLeft() { return playerLeft; }
     public BufferedImage getGround() { return ground; }
     public BufferedImage getBlock() { return block; }
     public BufferedImage getRobot() { return robot; }
     public BufferedImage getPropulsor() { return propulsor; }
-    public BufferedImage getLogo() { return logo; }
     public BufferedImage getSwitch() { return switchBlock; }
     public BufferedImage getOpenBridge() { return openedBridge; }
     public BufferedImage getClosedBridge() { return closedBridge; }

@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,17 +32,11 @@ public class MenuView extends JPanel {
         mainPanel.add(Box.createVerticalGlue());
 
         // 2. Gestion du LOGO
-        if (AssetManager.getInstance().getLogo() != null) {
-            JLabel logoLabel = new JLabel(new ImageIcon(AssetManager.getInstance().getLogo()));
-            logoLabel.setAlignmentX(CENTER_ALIGNMENT);
-            mainPanel.add(logoLabel);
-        } else {
-            JLabel titleLabel = new JLabel("Star Stuff");
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
-            titleLabel.setForeground(Color.YELLOW);
-            titleLabel.setAlignmentX(CENTER_ALIGNMENT);
-            mainPanel.add(titleLabel);
-        }
+        JLabel titleLabel = new JLabel("Star Stuff");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
+        titleLabel.setForeground(Color.YELLOW);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
+        mainPanel.add(titleLabel);
 
         // 3. Espace entre titre et boutons
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));

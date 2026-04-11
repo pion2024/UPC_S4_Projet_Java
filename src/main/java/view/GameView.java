@@ -162,7 +162,14 @@ public class GameView extends JPanel {
             img = AssetManager.getInstance().getRobot();
         }
         else if (mobile instanceof Agent) {
-            img = AssetManager.getInstance().getPlayer();
+            Agent a = (Agent) mobile;
+            switch (a.getFacing()) {
+                case UP -> img = AssetManager.getInstance().getPlayerUp();
+                case DOWN -> img = AssetManager.getInstance().getPlayerDown();
+                case LEFT -> img = AssetManager.getInstance().getPlayerLeft();
+                case RIGHT -> img = AssetManager.getInstance().getPlayerRight();
+        }
+
         }
         else if (mobile instanceof Block) {
             img = AssetManager.getInstance().getBlock();
