@@ -6,5 +6,6 @@ public enum CellType {
     TILE,
     BLOCK,
     BRIDGE,
-    PROPULSOR;
+    PROPULSOR,
+    WALL;
 }

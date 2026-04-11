@@ -123,8 +123,12 @@ public class GameView extends JPanel {
                 img = item.isTraversable() ? AssetManager.getInstance().getOpenBridge() : AssetManager.getInstance().getClosedBridge();
                 fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
                 break;
+            case WALL:
+                img = AssetManager.getInstance().getWall();
+                fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
+                break;
             default:
-                fallback = Color.WHITE;
+                fallback = Color.GRAY;
                 break;
         }
 

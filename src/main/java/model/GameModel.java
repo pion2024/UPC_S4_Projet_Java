@@ -8,7 +8,7 @@ import model.entity.Agent;
 import model.entity.Bridge;
 import model.entity.Items;
 import model.entity.Switch;
-import model.physic.Direction;
+import model.entity.Wall;
 import model.physic.Position;
 
 public class GameModel {
@@ -23,7 +23,7 @@ public class GameModel {
         Items[][] items = new Items[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                items[i][j] = new Bridge(0, new Position(i, j), false, Direction.UP);
+                items[i][j] = new Wall(new Position(i, j));
             }
         }
 
