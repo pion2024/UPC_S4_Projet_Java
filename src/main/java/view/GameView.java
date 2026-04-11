@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 
 import model.GameModel;
 import model.board.Board;
+import model.entity.Agent;
+import model.entity.Block;
 import model.entity.Items;
 import model.entity.MovableEntity;
 import model.entity.Robot;
@@ -150,12 +152,16 @@ public class GameView extends JPanel {
     // }
 
     private void drawMovableEntity(Graphics g, MovableEntity mobile, int col, int row) {
-        BufferedImage img;
+        BufferedImage img = null;
 
         if (mobile instanceof Robot) {
             img = AssetManager.getInstance().getRobot();
-        } else {
+        }
+        else if (mobile instanceof Agent) {
             img = AssetManager.getInstance().getPlayer();
+        }
+        else if (mobile instanceof Block) {
+            img = AssetManager.getInstance().getBlock();
         }
 
         drawCell(g, img, col, row, Color.BLUE);
