@@ -101,18 +101,14 @@ public class GameController extends KeyAdapter {
 
                     Board board = model.getBoard();
 
-<<<<<<< HEAD
-                    if (board.getElement(i,j).isInside(i, j)) {
-=======
                     if (board.isInside(i, j)) {
->>>>>>> origin/dev
 
                         // PRIORITÉ AU BLOC
                         if (board.getEntityAt(i, j) instanceof Block) {
                         moveMgr.grabBlock(model.getPlayer());
                         } else {
                             // sinon interaction avec switch
-                            Items item = board.getElement(i, j);
+                            Items item = board.getItemAt(i, i);
                             if (item instanceof Switch sw) {
                                 sw.onInteract(model.getPlayer());
                             }

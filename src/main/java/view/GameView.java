@@ -147,14 +147,14 @@ public class GameView extends JPanel {
     // }
 
     private void drawMovableEntity(Graphics g, MovableEntity mobile, int col, int row) {
+        BufferedImage img;
+
         if (mobile instanceof Robot) {
-            int padding = 5;
-            drawCell(g, AssetManager.getInstance().getPlayer(), col, row, Color.BLUE);
+            img = AssetManager.getInstance().getRobot();
         } else {
-            int padding = 10;
-            g.setColor(Color.MAGENTA);
-            g.fillRect(col * CELL_SIZE + padding, row * CELL_SIZE + padding,
-                       CELL_SIZE - 2 * padding, CELL_SIZE - 2 * padding);
+            img = AssetManager.getInstance().getPlayer();
         }
+
+        drawCell(g, img, col, row, Color.BLUE);
     }
 }
