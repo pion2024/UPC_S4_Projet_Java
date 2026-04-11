@@ -29,7 +29,7 @@ public class WindowManager {
         gameView = new GameView(null);
 
         JPanel gameCenteringPanel = new JPanel(new GridBagLayout());
-        gameCenteringPanel.setBackground(Color.BLACK); // Optionnel : fond noir autour du jeu
+        gameCenteringPanel.setBackground(new Color(10, 15, 40)); // Optionnel : fond noir autour du jeu
         gameCenteringPanel.add(gameView);
         
         // On crée le menu en lui disant quoi faire via WindowManager

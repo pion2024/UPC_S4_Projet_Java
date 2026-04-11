@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.board.Board;
+import model.entity.Agent;
 import model.entity.Bridge;
 import model.entity.Items;
-import model.entity.Robot;
 import model.entity.Switch;
 import model.physic.Direction;
 import model.physic.Position;
@@ -16,7 +16,7 @@ public class GameModel {
     private Board board;
     private List<Bridge> bridges;
     private List<Switch> switches;
-    private Robot player;
+    private Agent player;
 
     public GameModel(int width, int height) {
         // init du monde avec du vide partout (bridges bloqués)
@@ -42,17 +42,17 @@ public class GameModel {
         this.switches.add(s);
     }
 
-    public void setPlayer(Robot player) {
-        this.player = player;
+    public void setPlayer(Agent player2) {
+        this.player = player2;
         // ajouter le player aux entités mobiles du board
-        this.board.getMovableEntities().add(player);
+        this.board.getMovableEntities().add(player2);
     }
 
     public Board getBoard() {
         return this.board;
     }
 
-    public Robot getPlayer() {
+    public Agent getPlayer() {
         return this.player;
     }
 

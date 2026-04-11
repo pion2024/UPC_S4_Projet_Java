@@ -21,7 +21,7 @@ public class GameView extends JPanel {
 
     public GameView(GameModel model) {
         this.model = model;
-        this.setBackground(Color.BLACK);
+        this.setBackground(new Color(30, 50, 90));
     
         // Protection indispensable au lancement du menu
         if (model != null && model.getBoard() != null) {
@@ -34,11 +34,14 @@ public class GameView extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        // le fond est colorier au cas ou
+        g.setColor(new Color(30, 50, 90)); 
+        g.fillRect(0, 0, getWidth(), getHeight());
         //Si le modèle est null, on s'arrête là
         if (model == null || model.getBoard() == null) {
             return; 
         }
-        super.paintComponent(g);
         Board board = model.getBoard();
         int cols = board.getNbColumns();
         int rows = board.getNbLines();

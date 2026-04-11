@@ -2,6 +2,7 @@
 package model;
 
 import model.board.Board;
+import model.entity.Agent;
 import model.entity.Block;
 import model.entity.BlockSwitch;
 import model.entity.Bridge;
@@ -41,7 +42,7 @@ public enum Level {
             model.addBridge(b2);
 
             //le robot qui pop
-            Robot player = new Robot(new Position(0, 0));
+            Agent player = new Robot(new Position(0, 0));
             model.getBoard().getMovableEntities().add(player);
             model.setPlayer(player);
 
