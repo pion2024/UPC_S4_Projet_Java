@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.board.Board;
-import model.board.Matrix;
 import model.entity.Bridge;
 import model.entity.Items;
 import model.entity.Robot;
@@ -21,14 +20,14 @@ public class GameModel {
 
     public GameModel(int width, int height) {
         // init du monde avec du vide partout (bridges bloqués)
-        Matrix<Items> matrix = new Matrix<>(height, width);
+        Items[][] items = new Items[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                matrix.setElement(i, j, new Bridge(0, new Position(i, j), false, Direction.UP));
+                items[i][j] = new Bridge(0, new Position(i, j), false, Direction.UP);
             }
         }
 
-        this.board = new Board(matrix);
+        this.board = new Board(items);
         this.bridges = new ArrayList<>();
         this.switches = new ArrayList<>();
     }

@@ -1,12 +1,11 @@
 //src/main/java/model/Level.java
 package model;
 
-import model.board.Matrix;
+import model.board.Board;
 import model.entity.Block;
 import model.entity.BlockSwitch;
 import model.entity.Bridge;
 import model.entity.Ground;
-import model.entity.Items;
 import model.entity.Robot;
 import model.physic.Direction;
 import model.physic.Position;
@@ -15,17 +14,17 @@ public enum Level {
     LEVEL_1(10, 10) {
         @Override
         public void setup(GameModel model) {
-            Matrix<Items> matrix = model.getBoard();
+            Board board = model.getBoard();
 
             //on dessine les zones de terre
-            createIsland(matrix, 0, 0, 4, 10); //bloc de gauche
-            createIsland(matrix, 6, 0, 4, 10); //bloc de droite
+            createIsland(board, 0, 0, 4, 10); //bloc de gauche
+            createIsland(board, 6, 0, 4, 10); //bloc de droite
 
             //on pose les mecanismes
             //un interrupteur rouge au depart
             BlockSwitch sw1 = new BlockSwitch();            
-            matrix.setElement(5, 2, sw1);
-            matrix.setElement(5, 2, sw1);
+            board.setItem(5, 2, sw1);
+            board.setItem(5, 2, sw1);
             model.addSwitch(sw1);
 
             //on cree le passage entre les deux iles
@@ -36,8 +35,8 @@ public enum Level {
             b1.addSwitch(sw1);
             b2.addSwitch(sw1);
             
-            matrix.setElement(5, 4, b1);
-            matrix.setElement(5, 5, b2);
+            board.setItem(5, 4, b1);
+            board.setItem(5, 5, b2);
             model.addBridge(b1);
             model.addBridge(b2);
 
@@ -66,11 +65,11 @@ public enum Level {
     public abstract void setup(GameModel model);
 
     //remplit une zone avec du ground
-    protected void createIsland(Matrix<Items> matrix, int startJ, int startI, int width, int height) {
+    protected void createIsland(Board board, int startJ, int startI, int width, int height) {
     for (int i = startI; i < startI + height; i++) {
         for (int j = startJ; j < startJ + width; j++) {
-            if (matrix.isInside(i, j)) {
-                matrix.setElement(i, j, new Ground());
+            if (board.isInside(i, j)) {
+                board.setItem(i, j, new Ground());
             }
         }
     }

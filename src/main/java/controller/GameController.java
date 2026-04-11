@@ -101,7 +101,11 @@ public class GameController extends KeyAdapter {
 
                     Board board = model.getBoard();
 
+<<<<<<< HEAD
                     if (board.getElement(i,j).isInside(i, j)) {
+=======
+                    if (board.isInside(i, j)) {
+>>>>>>> origin/dev
 
                         // PRIORITÉ AU BLOC
                         if (board.getEntityAt(i, j) instanceof Block) {
