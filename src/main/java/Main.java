@@ -8,7 +8,7 @@ import view.WindowManager;
 public class Main {
     public static void main(String[] args) {
         // On charge d'abord les images (sinon le menu sera vide)
-        AssetManager.loadAssets();
+        AssetManager.getInstance();
 
         SwingUtilities.invokeLater(() -> {
             // On crée le gestionnaire de fenêtres (il crée la JFrame et le CardLayout)
