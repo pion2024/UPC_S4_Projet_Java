@@ -7,24 +7,78 @@ import java.net.URL;
 import javax.imageio.ImageIO;
 
 public class AssetManager {
-    public static BufferedImage BACKGROUND;
-    public static BufferedImage LOGO; // Sera null car pas encore d'image
 
-    public static void loadAssets() {
-        BACKGROUND = loadImage("/assets/background.png");
+    private static AssetManager instance;
+
+    // ===== IMAGES =====
+    private BufferedImage background;
+    private BufferedImage playerUp;
+    private BufferedImage playerRight;
+    private BufferedImage playerDown;
+    private BufferedImage playerLeft;
+    private BufferedImage ground;
+    private BufferedImage block;
+    private BufferedImage robot;
+    private BufferedImage propulsor;
+    private BufferedImage switchBlock;
+    private BufferedImage openedBridge;
+    private BufferedImage closedBridge;
+    private BufferedImage wall;
+
+    private AssetManager() {
+        loadAllAssets();
     }
 
-    private static BufferedImage loadImage(String path) {
+    public static AssetManager getInstance() {
+        if (instance == null) {
+            instance = new AssetManager();
+        }
+        return instance;
+    }
+
+    private void loadAllAssets() {
+        background = load("/assets/background.png");
+        playerUp = load("/assets/playerUp.png");
+        playerRight = load("/assets/playerRight.png");
+        playerDown = load("/assets/playerDown.png");
+        playerLeft = load("/assets/playerLeft.png");
+        ground = load("/assets/ground.png");
+        block = load("/assets/block.png");
+        robot = load("/assets/robot.png");
+        propulsor = load("/assets/propulsor.png");
+        switchBlock = load("/assets/switchBlock.png");
+        openedBridge = load("/assets/openedBridge.png");
+        closedBridge = load("/assets/closedBridge.png");
+        wall = load("/assets/wall.png");
+
+        System.out.println(" Assets chargés !");
+    }
+
+    private BufferedImage load(String path) {
         try {
-            URL url = AssetManager.class.getResource(path);
+            URL url = getClass().getResource(path);
             if (url == null) {
-                System.out.println("Info: Image " + path + " non trouvée, utilisation du mode texte.");
+                System.err.println(" Introuvable : " + path);
                 return null;
             }
             return ImageIO.read(url);
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
+
+    // ===== GETTERS =====
+    public BufferedImage getBackground() { return background; }
+    public BufferedImage getPlayerUp() { return playerUp; }
+    public BufferedImage getPlayerRight() { return playerRight; }
+    public BufferedImage getPlayerDown() { return playerDown; }
+    public BufferedImage getPlayerLeft() { return playerLeft; }
+    public BufferedImage getGround() { return ground; }
+    public BufferedImage getBlock() { return block; }
+    public BufferedImage getRobot() { return robot; }
+    public BufferedImage getPropulsor() { return propulsor; }
+    public BufferedImage getSwitch() { return switchBlock; }
+    public BufferedImage getOpenBridge() { return openedBridge; }
+    public BufferedImage getClosedBridge() { return closedBridge; }
+    public BufferedImage getWall(){ return wall;}
 }

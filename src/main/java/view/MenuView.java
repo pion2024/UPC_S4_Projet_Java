@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,17 +32,11 @@ public class MenuView extends JPanel {
         mainPanel.add(Box.createVerticalGlue());
 
         // 2. Gestion du LOGO
-        if (AssetManager.LOGO != null) {
-            JLabel logoLabel = new JLabel(new ImageIcon(AssetManager.LOGO));
-            logoLabel.setAlignmentX(CENTER_ALIGNMENT);
-            mainPanel.add(logoLabel);
-        } else {
-            JLabel titleLabel = new JLabel("Star Stuff");
-            titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
-            titleLabel.setForeground(Color.YELLOW);
-            titleLabel.setAlignmentX(CENTER_ALIGNMENT);
-            mainPanel.add(titleLabel);
-        }
+        JLabel titleLabel = new JLabel("Star Stuff");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
+        titleLabel.setForeground(Color.YELLOW);
+        titleLabel.setAlignmentX(CENTER_ALIGNMENT);
+        mainPanel.add(titleLabel);
 
         // 3. Espace entre titre et boutons
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -72,9 +65,9 @@ public class MenuView extends JPanel {
         super.paintComponent(g);
         
         // On vérifie si l'image est bien chargée dans l'AssetManager
-        if (AssetManager.BACKGROUND != null) {
+        if (AssetManager.getInstance().getBackground() != null) {
             // On dessine l'image pour qu'elle occupe tout le panneau
-            g.drawImage(AssetManager.BACKGROUND, 0, 0, getWidth(), getHeight(), this);
+            g.drawImage(AssetManager.getInstance().getBackground(), 0, 0, getWidth(), getHeight(), this);
         } else {
             // Couleur de secours si l'image ne charge pas
             g.setColor(new Color(30, 30, 30));
