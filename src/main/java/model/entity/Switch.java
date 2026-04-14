@@ -2,6 +2,7 @@ package model.entity;
 
 import model.physic.Direction;
 
+
 public abstract class Switch extends Items {
 
     protected boolean isPressed;
@@ -15,6 +16,8 @@ public abstract class Switch extends Items {
     public void updateStatus(boolean active) {
         this.isPressed = active;
     }
+    
+
     
     public boolean getIsPressed() {
         return isPressed;
