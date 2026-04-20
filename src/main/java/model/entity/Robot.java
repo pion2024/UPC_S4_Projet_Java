@@ -28,7 +28,7 @@ public class Robot extends Agent {
         super(pos);
     }
 
-    // Ajoute une commande au tableau (max 9 pour garder la place du StopCommand)
+    // Ajoute une commande au tableau. max 9 pour garder la place du StopCommand
     public void addCommand(Command cmd) {
         if (addIndex < 9) {
             program[addIndex] = cmd;
@@ -62,25 +62,25 @@ public class Robot extends Agent {
 
         Command currentCmd = program[execIndex];
 
-        // Condition d'arrêt naturel
+        // Condition d'arrêt
         if (currentCmd instanceof StopCommand) {
             System.out.println("Robot : Fin de l'exécution du programme.");
             stopExecution();
             return;
         }
 
-        // --- PHASE 1 : Pré-conditions et Planification du chemin ---
+        // PHASE 1 : verification des conditions avant planifier le chemin 
         if (currentPath == null) {
             
             // Vérification des pré-conditions avant même de bouger
             if (currentCmd instanceof PickUpCommand) {
                 if (this.isCarrying()) {
-                    failAndStop("Erreur (PickUp) : Le robot porte déjà un bloc !");
+                    failAndStop("Erreur (PickUp) : Le robot porte déjà un bloc");
                     return;
                 }
             } else if (currentCmd instanceof DropAtCommand) {
                 if (!this.isCarrying()) {
-                    failAndStop("Erreur (DropAt) : Le robot ne porte aucun bloc à déposer !");
+                    failAndStop("Erreur (DropAt) : Le robot ne porte aucun bloc à déposer");
                     return;
                 }
             }
@@ -88,7 +88,7 @@ public class Robot extends Agent {
             // Résoudre la position cible
             Position targetPos = resolveTargetPosition(currentCmd, board);
             if (targetPos == null) {
-                failAndStop("Erreur : La cible est introuvable sur le plateau !");
+                failAndStop("Erreur : La cible est introuvable sur le plateau");
                 return;
             }
 
@@ -97,12 +97,12 @@ public class Robot extends Agent {
             currentPath = findShortestPath(moveMgr, board, this.getPos(), targetPos, needsAdjacent);
             
             if (currentPath == null) {
-                failAndStop("Erreur : Aucun chemin possible vers la cible !");
+                failAndStop("Erreur : Aucun chemin possible vers la cible");
                 return;
             }
         }
 
-        // --- PHASE 2 : Déplacement ---
+        // PHASE 2 : Déplacement suivant le chemin généré 
         if (!currentPath.isEmpty()) {
             Direction nextStep = currentPath.get(0);
             int ni = this.getPos().getI() + nextStep.getDi();
@@ -113,15 +113,16 @@ public class Robot extends Agent {
                 moveMgr.moveAgent(this, nextStep);
                 currentPath.remove(0); 
             } else {
-                currentPath = null; // Un obstacle est apparu, on recalculera le chemin au tour suivant
+                currentPath = null; 
+                // Si un obstacle est apparu, on recalculera le chemin au tour suivant
             }
             return; // Le déplacement prend un tour complet
         }
 
-        // --- PHASE 3 : Vérification finale et Action (Le robot est arrivé) ---
+        //PHASE 3 : Vérification finale et Action (Le robot est arrivé) ---
         Position targetPos = resolveTargetPosition(currentCmd, board);
         if (targetPos == null) {
-            failAndStop("Erreur : La cible a disparu pendant le trajet !");
+            failAndStop("Erreur : La cible a disparu pendant le trajet");
             return;
         }
 
@@ -183,7 +184,7 @@ public class Robot extends Agent {
         else if (dj < 0) setFacing(Direction.LEFT);
     }
 
-    // Algorithme BFS (Recherche du chemin le plus court)
+    // recherche du plus court chemin par BFS 
     private List<Direction> findShortestPath(MovementManager moveMgr, Board board, Position start, Position target, boolean adjacentOnly) {
         boolean[][] visited = new boolean[board.getNbLines()][board.getNbColumns()];
         Queue<PathNode> queue = new LinkedList<>();
@@ -221,12 +222,12 @@ public class Robot extends Agent {
         return null;
     }
 
-    // Vérifie si deux cases sont adjacentes (haut, bas, gauche, droite)
+    // helper - Vérifier si deux cases sont adjacentes 
     private boolean isAdjacent(Position p1, Position p2) {
         return Math.abs(p1.getI() - p2.getI()) + Math.abs(p1.getJ() - p2.getJ()) == 1;
     }
 
-    // Classe interne pour mémoriser les nœuds du BFS
+    // helper - Classe interne pour mémoriser les nœuds du BFS
     private static class PathNode {
         int i, j;
         List<Direction> path;

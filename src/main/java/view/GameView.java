@@ -1,4 +1,3 @@
-//src/main/java/view/GameView.java
 package view;
 
 import java.awt.Color;
@@ -16,6 +15,7 @@ import model.entity.Items;
 import model.entity.MovableEntity;
 import model.entity.Robot;
 import model.entity.Switch;
+import model.entity.Terminal; 
 
 public class GameView extends JPanel {
     private GameModel model;
@@ -127,6 +127,11 @@ public class GameView extends JPanel {
                 img = AssetManager.getInstance().getWall();
                 fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
                 break;
+            case TERMINAL: 
+                img = AssetManager.getInstance().getTerminal();
+                fallback = Color.CYAN; // Couleur par défaut si pas d'image
+                break;
+
             default:
                 fallback = Color.GRAY;
                 break;
