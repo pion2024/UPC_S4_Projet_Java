@@ -1,8 +1,9 @@
 package model.command;
-import model.entity.MovableEntity;
+
+import model.entity.Items;
 
 public class DropAtCommand extends Command {
-    public DropAtCommand(MovableEntity target) {
+    public DropAtCommand(Items target) {
         super(target);
     }
 }
