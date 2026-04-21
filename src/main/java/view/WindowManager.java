@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
@@ -14,6 +15,10 @@ public class WindowManager {
     private CardLayout cardLayout;
     private JPanel container;
     
+    // nouveaux panels pour gérer l'affichage fractionné (Jeu + Panneau de commande)
+    private JPanel gameMainPanel; 
+    private JPanel commandPanelContainer;
+    
     private MenuView menuView;
     private GameView gameView;
     private GameController controller;
@@ -25,18 +30,25 @@ public class WindowManager {
         cardLayout = new CardLayout();
         container = new JPanel(cardLayout);
         
-        // On crée la vue du jeu (vide au début)
+        // Vue du jeu
         gameView = new GameView(null);
-
         JPanel gameCenteringPanel = new JPanel(new GridBagLayout());
-        gameCenteringPanel.setBackground(new Color(10, 15, 40)); // Optionnel : fond noir autour du jeu
+        gameCenteringPanel.setBackground(new Color(10, 15, 40)); 
         gameCenteringPanel.add(gameView);
         
-        // On crée le menu en lui disant quoi faire via WindowManager
+        // plateau de jeu : Jeu au centre, Commandes à droite
+        gameMainPanel = new JPanel(new BorderLayout());
+        gameMainPanel.add(gameCenteringPanel, BorderLayout.CENTER);
+        
+        commandPanelContainer = new JPanel(new BorderLayout());
+        commandPanelContainer.setBackground(new Color(10, 15, 40));
+        gameMainPanel.add(commandPanelContainer, BorderLayout.EAST);
+        
+        // Menu
         menuView = new MenuView(levelNum -> switchToGame(levelNum));
         
         container.add(menuView, "MENU");
-        container.add(gameCenteringPanel, "GAME");
+        container.add(gameMainPanel, "GAME");
         
         frame.add(container);
     }
@@ -48,27 +60,41 @@ public class WindowManager {
         showMenu();
     }
 
-    // Basculer vers le jeu
     public void switchToGame(int levelNum) {
-        // C'est ici qu'on demande au contrôleur d'initialiser le niveau
+        hideCommandPanel(); 
+        // cacher le menu de commande est caché au lancement
         if (controller != null) {
             controller.prepareLevel(levelNum);
         }
         
         cardLayout.show(container, "GAME");
-
-        frame.pack(); // Redimensionne la fenêtre selon la GameView
-        frame.setLocationRelativeTo(null); // Recentrer la fenêtre si tu veux
-
-        container.requestFocusInWindow(); // Pour le clavier
+        frame.pack(); 
+        frame.setLocationRelativeTo(null); 
+        container.requestFocusInWindow(); 
     }
 
-    // Revenir au menu
     public void showMenu() {
         cardLayout.show(container, "MENU");
     }
 
-    // Getters pour que le contrôleur puisse manipuler les vues
+    // Méthodes pour afficher/cacher le panneau de commandes ---
+    public void showCommandPanel(JPanel panel) {
+        commandPanelContainer.removeAll();
+        commandPanelContainer.add(panel, BorderLayout.CENTER);
+        commandPanelContainer.revalidate();
+        commandPanelContainer.repaint();
+        frame.pack(); // Ajuste la taille de la fenêtre pour s'adapter au menu
+    }
+    
+    public void hideCommandPanel() {
+        commandPanelContainer.removeAll();
+        commandPanelContainer.revalidate();
+        commandPanelContainer.repaint();
+        frame.pack();
+        container.requestFocusInWindow(); // Rend le focus au jeu pour pouvoir re-bouger
+    }
+
+    // Getters / Setters
     public GameView getGameView() { return gameView; }
     public JPanel getContainer() { return container; }
     public void setController(GameController controller) { this.controller = controller; }

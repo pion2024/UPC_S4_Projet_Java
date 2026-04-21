@@ -32,8 +32,6 @@ public class GameModel {
         this.switches = new ArrayList<>();
     }
 
-    // ======= Méthodes de gestion =======
-
     public void addBridge(Bridge b) {
         this.bridges.add(b);
     }
@@ -56,11 +54,8 @@ public class GameModel {
         return this.player;
     }
 
-    // ======= Boucle de mise à jour =======
-
     public void update() {
-        // Les switches sont gérés par onEnter / onExit / onInteract => pas besoin de update ici
-
+        // Les switches sont gérés par onEnter / onExit / onInteract, donc pas besoin de update ici
         // On update l'état des ponts
         for (Bridge bridge : bridges) {
             bridge.updateStatus();

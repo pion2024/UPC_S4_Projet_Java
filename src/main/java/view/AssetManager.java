@@ -24,6 +24,7 @@ public class AssetManager {
     private BufferedImage openedBridge;
     private BufferedImage closedBridge;
     private BufferedImage wall;
+    private BufferedImage terminal; 
 
     private AssetManager() {
         loadAllAssets();
@@ -50,6 +51,7 @@ public class AssetManager {
         openedBridge = load("/assets/openedBridge.png");
         closedBridge = load("/assets/closedBridge.png");
         wall = load("/assets/wall.png");
+        terminal = load("/assets/terminal.png");
 
         System.out.println(" Assets chargés !");
     }
@@ -81,4 +83,5 @@ public class AssetManager {
     public BufferedImage getOpenBridge() { return openedBridge; }
     public BufferedImage getClosedBridge() { return closedBridge; }
     public BufferedImage getWall(){ return wall;}
+    public BufferedImage getTerminal() { return terminal; } 
 }

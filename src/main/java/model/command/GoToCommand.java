@@ -1,9 +1,9 @@
 package model.command;
-import model.entity.MovableEntity;
+
+import model.entity.Items;
 
 public class GoToCommand extends Command {
-    public GoToCommand(MovableEntity target) {
+    public GoToCommand(Items target) {
         super(target);
     }
 }
-

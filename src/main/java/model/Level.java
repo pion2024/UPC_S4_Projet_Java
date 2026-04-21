@@ -1,4 +1,3 @@
-//src/main/java/model/Level.java
 package model;
 
 import model.board.Board;
@@ -7,6 +6,8 @@ import model.entity.Block;
 import model.entity.BlockSwitch;
 import model.entity.Bridge;
 import model.entity.Ground;
+import model.entity.Robot;      
+import model.entity.Terminal;   
 import model.physic.Direction;
 import model.physic.Position;
 
@@ -16,38 +17,41 @@ public enum Level {
         public void setup(GameModel model) {
             Board board = model.getBoard();
 
-            //on dessine les zones de terre
-            createIsland(board, 0, 0, 4, 10); //bloc de gauche
-            createIsland(board, 6, 0, 4, 10); //bloc de droite
+            // Création des îles de base
+            createIsland(board, 0, 0, 4, 10); // bloc de gauche
+            createIsland(board, 6, 0, 4, 10); // bloc de droite
 
-            //on pose les mecanismes
-            //un interrupteur rouge au depart
-            BlockSwitch sw1 = new BlockSwitch();            
-            board.setItem(5, 2, sw1);
+            Terminal terminal = new Terminal();
+            // Le joueur commence en (0,0), le terminal est placé en (0,1)
+            board.setItem(0, 1, terminal); 
+
+            Robot robot = new Robot(new Position(3, 3));
+            model.getBoard().getMovableEntities().add(robot);
+
+            // Switch
+            BlockSwitch sw1 = new BlockSwitch();
             board.setItem(5, 2, sw1);
             model.addSwitch(sw1);
 
-            //on cree le passage entre les deux iles
+            // Joueur
+            Agent player = new Agent(new Position(0, 0));
+            model.getBoard().getMovableEntities().add(player);
+            model.setPlayer(player);
+
+            // Bloc
+            Block box = new Block(new Position(2, 2));
+            model.getBoard().getMovableEntities().add(box);
+
+            // Ponts
             Bridge b1 = new Bridge(2, new Position(5, 4), false, Direction.UP);
             Bridge b2 = new Bridge(3, new Position(5, 5), false, Direction.UP);
-            
-            //on lie les ponts au switch
             b1.addSwitch(sw1);
             b2.addSwitch(sw1);
-            
             board.setItem(5, 4, b1);
             board.setItem(5, 5, b2);
             model.addBridge(b1);
             model.addBridge(b2);
 
-            //le joueur qui pop
-            Agent player = new Agent(new Position(0, 0));
-            model.getBoard().getMovableEntities().add(player);
-            model.setPlayer(player);
-
-            //on peut ajouter un bloc pour tester la physique plus tard
-            Block box = new Block(new Position(2, 2));
-            model.getBoard().getMovableEntities().add(box);
         }
     };
 
@@ -64,14 +68,13 @@ public enum Level {
 
     public abstract void setup(GameModel model);
 
-    //remplit une zone avec du ground
     protected void createIsland(Board board, int startJ, int startI, int width, int height) {
-    for (int i = startI; i < startI + height; i++) {
-        for (int j = startJ; j < startJ + width; j++) {
-            if (board.isInside(i, j)) {
-                board.setItem(i, j, new Ground());
+        for (int i = startI; i < startI + height; i++) {
+            for (int j = startJ; j < startJ + width; j++) {
+                if (board.isInside(i, j)) {
+                    board.setItem(i, j, new Ground());
+                }
             }
         }
     }
-}
 }
