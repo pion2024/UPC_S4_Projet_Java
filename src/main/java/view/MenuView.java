@@ -76,7 +76,7 @@ public class MenuView extends JPanel {
     }
 
     private void showLevelSelection() {
-        String[] levels = {"Niveau 1", "Niveau 2 (Bientôt)", "Niveau 3 (Bientôt)"};
+        String[] levels = {"Niveau 1", "Niveau 2", "Niveau 3 (Bientôt)"};
         String choice = (String) JOptionPane.showInputDialog(this, 
             "Choisissez un monde :", "Sélection de niveau",
             JOptionPane.QUESTION_MESSAGE, null, levels, levels[0]);

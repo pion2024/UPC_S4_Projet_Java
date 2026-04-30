@@ -11,6 +11,7 @@ import model.GameModel;
 import model.Level;
 import model.board.Board;
 import model.entity.Block;
+import model.entity.InteractionSwitch;
 import model.entity.Items;
 import model.entity.MovableEntity;
 import model.entity.Robot;
@@ -157,6 +158,24 @@ public class GameController extends KeyAdapter {
                             }
                         }
                     }
+                }
+                break;
+            case KeyEvent.VK_Q:
+                p = model.getPlayer().getPos();
+                d = model.getPlayer().getFacing();
+
+                i = p.getI() + d.getDi();
+                j = p.getJ() + d.getDj();
+                board = model.getBoard();
+
+                if (board.isInside(i, j)) {
+                    Items item = board.getItemAt(i, j);
+                    // interaction avec le terminal 
+                    if (item instanceof InteractionSwitch && d == Direction.UP) {
+                        InteractionSwitch sw = (InteractionSwitch) item;
+                        sw.onInteract(model.getPlayer());
+                        actionPerfomed = true;  
+                    }     
                 }
                 break;
         }
