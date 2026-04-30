@@ -7,8 +7,18 @@
 * [Set up project integrations](https://moule.informatique.univ-paris-diderot.fr/pi4-java-2526-vp2c-star/pi4-java-2526-vp2c-star/-/settings/integrations) peut-être qu'on aurait besoin de ça
 
 ## Collaborate with your team
-
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html) plus tard, je vais transformer cette ligne en disant comment travailler en groupe, car je trouve que notre méthodologie de travail actuelle est plutôt désorganisée.
+* Trouver quelque chose à faire (point difficile pour David)
+* Elaborer d'abord un ticket que vous avez trouvé pour ensuite...
+* Modifier le ticket que vous avez écrit en créant une nouvelle branche qui a vocation de terminer le ticket, et puis...
+* Dire dans le groupe votre ticket (Cela peut être: "J'ai créé un nouveau ticket.". Tout simplement. Ceci est une étape importante, car on ne regarde pas tous attentivement la liste des tickets. Alors, lorsqu'il y a du mouvement dans les tickets, il faut le faire savoir.)
+* Essayer des choses pour régler le ticket... (Ou la la pas d'idées de comment formuler...) Ensuite... Lorsque vous pensez que vous avez terminé, ou que vous êtes bloqués,
+* Parler au groupe, puis...
+* Répéter: Les étapes Essayer et Parler jusqu'à...
+* Penser (encore) que vous avez terminé, puis enfin...
+* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
+* Faire savoir cette Merge Request comme pour le ticket.
+* Ensuite... vous savez... Je ne veux pas (vous) le dire..: Recommencer. Mais si possible, juste avant de Recommencer..,
+* Merger.
 
 ## Test and Deploy
 
