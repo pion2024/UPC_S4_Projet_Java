@@ -2,45 +2,29 @@
 
 
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://moule.informatique.univ-paris-diderot.fr/pi4-java-2526-vp2c-star/pi4-java-2526-vp2c-star.git
-git branch -M main
-git push -uf origin main
-```
-
 ## Integrate with your tools
 
-* [Set up project integrations](https://moule.informatique.univ-paris-diderot.fr/pi4-java-2526-vp2c-star/pi4-java-2526-vp2c-star/-/settings/integrations)
+* [Set up project integrations](https://moule.informatique.univ-paris-diderot.fr/pi4-java-2526-vp2c-star/pi4-java-2526-vp2c-star/-/settings/integrations) peut-être qu'on aurait besoin de ça
 
 ## Collaborate with your team
-
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
+* Trouver quelque chose à faire (point difficile pour David)
+* Elaborer d'abord un ticket que vous avez trouvé pour ensuite...
+* Modifier le ticket que vous avez écrit en créant une nouvelle branche qui a vocation de terminer le ticket, et puis...
+* Dire dans le groupe votre ticket (Cela peut être: "J'ai créé un nouveau ticket.". Tout simplement. Ceci est une étape importante, car on ne regarde pas tous attentivement la liste des tickets. Alors, lorsqu'il y a du mouvement dans les tickets, il faut le faire savoir.)
+* Essayer des choses pour régler le ticket... (Ou la la pas d'idées de comment formuler...) Ensuite... Lorsque vous pensez que vous avez terminé, ou que vous êtes bloqués,
+* Parler au groupe, puis...
+* Répéter: Les étapes Essayer et Parler jusqu'à...
+* Penser (encore) que vous avez terminé, puis enfin...
 * [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+* Faire savoir cette Merge Request comme pour le ticket.
+* Ensuite... vous savez... Je ne veux pas (vous) le dire..: Recommencer. Mais si possible, juste avant de Recommencer..,
+* Merger.
 
 ## Test and Deploy
 
 Use the built-in continuous integration in GitLab.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/) ça, on doit faire. (Ce n'est pas encore fait à ma connaissance.)
 
 ***
 
