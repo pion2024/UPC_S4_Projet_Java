@@ -121,23 +121,23 @@ public class GameModel {
 
     //------------------------------------------------------------------------------
 
-    public void updateWithCable() {
-        //active le cable si le switch est pressé/activé
-        if (this.switches.isEmpty() || (this.bridges.isEmpty() && this.propulsors.isEmpty())) return;
-        for (int i = 0 ; i < this.switches.size() ; i++) {
-            if (this.switches.get(i).getIsPressed()) {
-                for (int j = 0 ; j < this.cables.get(i).size() ; j++) {
-                    this.cables.get(i).get(j).setIsActivated(true);
-                }
-            }
-        }
-        //active le pont si le cable est activé
-        for (Bridge bridge : bridges) {
-            for (int k = 0 ; k < this.cables.size() ; k++) {
-                bridge.setActivated(this.cables.get(k).get(0).getIsActivated());
-            }
-        }
-    }
+    // public void updateWithCable() {
+    //     //active le cable si le switch est pressé/activé
+    //     if (this.switches.isEmpty() || (this.bridges.isEmpty() && this.propulsors.isEmpty())) return;
+    //     for (int i = 0 ; i < this.switches.size() ; i++) {
+    //         if (this.switches.get(i).getIsPressed()) {
+    //             for (int j = 0 ; j < this.cables.get(i).size() ; j++) {
+    //                 this.cables.get(i).get(j).setIsActivated(true);
+    //             }
+    //         }
+    //     }
+    //     //active le pont si le cable est activé
+    //     for (Bridge bridge : bridges) {
+    //         for (int k = 0 ; k < this.cables.size() ; k++) {
+    //             bridge.setActivated(this.cables.get(k).get(0).getIsActivated());
+    //         }
+    //     }
+    // }
 
     //cablage (pour l'instant ne fait que des cablage en ligne ou en courbe)
     // public List<Cable> cableManagement(Switch sw, Bridge bridge, Board board) {

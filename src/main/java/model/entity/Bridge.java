@@ -25,6 +25,14 @@ public class Bridge extends Items implements Activatable {
         return this.dir;
     }
 
+    public int getDi() {
+        return this.dir.getDi();
+    }
+
+    public int getDj() {
+        return this.dir.getDi();
+    }
+
     @Override
     public void setActivated(boolean state) {
         this.active = state;

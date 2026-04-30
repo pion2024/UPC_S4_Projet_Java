@@ -17,7 +17,13 @@ public abstract class Switch extends Items {
         this.isPressed = active;
     }
     
+    public int getDi() {
+        return this.dir.getDi();
+    }
 
+    public int getDj() {
+        return this.dir.getDi();
+    }
     
     public boolean getIsPressed() {
         return isPressed;
