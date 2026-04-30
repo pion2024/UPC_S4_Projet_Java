@@ -2,36 +2,19 @@
 
 
 
-## Getting started
-
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
-
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-
 ## Integrate with your tools
 
 * [Set up project integrations](https://moule.informatique.univ-paris-diderot.fr/pi4-java-2526-vp2c-star/pi4-java-2526-vp2c-star/-/settings/integrations) peut-être qu'on aurait besoin de ça
 
 ## Collaborate with your team
 
-* [Invite team members and collaborators] ✓
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html) plus tard, je vais transformer cette ligne.
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html) plus tard, je vais transformer cette ligne en disant comment travailler en groupe, car je trouve que notre méthodologie de travail actuelle est plutôt désorganisée.
 
 ## Test and Deploy
 
 Use the built-in continuous integration in GitLab.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/) ça on doit faire.
-
-Le reste, je ne comprends pas. Donc je vais les supprimer dans le prochain commit.
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/) ça, on doit faire. (Ce n'est pas encore fait à ma connaissance.)
 
 ***
 
