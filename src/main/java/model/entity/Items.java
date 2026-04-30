@@ -19,6 +19,14 @@ public abstract class Items{
         return this.dir;
     }
 
+    public int getDi() {
+        return this.dir.getDi();
+    }
+
+    public int getDj() {
+        return this.dir.getDi();
+    }
+
     public void setDir(Direction dir){
         this.dir=dir;
     }

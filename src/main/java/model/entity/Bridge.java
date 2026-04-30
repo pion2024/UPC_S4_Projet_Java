@@ -9,12 +9,14 @@ import model.physic.Position;
 public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
     private List<Switch> hostSwitches;
+    private Cable cable;
 
     public Bridge(int id, Position pos, boolean traversable, Direction dir) {
         super(traversable, CellType.BRIDGE, dir);
         this.active = traversable;
         this.hostSwitches = new ArrayList<>();
         this.hostSwitches = new ArrayList<>();
+        this.cable = null;
     }
 
     public List<Switch> getHostSwitches() {
@@ -39,6 +41,10 @@ public class Bridge extends Items implements Activatable {
         this.traversable = this.active;
     }
 
+    public void setCable(Cable cable) {
+        this.cable = cable;
+    }
+
     @Override
     public void onSteppedOn(MovableEntity stepper) {
          // ne fais rien 
@@ -58,6 +64,11 @@ public class Bridge extends Items implements Activatable {
         }
         setActivated(allPressed);
     }    
+
+    public void updateCable() {
+        if (this.cable.getOutput()) setActivated(true);
+        else setActivated(false);
+    }
 }
 
 
