@@ -80,6 +80,14 @@ public class Cable extends Items{
         return this.nbOfConnection;
     }
 
+    public int getI() {
+        return this.pos.getI();
+    }
+
+    public int getJ() {
+        return this.pos.getJ();
+    }
+
     //Setters
 
     public void setInput(boolean newInput) {

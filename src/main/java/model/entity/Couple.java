@@ -41,10 +41,10 @@ public class Couple {
     }
 
     public void connexion(Switch sw, Bridge br, Board board) {
-        int i = sw.getDi();
-        int j = sw.getDj();
-        int brI = br.getDi();
-        int brJ = br.getDj();
+        int i = sw.getI();
+        int j = sw.getJ();
+        int brI = br.getI();
+        int brJ = br.getJ();
         boolean premierCable = true;
 
         Direction vDir = i < brI ? Direction.DOWN : (i > brI ? Direction.UP : null);
@@ -54,7 +54,7 @@ public class Couple {
             i += vDir.getDi();
             while (i != brI) {
                 Position pos = new Position(i, j);
-                if (board.getItemAt(i, j).getType() == CellType.GROUND)
+                if (board.isInside(i, j) && board.getItemAt(i, j).getType() == CellType.GROUND)
                     this.listOfCables.add(new Cable(pos, vDir));
                 Items tmp = board.getItemAt(i, j);
                 if (tmp instanceof Cable) {
@@ -72,7 +72,7 @@ public class Couple {
             j += hDir.getDj();
             while (j != brJ) {
                 Position pos = new Position(i, j);
-                if (board.getItemAt(i, j).getType() == CellType.GROUND)
+                if (board.isInside(i, j) && board.getItemAt(i, j).getType() == CellType.GROUND)
                     this.listOfCables.add(new Cable(pos, hDir));
                 Items tmp = board.getItemAt(i, j);
                 if (tmp instanceof Cable) {
@@ -83,7 +83,7 @@ public class Couple {
                 j += hDir.getDj();
             }
         }
-        this.br.setCable(this.listOfCables.getLast());
+        this.br.setCable(this.listOfCables.get(this.listOfCables.size()-1));
     }
 
 }

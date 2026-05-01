@@ -92,8 +92,8 @@ public class Board {
 
     /**
      * Utilitaire pour trouver s'il y a un objet mobile à une position donnée.
-     * @param x
-     * @param y
+     * @param i
+     * @param j
      * @return
      */
     public MovableEntity getEntityAt(int i, int j) {

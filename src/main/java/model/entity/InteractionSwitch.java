@@ -1,11 +1,12 @@
 package model.entity;
 
 import model.physic.Direction;
+import model.physic.Position;
 
 public class InteractionSwitch extends Switch {
 
-    public InteractionSwitch() {
-        super(true, Direction.DOWN);
+    public InteractionSwitch(Position pos) {
+        super(pos, true, Direction.DOWN);
     }
 
     @Override

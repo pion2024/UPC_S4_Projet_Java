@@ -10,10 +10,12 @@ public class Bridge extends Items implements Activatable {
     private boolean active; // état du pont
     private List<Switch> hostSwitches;
     private Cable cable;
+    private Position pos;
 
     public Bridge(int id, Position pos, boolean traversable, Direction dir) {
         super(traversable, CellType.BRIDGE, dir);
         this.active = traversable;
+        this.pos = pos;
         this.hostSwitches = new ArrayList<>();
         this.hostSwitches = new ArrayList<>();
         this.cable = null;
@@ -21,6 +23,14 @@ public class Bridge extends Items implements Activatable {
 
     public List<Switch> getHostSwitches() {
         return this.hostSwitches;
+    }
+
+    public int getI() {
+        return this.pos.getI();
+    }
+
+    public int getJ(){
+        return this.pos.getJ();
     }
 
     public Direction getDir() {
@@ -67,7 +77,7 @@ public class Bridge extends Items implements Activatable {
 
     public void updateCable() {
         if (this.cable.getOutput()) setActivated(true);
-        else setActivated(false);
+        //else setActivated(false);
     }
 }
 

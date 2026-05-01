@@ -64,7 +64,7 @@ public enum Level {
 
             //on pose les mecanismes
             //un interrupteur rouge au depart
-            BlockSwitch sw1 = new BlockSwitch();            
+            BlockSwitch sw1 = new BlockSwitch(new Position(5, 2));            
             board.setItem(5, 2, sw1);
             board.setItem(5, 2, sw1);
             model.addSwitch(sw1);
@@ -85,6 +85,10 @@ public enum Level {
             board.setItem(5, 5, b2);
             model.addBridge(b1);
             model.addBridge(b2);
+
+            cabler(board, c1);
+            cabler(board, c2);
+
 
             //le joueur qui pop
             Agent player = new Agent(new Position(0, 0));
@@ -123,7 +127,7 @@ public enum Level {
 
     public void cabler(Board board, Couple couple) {
         for (Cable cable : couple.getListOfCables()) {
-           board.setItem(cable.getDi(), cable.getDj(), cable);
+           board.setItem(cable.getI(), cable.getJ(), cable);
         }
     }
 }

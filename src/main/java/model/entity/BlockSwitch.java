@@ -1,11 +1,12 @@
 package model.entity;
 
 import model.physic.Direction;
+import model.physic.Position;
 
 public class BlockSwitch extends Switch {
 
-    public BlockSwitch() {
-        super(true, Direction.DOWN);
+    public BlockSwitch(Position pos) {
+        super(pos, true, Direction.DOWN);
     }
 
     @Override

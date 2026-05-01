@@ -35,6 +35,7 @@ public class GameModel {
         this.board = new Board(items);
         this.bridges = new ArrayList<>();
         this.switches = new ArrayList<>();
+        this.couples = new ArrayList<>();
     }
 
     // ======= Méthodes de gestion =======
@@ -94,21 +95,25 @@ public class GameModel {
                     Cable tmp2 = listOfCables.get(i-1);
                     if (tmp.getNbConnection() == 1) tmp.setInput(tmp2.getOutput());
                     if (tmp.getNbConnection() == 2){
-                        if (board.getItemAt(tmp.getDi()+1, tmp.getDj()+1) instanceof Cable) {
-                            Cable tmp3 = (Cable) board.getItemAt(tmp.getDi()+1, tmp.getDj()+1);
+                        if (board.getItemAt(tmp.getI()+1, tmp.getJ()+1) instanceof Cable) {
+                            Cable tmp3 = (Cable) board.getItemAt(tmp.getI()+1, tmp.getJ()+1);
                             tmp.setInput2(tmp2.getOutput(), tmp3.getOutput());
+                            for (Bridge br : bridges) br.updateCable();
                         }
-                        if (board.getItemAt(tmp.getDi()-1, tmp.getDj()+1) instanceof Cable) {
-                            Cable tmp3 = (Cable) board.getItemAt(tmp.getDi()+1, tmp.getDj()+1);
+                        if (board.getItemAt(tmp.getI()-1, tmp.getJ()+1) instanceof Cable) {
+                            Cable tmp3 = (Cable) board.getItemAt(tmp.getI()+1, tmp.getJ()+1);
                             tmp.setInput2(tmp2.getOutput(), tmp3.getOutput());
+                            for (Bridge br : bridges) br.updateCable();
                         }
-                        if (board.getItemAt(tmp.getDi()+1, tmp.getDj()-1) instanceof Cable) {
-                            Cable tmp3 = (Cable) board.getItemAt(tmp.getDi()+1, tmp.getDj()+1);
+                        if (board.getItemAt(tmp.getI()+1, tmp.getJ()-1) instanceof Cable) {
+                            Cable tmp3 = (Cable) board.getItemAt(tmp.getI()+1, tmp.getJ()+1);
                             tmp.setInput2(tmp2.getOutput(), tmp3.getOutput());
+                            for (Bridge br : bridges) br.updateCable();
                         }
-                        if (board.getItemAt(tmp.getDi()-1, tmp.getDj()-1) instanceof Cable) {
-                            Cable tmp3 = (Cable) board.getItemAt(tmp.getDi()+1, tmp.getDj()+1);
+                        if (board.getItemAt(tmp.getI()-1, tmp.getJ()-1) instanceof Cable) {
+                            Cable tmp3 = (Cable) board.getItemAt(tmp.getI()+1, tmp.getJ()+1);
                             tmp.setInput2(tmp2.getOutput(), tmp3.getOutput());
+                            for (Bridge br : bridges) br.updateCable();
                         }
                     } 
                 }

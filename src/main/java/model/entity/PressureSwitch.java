@@ -1,13 +1,14 @@
 package model.entity;
 
 import model.physic.Direction;
+import model.physic.Position;
 
 public class PressureSwitch extends Switch {
 
     private int count = 0;
 
-    public PressureSwitch() {
-        super(true, Direction.DOWN);
+    public PressureSwitch(Position pos) {
+        super(pos, true, Direction.DOWN);
     }
 
     @Override
