@@ -1,10 +1,10 @@
 package model.entity;
 
+import model.entity.Cable.CableSource;
 import model.physic.Direction;
 import model.physic.Position;
 
-
-public abstract class Switch extends Items {
+public abstract class Switch extends Items implements CableSource {
 
     private Position pos;
     protected boolean isPressed;

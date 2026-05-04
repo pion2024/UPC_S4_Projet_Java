@@ -5,6 +5,7 @@ import model.entity.Agent;
 import model.entity.Block;
 import model.entity.BlockSwitch;
 import model.entity.Bridge;
+import model.entity.Cable.Intersection;
 import model.entity.Couple;
 import model.entity.Ground;
 import model.entity.InteractionSwitch;
@@ -34,7 +35,6 @@ public enum Level {
             // Switch
             BlockSwitch sw1 = new BlockSwitch(new Position(5, 2));
             board.setItem(5, 2, sw1);
-            model.addSwitch(sw1);
 
             // Joueur
             Agent player = new Agent(new Position(0, 0));
@@ -52,11 +52,9 @@ public enum Level {
             b2.addSwitch(sw1);
             board.setItem(5, 4, b1);
             board.setItem(5, 5, b2);
-            model.addBridge(b1);
-            model.addBridge(b2);
 
 
-            // Couples
+            // Connexions
             Couple c1 = new Couple(sw1, b1);
             Couple c2 = new Couple(sw1, b2);
 
@@ -88,15 +86,12 @@ public enum Level {
             // Switch
             BlockSwitch sw1 = new BlockSwitch(new Position(4, 1));
             board.setItem(4, 1, sw1);
-            model.addSwitch(sw1);
 
             PressureSwitch sw2 = new PressureSwitch(new Position(5, 2));
             board.setItem(5, 2, sw2);
-            model.addSwitch(sw2);
 
             InteractionSwitch sw3 = new InteractionSwitch(new Position(6, 3));
             board.setItem(6, 3, sw3);
-            model.addSwitch(sw3);
 
             // Joueur
             Agent player = new Agent(new Position(0, 0));
@@ -121,8 +116,7 @@ public enum Level {
             b2.addSwitch(sw1);
             board.setItem(5, 4, b1);
             board.setItem(5, 5, b2);
-            model.addBridge(b1);
-            model.addBridge(b2);
+
             // pont pour le switch 2
             Bridge b3 = new Bridge(2, new Position(6, 4), false, Direction.UP);
             Bridge b4 = new Bridge(3, new Position(6, 5), false , Direction.UP);
@@ -130,8 +124,7 @@ public enum Level {
             b4.addSwitch(sw2);
             board.setItem(6, 4, b3);
             board.setItem(6, 5, b4);
-            model.addBridge(b3);
-            model.addBridge(b4);
+
             // pont pour le switch 3
             Bridge b5 = new Bridge(2, new Position(7, 4), false, Direction.UP);
             Bridge b6 = new Bridge(3, new Position(7, 5), false, Direction.UP);
@@ -139,10 +132,92 @@ public enum Level {
             b6.addSwitch(sw3);
             board.setItem(7, 4, b5);
             board.setItem(7, 5, b6);
-            model.addBridge(b5);
-            model.addBridge(b6);
+
+
+            //Connexions
+            Couple c1 = new Couple(sw1, b1);
+            Couple c2 = new Couple(sw1, b2);
+
+            c1.connexion(board);
+            c2.connexion(board);
+
+            model.addCouple(c1);
+            model.addCouple(c2);
+
+            Couple c3 = new Couple(sw2, b3);
+            Couple c4 = new Couple(sw2, b4);
+
+            c3.connexion(board);
+            c4.connexion(board);
+
+            model.addCouple(c3);
+            model.addCouple(c4);
+
+            Couple c5 = new Couple(sw3, b5);
+            Couple c6 = new Couple(sw3, b6);
+
+            c5.connexion(board);
+            c6.connexion(board);
+
+            model.addCouple(c5);
+            model.addCouple(c6);
+        }
+    },
+
+    LEVEL_3(10, 10) {
+        @Override
+        public void setup(GameModel model) {
+            Board board = model.getBoard();
+
+            // Création des îles de base
+            createIsland(board, 0, 0, 4, 10); // bloc de gauche
+            createIsland(board, 5, 0, 5, 10); // bloc de droite
+
+            // Joueur
+            Agent player = new Agent(new Position(0, 0));
+            model.getBoard().getMovableEntities().add(player);
+            model.setPlayer(player);
+
+            // Bloc
+            Block box = new Block(new Position(2, 2));
+            model.getBoard().getMovableEntities().add(box);
+
+            Block box2 = new Block(new Position(2, 3));
+            model.getBoard().getMovableEntities().add(box2);
+
+            // Switch
+            BlockSwitch sw1 = new BlockSwitch(new Position(7, 1));
+            board.setItem(7, 1, sw1);
+
+            BlockSwitch sw2 = new BlockSwitch(new Position(3, 1));
+            board.setItem(3, 1, sw2);
+
+            // Ponts
+            Bridge b1 = new Bridge(2, new Position(5, 4), false, Direction.UP);
+            board.setItem(5, 4, b1);
+
+            // Intersection
+            Intersection inter1 = new Intersection(new Position(5, 2));
+            board.setItem(5, 2, inter1);
+
+            // Connexions
+            Couple c1 = new Couple(sw1, inter1);
+            Couple c2 = new Couple(sw2, inter1);
+            Couple c3 = new Couple(inter1, b1);
+
+            c1.connexion(board);
+            c2.connexion(board);
+            c3.connexion(board);
+
+            inter1.addCable(c1.getLastCable());
+            inter1.addCable(c2.getLastCable());
+
+            model.addCouple(c1);
+            model.addCouple(c2);
+            model.addCouple(c3);
         }
     };
+
 
     private final int width;
     private final int height;

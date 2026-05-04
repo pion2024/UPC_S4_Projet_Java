@@ -2,11 +2,12 @@ package model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.entity.Cable.CableTarget;
 import model.physic.Direction;
 import model.physic.Position;
 
 // Le Pont (ou dalle vide) qui apparaît/disparaît 
-public class Bridge extends Items implements Activatable {
+public class Bridge extends Items implements Activatable, CableTarget {
     private boolean active; // état du pont
     private List<Switch> hostSwitches;
     private Cable cable;
@@ -55,7 +56,7 @@ public class Bridge extends Items implements Activatable {
         return this.active;
     }
 
-    public void setCable(Cable cable) {
+    public void addCable(Cable cable) {
         this.cable = cable;
     }
 

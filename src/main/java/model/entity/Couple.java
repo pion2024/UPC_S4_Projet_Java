@@ -4,95 +4,73 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.board.Board;
+import model.entity.Cable.CableSource;
+import model.entity.Cable.CableTarget;
 import model.physic.Direction;
 import model.physic.Position;
 
 public class Couple {
-    private Board b1;
     private List<Cable> listOfCables;
-    private Switch sw;
-    private Switch sw2;
-    private Switch sw3;
-    private Bridge br;
+    private CableSource source;     //switch, cable et intersection
+    private CableTarget target;     //intersection, cable, pont et propulseur
 
-    public Couple(Switch sw, Bridge br) {
-        this.sw = sw;
-        this.br = br;
+    public Couple(CableSource source, CableTarget target) {
+        this.source = source;
+        this.target = target;
         this.listOfCables = new ArrayList<>();
     }
 
-    // public Couple(Switch sw1, Switch sw2, Bridge br) {
-    //     this.sw = sw1;
-    //     this.sw2 = sw2;
-    //     this.br = br;
-    //     this.listOfCables = new ArrayList<>();
-    // }
-
-    // public Couple(Switch sw1, Switch sw2, Switch sw3, Bridge br) {
-    //     this.sw = sw1;
-    //     this.sw2 = sw2;
-    //     this.sw3 = sw3;
-    //     this.br = br;
-    //     this.listOfCables = new ArrayList<>();
-    // }
 
     public List<Cable> getListOfCables() {
         return this.listOfCables;
     }
 
-    public Switch getSwitch() {
-        return this.sw;
+    public CableSource getSource() {
+        return this.source;
     }
 
-    public Bridge getBridge() {
-        return this.br;
+    public CableTarget getTarget() {
+        return this.target;
+    }
+
+    public Cable getLastCable() {
+        return this.listOfCables.get(listOfCables.size()-1);
     }
 
     //on crée la connexion entre un pont et un bridge, et on a ajoute le cablage sur le board
     public void connexion(Board board) {
-        int i = this.sw.getI();
-        int j = this.sw.getJ();
-        int brI = this.br.getI();
-        int brJ = this.br.getJ();
+        int i = this.source.getI();
+        int j = this.source.getJ();
+        int targetI = this.target.getI();
+        int targetJ = this.target.getJ();
         boolean premierCable = true;
 
-        Direction vDir = i < brI ? Direction.DOWN : (i > brI ? Direction.UP : null);
+        Direction vDir = i < targetI ? Direction.DOWN : (i > targetI ? Direction.UP : null);
         if (vDir != null) {
-            this.listOfCables.add(new Cable(sw, vDir));
+            this.listOfCables.add(new Cable(source, vDir));
             premierCable = false;
             i += vDir.getDi();
-            while (i != brI) {
+            while (i != targetI) {
                 Position pos = new Position(i, j);
                 if (board.isInside(i, j) && board.getItemAt(i, j).getType() == CellType.GROUND)
                     this.listOfCables.add(new Cable(pos, vDir));
-                else if (board.getItemAt(i, j) instanceof Cable) {
-                    Cable tmp = (Cable) board.getItemAt(i, j);
-                    if (tmp.getNbConnection() == 1)
-                        this.listOfCables.add(new Cable(pos, tmp, vDir));
-                }
                 i += vDir.getDi();
             }
         }
 
-        Direction hDir = j < brJ ? Direction.RIGHT : (j > brJ ? Direction.LEFT : null);
+        Direction hDir = j < targetJ ? Direction.RIGHT : (j > targetJ ? Direction.LEFT : null);
         if (hDir != null) {
-            this.listOfCables.add(premierCable ? new Cable(sw, hDir) : new Cable(new Position(i, j), hDir));
+            this.listOfCables.add(premierCable ? new Cable(source, hDir) : new Cable(new Position(i, j), hDir));
             j += hDir.getDj();
-            while (j != brJ) {
+            while (j != targetJ) {
                 Position pos = new Position(i, j);
                 if (board.isInside(i, j) && board.getItemAt(i, j).getType() == CellType.GROUND)
                     this.listOfCables.add(new Cable(pos, hDir));
-                else if (board.getItemAt(i, j) instanceof Cable) {
-                    Cable tmp = (Cable) board.getItemAt(i, j);
-                    if (tmp.getNbConnection() == 1)
-                        this.listOfCables.add(new Cable(pos, tmp, hDir));
-                }
                 j += hDir.getDj();
             }
         }
         Direction tmp2 = (vDir != null && hDir == null) ? vDir : hDir;
-        this.listOfCables.add(new Cable(new Position(brI, brJ), tmp2));
-        this.br.setCable(this.listOfCables.get(this.listOfCables.size()-1));
+        this.listOfCables.add(new Cable(new Position(targetI, targetJ), tmp2));
+        this.target.addCable(this.listOfCables.get(this.listOfCables.size()-1));
     }
-
 }

@@ -1,36 +1,31 @@
 package model.entity;
 
+import model.entity.Cable.CableSource;
+import model.entity.Cable.CableTarget;
 import model.physic.Direction;
 import model.physic.Position;
 
 public class Cable extends Items{
     private Position pos;
-    private int nbOfConnection;
-    private Switch sw;
-    private Bridge br;
-    private Direction dir;
-    private Cable input2;
+    private CableSource source;
+    private CableTarget target;
     private boolean in;
-    private boolean in2;
-    private boolean in3;
     private boolean out;
     
-    public Cable(Switch sw, Direction dir) {
+    public Cable(CableSource source, Direction dir) {
         super(true, CellType.CABLE, dir);
-        this.pos = new Position(sw.getDi(), sw.getDj());
-        this.sw = sw;
-        this.in = sw.getIsPressed();
+        this.pos = new Position(source.getDi(), source.getDj());
+        this.source = source;
+        this.in = source.getIsPressed();
         this.out = this.in;
-        this.nbOfConnection = 1;
     }
 
-    public Cable(Position pos, Direction dir, Bridge br) {
+    public Cable(Position pos, Direction dir, CableTarget target) {
         super(true, CellType.CABLE, dir);
         this.pos = new Position(pos.getI(), pos.getJ());
-        this.br = br;
+        this.target = target;
         this.in = false;
         this.out = this.in;
-        this.nbOfConnection = 1;
     }
 
     public Cable(Position pos, Direction dir) {
@@ -38,29 +33,6 @@ public class Cable extends Items{
         this.pos = new Position(pos.getI(), pos.getJ());
         this.in = false;
         this.out = this.in;
-        this.nbOfConnection = 1;
-    }
-
-    public Cable(Position pos, Cable input, Direction dir) { //cellule de cable avec connexion -|- (2 entrées et 1 sortie)
-        super(true, CellType.CABLE, dir);
-        this.dir = dir;
-        this.pos = new Position(pos.getI(), pos.getJ());
-        this.in = false;
-        this.in2 = false;
-        this.out = this.in && this.in2;
-        this.nbOfConnection = 2;
-    }
-
-    public Cable(Position pos, Cable input, Cable input2, Direction dir) {//cellule de cable avec connexion -|- (3 entrées et 1 sortie)
-        super(true, CellType.CABLE, dir);
-        this.input2 = input2;
-        this.dir = dir;
-        this.pos = new Position(pos.getI(), pos.getJ());
-        this.in = false;
-        this.in2 = false;
-        this.in3 = false;
-        this.out = this.in && this.in2 && this.in3;
-        this.nbOfConnection = 3;
     }
 
     //Getters
@@ -76,8 +48,8 @@ public class Cable extends Items{
         return type;
     }
 
-    public int getNbConnection() {
-        return this.nbOfConnection;
+    public Position getPos() {
+        return this.pos;
     }
 
     public int getI() {
@@ -90,28 +62,121 @@ public class Cable extends Items{
 
     //Setters
 
+    public void setInput(Cable cable) {
+        this.in = cable.getOutput();
+        this.out = cable.getOutput();
+    }
+
     public void setInput(boolean newInput) {
         this.in = newInput;
         this.out = newInput;
     }
 
-    public void setInput2(boolean newInput1, boolean newInput2) {
-        this.in = newInput1;
-        this.in2 = newInput2;
-        this.out = newInput1 && newInput2;
-    }
+    public void setInput(Cable cable1, Cable cable2) {
+            this.in = (cable1.getOutput() && cable2.getOutput());
+            this.out = this.in;
+        }
 
-    public void setInput3(boolean newInput1, boolean newInput2, boolean newInput3) {
-        this.in = newInput1;
-        this.in2 = newInput2;
-        this.in3 = newInput3;
-        this.out = newInput1 && newInput2 && newInput3;
-    }
+        public void setInput(Cable cable1, Cable cable2, Cable cable3) {
+            this.in = (cable1.getOutput() && cable2.getOutput() && cable3.getOutput());
+            this.out = this.in;
+        }
+
+        public void updateStatus() {
+            
+        }
 
 
     @Override
     public void onSteppedOn(MovableEntity stepper) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'onSteppedOn'");
+    }
+
+    public static class Intersection extends Items implements CableSource, CableTarget {
+        private Cable input1;
+        private Cable input2;
+        private Cable input3;
+        private Cable output;
+        private Position pos;
+
+        public Intersection(Position pos) {
+            super(true, CellType.CABLE, null);
+            this.pos = pos;
+            this.input1 = null;
+            this.input2 = null;
+            this.input3 = null;
+            this.output = null;
+        }
+
+        public int getI() {
+            return this.pos.getI();
+        }
+
+        public int getJ() {
+            return this.pos.getJ();
+        }
+
+        public int getDi() {
+            return this.output.getDi();
+        }
+
+        public int getDj() {
+            return this.output.getDj();
+        }
+
+        public boolean getIsPressed() {
+            if (input3 == null) return this.input1.getOutput() && this.input2.getOutput();
+            else return this.input1.getOutput() && this.input2.getOutput() && this.input3.getOutput();
+        }
+
+        public void addCable(Cable cable) {
+            if (this.input1 == null) this.input1 = cable;
+            else if (this.input1 != null && this.input2 == null) {
+                this.input2 = cable;
+                for (Direction dir : Direction.values()) {
+                    if (dir != input1.getDir() && dir != input2.getDir()) {
+                        this.output = new Cable(input1.getPos(), dir);
+                        break;
+                    }
+                }
+            } 
+            else if (this.input1 != null && this.input2 != null && this.input3 == null) {
+                this.input3 = cable;
+                for (Direction dir : Direction.values()) {
+                    if (dir != input1.getDir() && dir != input2.getDir()) {
+                        this.output = new Cable(input1.getPos(), dir);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void updateStatus() {
+            if (this.input1 != null && this.input2 != null && this.input3 == null) 
+                this.output.setInput(input1, input2);
+            else if (this.input1 != null && this.input2 != null && this.input3 != null)
+                this.output.setInput(input1, input2, input3);
+        }
+
+        @Override
+        public void onSteppedOn(MovableEntity stepper) {
+            // ne fais rien 
+        }
+    }
+
+    public interface CableSource {
+        int getI();
+        int getJ();
+        int getDi();
+        int getDj();
+        boolean getIsPressed();
+    }
+
+    public interface CableTarget {
+        int getI();
+        int getJ();
+        void addCable(Cable cable);
+        void updateStatus();
     }
 }
