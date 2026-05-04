@@ -63,6 +63,9 @@ public enum Level {
             c1.connexion(board);
             c2.connexion(board);
 
+            model.addCouple(c1);
+            model.addCouple(c2);
+
         }
     },
 

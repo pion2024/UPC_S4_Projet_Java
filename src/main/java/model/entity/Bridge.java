@@ -51,6 +51,10 @@ public class Bridge extends Items implements Activatable {
         this.traversable = this.active;
     }
 
+    public boolean getIsActivated() {
+        return this.active;
+    }
+
     public void setCable(Cable cable) {
         this.cable = cable;
     }

@@ -82,6 +82,9 @@ public class GameModel {
     //     }
     // }
 
+    public void addCouple(Couple c) {
+        this.couples.add(c);
+    }
 
     public void update() {
         for (Couple couple : couples) {
