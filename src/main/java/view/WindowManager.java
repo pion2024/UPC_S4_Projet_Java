@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.GameController;
@@ -71,6 +72,32 @@ public class WindowManager {
         frame.pack(); 
         frame.setLocationRelativeTo(null); 
         container.requestFocusInWindow(); 
+    }
+
+    public void showLevelCompletionDialog(int currentLevel) {
+        Object[] options = {"Revenir au menu", "Passer au niveau " + (currentLevel + 1)};
+        
+        // Affiche la boîte de dialogue modale
+        int choix = JOptionPane.showOptionDialog(
+                frame, 
+                "Voulez-vous revenir au menu ou passer au level " + (currentLevel + 1) + " ?", 
+                "Niveau terminé !", 
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, 
+                options, 
+                options[1] 
+        );
+
+        // Traitement du choix
+        if (choix == 0) {
+            // Revenir au menu
+            showMenu();
+        } 
+        else if (choix == 1) {
+            // Passer au niveau suivant
+            switchToGame(currentLevel + 1);
+        }
     }
 
     public void showMenu() {
