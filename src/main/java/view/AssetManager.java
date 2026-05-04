@@ -25,6 +25,9 @@ public class AssetManager {
     private BufferedImage closedBridge;
     private BufferedImage wall;
     private BufferedImage terminal; 
+    private BufferedImage arrivalSwitch; 
+    private BufferedImage switchAgent; 
+    private BufferedImage switchInteraction; 
 
     private AssetManager() {
         loadAllAssets();
@@ -52,6 +55,9 @@ public class AssetManager {
         closedBridge = load("/assets/closedBridge.png");
         wall = load("/assets/wall.png");
         terminal = load("/assets/terminal.png");
+        arrivalSwitch = load("/assets/arrivalSwitch.png");
+        switchAgent = load("/assets/switchAgent.png");
+        switchInteraction = load("/assets/switchInteraction.png");
 
         System.out.println(" Assets chargés !");
     }
@@ -79,9 +85,12 @@ public class AssetManager {
     public BufferedImage getBlock() { return block; }
     public BufferedImage getRobot() { return robot; }
     public BufferedImage getPropulsor() { return propulsor; }
-    public BufferedImage getSwitch() { return switchBlock; }
+    public BufferedImage getSwitchBlock() { return switchBlock; }
     public BufferedImage getOpenBridge() { return openedBridge; }
     public BufferedImage getClosedBridge() { return closedBridge; }
     public BufferedImage getWall(){ return wall;}
     public BufferedImage getTerminal() { return terminal; } 
+    public BufferedImage getArrivalSwitch() { return arrivalSwitch; } 
+    public BufferedImage getSwitchAgent() { return switchAgent; } 
+    public BufferedImage getSwitchInteraction() { return switchInteraction; } 
 }
