@@ -10,12 +10,15 @@ import javax.swing.JPanel;
 import model.GameModel;
 import model.board.Board;
 import model.entity.Agent;
+import model.entity.ArrivalSwitch;
 import model.entity.Block;
+import model.entity.BlockSwitch;
+import model.entity.InteractionSwitch;
+import model.entity.PressureSwitch;
 import model.entity.Items;
 import model.entity.MovableEntity;
 import model.entity.Robot;
 import model.entity.Switch;
-import model.entity.Terminal; 
 
 public class GameView extends JPanel {
     private GameModel model;
@@ -116,11 +119,22 @@ public class GameView extends JPanel {
                 break;
             case SWITCH:
                 Switch sw = (Switch) item;
-                img = AssetManager.getInstance().getSwitch();
+                if (sw instanceof BlockSwitch){
+                   img = AssetManager.getInstance().getSwitchBlock(); 
+                }
+                if ( sw instanceof ArrivalSwitch){
+                    img = AssetManager.getInstance().getArrivalSwitch();
+                }
+                if ( sw instanceof PressureSwitch){
+                    img = AssetManager.getInstance().getSwitchAgent();
+                }
+                if ( sw instanceof InteractionSwitch){
+                    img = AssetManager.getInstance().getSwitchInteraction();
+                }
                 fallback = sw.getIsPressed() ? Color.GREEN : Color.RED;
                 break;
             case BRIDGE:
-                img = item.isTraversable() ? AssetManager.getInstance().getClosedBridge() : AssetManager.getInstance().getOpenBridge();
+                img = item.isTraversable() ? AssetManager.getInstance().getOpenBridge() : AssetManager.getInstance().getClosedBridge();
                 fallback = item.isTraversable() ? new Color(139, 69, 19) : Color.DARK_GRAY;
                 break;
             case WALL:
