@@ -2,13 +2,14 @@ package model;
 
 import model.board.Board;
 import model.entity.Agent;
+import model.entity.ArrivalSwitch;
 import model.entity.Block;
 import model.entity.BlockSwitch;
 import model.entity.Bridge;
 import model.entity.Ground;
 import model.entity.InteractionSwitch;
 import model.entity.PressureSwitch;
-import model.entity.Robot;      
+import model.entity.Robot;
 import model.entity.Terminal;   
 import model.physic.Direction;
 import model.physic.Position;
@@ -34,6 +35,10 @@ public enum Level {
             BlockSwitch sw1 = new BlockSwitch();
             board.setItem(5, 2, sw1);
             model.addSwitch(sw1);
+            
+            ArrivalSwitch As = new ArrivalSwitch();
+            board.setItem(7, 9, As);
+            model.addSwitch(As);
 
             // Joueur
             Agent player = new Agent(new Position(0, 0));
@@ -85,6 +90,10 @@ public enum Level {
             InteractionSwitch sw3 = new InteractionSwitch();
             board.setItem(6, 3, sw3);
             model.addSwitch(sw3);
+
+            ArrivalSwitch As = new ArrivalSwitch();
+            board.setItem(2, 7, As);
+            model.addSwitch(As);
 
             // Joueur
             Agent player = new Agent(new Position(0, 0));
