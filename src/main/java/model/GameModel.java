@@ -13,12 +13,14 @@ import model.physic.Position;
 
 public class GameModel {
 
+    private int levelNum;
     private Board board;
     private List<Bridge> bridges;
     private List<Switch> switches;
     private Agent player;
 
-    public GameModel(int width, int height) {
+    public GameModel(int width, int height, int levelNum) {
+        this.levelNum = levelNum;
         // init du monde avec du vide partout (bridges bloqués)
         Items[][] items = new Items[height][width];
         for (int i = 0; i < height; i++) {
@@ -60,5 +62,8 @@ public class GameModel {
         for (Bridge bridge : bridges) {
             bridge.updateStatus();
         }
+    }
+    public int getLveleNum(){
+        return this.levelNum;
     }
 }
