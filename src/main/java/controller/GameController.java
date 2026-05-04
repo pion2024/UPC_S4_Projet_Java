@@ -3,13 +3,15 @@ package controller;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.List;     
+
 import javax.swing.Timer;
 
 import model.GameModel;
 import model.Level;
 import model.board.Board;
+import model.entity.ArrivalSwitch;
 import model.entity.Block;
 import model.entity.InteractionSwitch;
 import model.entity.Items;
@@ -46,7 +48,7 @@ public class GameController extends KeyAdapter {
         }
 
         Level selectedLevel = allLevels[levelNum - 1];
-        this.model = new GameModel(selectedLevel.getWidth(), selectedLevel.getHeight());
+        this.model = new GameModel(selectedLevel.getWidth(), selectedLevel.getHeight(),levelNum);
         selectedLevel.setup(this.model);
         this.view.setModel(model);
         this.moveMgr = new MovementManager(model.getBoard());
@@ -144,7 +146,18 @@ public class GameController extends KeyAdapter {
                         return; 
                     }
 
-                    if (model.getPlayer().isCarrying()) {
+                    // 2. NOUVEAU : Interaction avec ArrivalBlock ou InteractionBlock
+                    if (item instanceof ArrivalSwitch) {
+                        ((ArrivalSwitch) item).onInteract(model.getPlayer());
+                        window.showLevelCompletionDialog(model.getLveleNum());
+                        actionPerfomed = true;
+                    } 
+                    else if (item instanceof InteractionSwitch) {
+                        ((InteractionSwitch) item).onInteract(model.getPlayer());
+                        actionPerfomed = true;
+                    }
+                    else {
+                        if (model.getPlayer().isCarrying()) {
                         moveMgr.dropBlock(model.getPlayer());
                         actionPerfomed = true;
                     } else {
@@ -158,6 +171,7 @@ public class GameController extends KeyAdapter {
                             }
                         }
                     }
+                    } 
                 }
                 break;
             case KeyEvent.VK_Q:
