@@ -2,11 +2,15 @@ package model.physic;
 
 import model.board.Board;
 import model.entity.Agent;
+import model.entity.ArrivalSwitch;
 import model.entity.Block;
 import model.entity.BlockSwitch;
+import model.entity.InteractionSwitch;
 import model.entity.Items;
 import model.entity.MovableEntity;
+import model.entity.PressureSwitch;
 import model.entity.Switch;
+import model.entity.Terminal;
 
 public class MovementManager {
     private Board board;
@@ -32,7 +36,7 @@ public class MovementManager {
 
         Items targetItem = board.getItemAt(newI, newJ);
 
-        if (targetItem instanceof BlockSwitch && !(entity instanceof Block)) {
+        if (targetItem instanceof BlockSwitch && !(entity instanceof Block) || targetItem instanceof InteractionSwitch || targetItem instanceof Terminal) {
             return; // joueur/robot ne peuvent pas passer
         }
 
@@ -101,6 +105,7 @@ public class MovementManager {
 
         // Déjà occupé
         if (entityAtPos != null) return;
+        if (itemAtPos instanceof PressureSwitch) return;
 
         if (itemAtPos instanceof Switch sw) {
 
@@ -148,6 +153,24 @@ public class MovementManager {
         }
 
         return true;
+    }
+
+    public void activeBlock(Agent a){
+        // 1. Récupérer la position du joueur
+        Position playerPos = a.getPos();
+    
+        // 2. Récupérer l'élément sur la case du joueur
+        Items item = board.getItemAt(playerPos.getI(), playerPos.getJ());
+
+        // 3. Vérifier le type et déclencher l'action
+        if (item != null) {
+            if (item instanceof ArrivalSwitch) {
+                ((ArrivalSwitch) item).onInteract(a);
+            } 
+            else if (item instanceof InteractionSwitch) {
+                ((InteractionSwitch) item).onInteract(a);
+            }
+        }
     }
 
     private Position getPositionInFront(Agent a) {
