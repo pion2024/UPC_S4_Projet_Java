@@ -64,20 +64,19 @@ public class Bridge extends Items implements Activatable {
         this.hostSwitches.add(sw);
     }
 
-    public void updateStatus() {
-        boolean allPressed = true;
-        for (Switch sw : hostSwitches) {
-            if (!sw.getIsPressed()) {
-                allPressed = false;
-                break;
-            }
-        }
-        setActivated(allPressed);
-    }    
+    // public void updateStatus() {
+    //     boolean allPressed = true;
+    //     for (Switch sw : hostSwitches) {
+    //         if (!sw.getIsPressed()) {
+    //             allPressed = false;
+    //             break;
+    //         }
+    //     }
+    //     setActivated(allPressed);
+    // }    
 
-    public void updateCable() {
-        if (this.cable.getOutput()) setActivated(true);
-        //else setActivated(false);
+    public void updateStatus() {
+        setActivated(this.cable.getOutput());
     }
 }
 

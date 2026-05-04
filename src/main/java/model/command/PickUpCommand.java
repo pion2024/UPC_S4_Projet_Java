@@ -1,4 +1,5 @@
 package model.command;
+
 import model.entity.MovableEntity;
 
 public class PickUpCommand extends Command {

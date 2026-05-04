@@ -28,20 +28,20 @@ public class MenuView extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setOpaque(false); // Important pour voir l'image de fond derrière
 
-        // 1. Espace flexible en haut
+        // Espace flexible en haut
         mainPanel.add(Box.createVerticalGlue());
 
-        // 2. Gestion du LOGO
+        // LOGO
         JLabel titleLabel = new JLabel("Star Stuff");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 60));
         titleLabel.setForeground(Color.YELLOW);
         titleLabel.setAlignmentX(CENTER_ALIGNMENT);
         mainPanel.add(titleLabel);
 
-        // 3. Espace entre titre et boutons
+        // Espace entre titre et boutons
         mainPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 
-        // 4. BOUTONS
+        // BOUTONS
         JButton playButton = createMenuButton("JOUER");
         JButton quitButton = createMenuButton("QUITTER");
 
@@ -76,7 +76,7 @@ public class MenuView extends JPanel {
     }
 
     private void showLevelSelection() {
-        String[] levels = {"Niveau 1", "Niveau 2 (Bientôt)", "Niveau 3 (Bientôt)"};
+        String[] levels = {"Niveau 1", "Niveau 2", "Niveau 3 (Bientôt)"};
         String choice = (String) JOptionPane.showInputDialog(this, 
             "Choisissez un monde :", "Sélection de niveau",
             JOptionPane.QUESTION_MESSAGE, null, levels, levels[0]);
