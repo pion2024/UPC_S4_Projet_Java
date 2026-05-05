@@ -1,6 +1,6 @@
+Ce répertoire Github héberge une copie du projet réalisé dans le cadre du cours Projet Java au S4.    
+--- 
 # pi4-java-2526-VP2c-star
-
-
 
 ## Integrate with your tools
 
