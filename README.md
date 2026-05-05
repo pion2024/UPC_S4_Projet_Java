@@ -1,6 +1,8 @@
+Ce répertoire héberge une copie du code du projet réalisé dans le cadre du cours Projet Java S4.  
+Vous trouverez la version le plus récent dans la branche `dev`.  
+
+
 # pi4-java-2526-VP2c-star
-
-
 
 ## Getting started
 
